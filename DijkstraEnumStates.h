@@ -1,0 +1,13 @@
+#ifndef DIJKSTRAENUMSTATES_H
+#define DIJKSTRAENUMSTATES_H
+
+
+#include <QVector>
+
+// START States
+enum State
+{
+    UNLABELED, LABELED, SCANNED
+};
+
+#endif // DIJKSTRAENUMSTATES_H
