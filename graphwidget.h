@@ -16,6 +16,7 @@ public:
     bool blockComponents();
     void nextStep();
     void insertNode(int key);
+    void ExportHeap();
 
     void extractMin();
     void decreaseKey(int key);
@@ -38,8 +39,10 @@ private:
 
     GraphicsFibNode **selectedMin;
     FibHeapGraphics *selectedHeap;
-    FibHeapGraphics fibheap;
+    FibHeapGraphics *firstFibHeap;
+    FibHeapGraphics *secondFibHeap;
     bool isDelete;
+    bool first;
 };
 
 #endif // GRAPHWIDGET_H

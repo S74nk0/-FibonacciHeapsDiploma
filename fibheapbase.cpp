@@ -310,3 +310,103 @@ void FibHeapBase<Node>::CascadingCut(Node *y)
     }
 }
 
+//O
+template<class Node>
+void FibHeapBase<Node>::ExportHeap(QString &fileName)
+{
+    QString rootTagName = "fibheap";
+    QString rootAtribute = "minNode";
+    QString rootAtribute2 = "n";
+    int minNodeIndex = 0;
+
+    QDomDocument document;
+
+    QDomElement root = document.createElement(rootTagName);
+    document.appendChild(root);
+
+    if(this->LastNode != 0)
+    {
+        Node *FirsRootNode = this->LastNode->next();
+        if(FirsRootNode != 0)
+            minNodeIndex = InsertElements(document, root, FirsRootNode);
+    }
+
+    root.setAttribute(rootAtribute, minNodeIndex);
+    root.setAttribute(rootAtribute2, this->n);
+
+    QDomElement r2 = document.documentElement(); // bris
+
+    //Write to file
+//    QFile outFile(fileName);
+//    if( !outFile.open( QIODevice::WriteOnly | QIODevice::Text ) )
+//        qDebug( "Failed to open file for writing." );
+
+//    QTextStream stream( &outFile );
+//    stream << document.toString();
+
+    QFile compressed(fileName + ".fibh");
+
+    compressed.open(QIODevice::WriteOnly);
+    compressed.write(qCompress(document.toByteArray()));
+    compressed.close();
+
+//    outFile.close();
+}
+
+template<class Node>
+int FibHeapBase<Node>::InsertElements(QDomDocument &document, QDomElement &root, Node *firstNode) // vrne index minimalnega vozlisca
+{
+    int minIndex = 0;
+    int returnIndex = 0;
+
+    Node *tempNode = firstNode;
+    do {
+        QDomElement newRoot = createElement(document, tempNode);
+        root.appendChild(newRoot);
+        InsertElement(document, newRoot, tempNode->child());
+
+        if(tempNode == this->min)
+            returnIndex = minIndex;
+
+        tempNode = tempNode->next();
+        minIndex++;
+    } while(tempNode != firstNode);
+
+    return returnIndex;
+}
+
+template<class Node>
+void FibHeapBase<Node>::InsertElement(QDomDocument &document, QDomElement &root, Node *node)
+{
+    if(node == 0)
+        return;
+
+    Node *tempNode = node;
+    do {
+        QDomElement newRoot = createElement(document, tempNode);
+        root.appendChild(newRoot);
+        InsertElement(document, newRoot, tempNode->child());
+
+        tempNode = tempNode->next();
+    } while(tempNode != node);
+}
+
+template<class Node>
+QDomElement FibHeapBase<Node>::createElement(QDomDocument &document, Node *node)
+{
+    QString nodeTag = "node";
+    QString atrKey = "key";
+    QString atrDegree = "degree";
+    QString atrMark = "mark";
+    QString markValue = "false";
+
+    if(node->mark)
+        markValue = "true";
+
+    QDomElement retElement = document.createElement(nodeTag);
+    retElement.setAttribute(atrKey, node->key);
+    retElement.setAttribute(atrDegree, node->degree);
+    retElement.setAttribute(atrMark, markValue);
+
+    return retElement;
+}

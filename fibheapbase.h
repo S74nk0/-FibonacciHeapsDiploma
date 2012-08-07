@@ -5,6 +5,11 @@
 #include <vector> // temporary ?
 #include "QDebug"
 
+//xml in file
+#include <QDomDocument>
+#include <QFile>
+#include <QTextStream>
+
 template<class Node>
 class FibHeapBase
 {
@@ -23,6 +28,9 @@ public:
     void DecreaseKey(Node *x, int k);
     void Delete(Node *x);
 
+    //O
+    void ExportHeap(QString &fileName);
+
 protected:
     Node *min;
     int n;
@@ -37,6 +45,12 @@ protected:
     //19.3
     void Cut(Node *x/*, FNode *y*/);
     void CascadingCut(Node *y);
+
+    //O
+    int InsertElements(QDomDocument &document, QDomElement &root, Node *firstNode); // vrne index minimalnega vozlisca
+    void InsertElement(QDomDocument &document, QDomElement &root, Node *node);
+    QDomElement createElement(QDomDocument &document, Node *node);
+
 };
 
 #endif // FIBHEAPBASE_H

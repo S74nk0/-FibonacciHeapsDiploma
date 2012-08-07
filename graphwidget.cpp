@@ -4,7 +4,7 @@
 #include <limits>
 
 GraphWidget::GraphWidget(QWidget *parent)
-    : QGraphicsView(parent), isDelete(false)
+    : QGraphicsView(parent), isDelete(false), first(true)
 {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -180,4 +180,14 @@ void GraphWidget::clearSelected()
 {
     selectedHeap->clear();
     GraphicsFibNode::minfNode = 0;
+}
+
+void GraphWidget::ExportHeap()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
+                                                    "",
+                                tr("Heaps (*.fibh)"));
+
+    if(fileName != "")
+        selectedHeap->ExportHeap(fileName);
 }

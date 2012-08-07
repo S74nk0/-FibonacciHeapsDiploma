@@ -80,7 +80,7 @@ void MainWindow::updateComponents()
 
 void MainWindow::on_actionSave_Selected_Heap_triggered()
 {
-//    ui->graphicsView->ExportHeap();
+    ui->graphicsView->ExportHeap();
 }
 
 void MainWindow::on_actionLoad_To_selected_Heap_triggered()
