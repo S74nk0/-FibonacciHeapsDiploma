@@ -52,34 +52,6 @@ void FibHeapWidget::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Minus:
         zoomOut();
         break;
-
-    case Qt::Key_M:
-        this->extractMin();
-        break;
-        //debuging
-    case Qt::Key_D:
-
-        this->decreaseKey(-20);
-
-        break;
-    case Qt::Key_A:
-
-        this->selectedHeap->animate(420);
-
-        break;
-
-    case Qt::Key_I:
-
-        addNode(selectedHeap->Insert(5));
-
-        break;
-    case Qt::Key_R:
-
-        deleteNode();
-
-        break;
-
-        //debuging
     default:
         QGraphicsView::keyPressEvent(event);
     }
@@ -127,7 +99,11 @@ void FibHeapWidget::addNode(GraphicsFibNode *node)
 void FibHeapWidget::extractMin()
 {
     delete selectedHeap->ExtractMin(0);
-    GraphicsFibNode::minfNode = selectedHeap->Min();
+    if(isFirst)
+        GraphicsFibNode::minfNode = selectedHeap->Min();
+    else
+        GraphicsFibNode::minfNode2 = selectedHeap->Min();
+
     this->updateMin();
 }
 
@@ -158,11 +134,24 @@ void FibHeapWidget::deleteNode()
 
 void FibHeapWidget::updateMin()
 {
-    GraphicsFibNode *oldMin = GraphicsFibNode::minfNode;
-    GraphicsFibNode::minfNode = selectedHeap->Min();
-    if(GraphicsFibNode::minfNode)
-        GraphicsFibNode::minfNode->update();
-    if(oldMin && oldMin != GraphicsFibNode::minfNode)
+    GraphicsFibNode *oldMin = 0;//GraphicsFibNode::minfNode;
+    GraphicsFibNode *newMin = 0;//GraphicsFibNode::minfNode;
+    if(isFirst)
+    {
+        oldMin = GraphicsFibNode::minfNode;
+        GraphicsFibNode::minfNode = selectedHeap->Min();
+        newMin = GraphicsFibNode::minfNode;
+    }
+    else
+    {
+        oldMin = GraphicsFibNode::minfNode2;
+        GraphicsFibNode::minfNode2 = selectedHeap->Min();
+        newMin = GraphicsFibNode::minfNode2;
+    }
+
+    if(newMin)
+        newMin->update();
+    if(oldMin && oldMin != newMin)
         oldMin->update();
 }
 
@@ -225,4 +214,42 @@ void FibHeapWidget::reset()
     secondFibHeap->clear();
     GraphicsFibNode::minfNode = 0;
     GraphicsFibNode::minfNode2 = 0;
+}
+
+void FibHeapWidget::unionOperation()
+{
+    if(!firstFibHeap || !secondFibHeap )
+        return;
+    if(!firstFibHeap->Min() || !secondFibHeap->Min())
+        return;
+
+    GraphicsFibNode *Min1 = GraphicsFibNode::minfNode;
+    GraphicsFibNode *Min2 = GraphicsFibNode::minfNode2;
+    if(isFirst)
+    {
+        selectedHeap = selectedHeap->Union(secondFibHeap);
+        GraphicsFibNode::minfNode = selectedHeap->Min();
+        GraphicsFibNode::minfNode2 = 0;
+        delete firstFibHeap;
+        firstFibHeap = selectedHeap;
+        delete secondFibHeap;
+        secondFibHeap = new FibHeapGraphics();
+    }
+    else
+    {
+        selectedHeap = selectedHeap->Union(firstFibHeap);
+        GraphicsFibNode::minfNode = 0;
+        GraphicsFibNode::minfNode2 = selectedHeap->Min();
+        delete firstFibHeap;
+        firstFibHeap = new FibHeapGraphics();
+        delete secondFibHeap;
+        secondFibHeap = selectedHeap;
+    }
+    secondFibHeap->referencePoint = secondRefPoint;
+    firstFibHeap->referencePoint = firstRefPoint;
+
+    Min1->update();
+    Min2->update();
+    scene()->addItem(selectedHeap->edges().last());
+    selectedHeap->animate(300);
 }

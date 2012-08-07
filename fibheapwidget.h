@@ -22,6 +22,7 @@ public:
     void extractMin();
     void decreaseKey(int key);
     void deleteNode();
+    void unionOperation();
     void clearSelected();
     void reset();
 

@@ -50,8 +50,8 @@ FibHeapBase<Node> *FibHeapBase<Node>::Union(FibHeapBase *H2)
 //    newH.min->insertEnd(this->LastNode, H2.min); // povezava
     if(this->min != 0 && H2->min != 0)
     {
-        Node *FirstNode = this->LastNode->Next;
-        Node *H2FirstNode = H2->LastNode->Next;
+        Node *FirstNode = this->LastNode->next();
+        Node *H2FirstNode = H2->LastNode->next();
 
         this->LastNode->Next = H2FirstNode;
         H2FirstNode->Prev = this->LastNode;

@@ -8,8 +8,10 @@
 class FibHeapGraphics : public FibHeapBase<GraphicsFibNode>
 {
 public:
+    ~FibHeapGraphics();
     GraphicsFibNode *Insert(int key);
     GraphicsFibNode *ExtractMin(int fake);
+    FibHeapGraphics *Union(FibHeapGraphics *H2);
 
     void unlinkEdges();
     void linkEdges();
@@ -26,6 +28,9 @@ public:
     bool blockComponents();
 
     QPointF referencePoint;
+
+    QList<GraphicsFibEdge *> edges() const;
+    QList<GraphicsFibNode *> nodes() const;
 
 private:
     QList<GraphicsFibEdge *> Edges;

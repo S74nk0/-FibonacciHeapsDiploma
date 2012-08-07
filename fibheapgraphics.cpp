@@ -2,8 +2,11 @@
 #include <QTimeLine>
 #include <QGraphicsItemAnimation>
 
-//FibHeapGraphics::FibHeapGraphics()
-//{}
+FibHeapGraphics::~FibHeapGraphics()
+{
+    Nodes.clear();
+    Edges.clear();
+}
 
 GraphicsFibNode *FibHeapGraphics::Insert(int key)
 {
@@ -191,4 +194,44 @@ void FibHeapGraphics::clear()
 
     this->min = this->LastNode = 0;
     this->n = 0;
+}
+
+FibHeapGraphics *FibHeapGraphics::Union(FibHeapGraphics *H2)
+{
+    FibHeapGraphics *newHeapUnion = static_cast<FibHeapGraphics *>(
+                FibHeapBase::Union(H2)
+                                                               );
+    FibHeapGraphics *newHeap = new FibHeapGraphics();
+    newHeap->min = newHeapUnion->min;
+    newHeap->n = newHeapUnion->n;
+    newHeap->LastNode = newHeapUnion->LastNode;
+
+    newHeap->referencePoint = this->referencePoint;
+
+    foreach(GraphicsFibNode *node, H2->Nodes) {
+        node->referencePoint = this->referencePoint;
+    }
+
+    newHeap->Nodes = this->Nodes
+            << H2->Nodes;
+    newHeap->Edges << this->Edges
+                   << H2->Edges
+                   << new GraphicsFibEdge(this->LastNode, H2->LastNode->next());
+
+    newHeap->saveCurrentPositions();
+    newHeap->setStates();
+    newHeap->updateEdges();
+    newHeap->setFirstPositions();
+
+    return newHeap;
+}
+
+QList<GraphicsFibEdge *> FibHeapGraphics::edges() const
+{
+    return this->Edges;
+}
+
+QList<GraphicsFibNode *> FibHeapGraphics::nodes() const
+{
+    return this->Nodes;
 }

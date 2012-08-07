@@ -53,7 +53,7 @@ void MainWindow::on_pushButton_SwitchHeap_clicked()
 
 void MainWindow::on_pushButton_Union_clicked()
 {
-//    ui->fibHeapView->unionOperation();
+    ui->fibHeapView->unionOperation();
     updateComponents();
 }
 
