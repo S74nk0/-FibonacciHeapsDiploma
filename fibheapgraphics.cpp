@@ -10,6 +10,9 @@ GraphicsFibNode *FibHeapGraphics::Insert(int key)
     GraphicsFibNode *tmpLast = this->LastNode;
     GraphicsFibNode *x = new GraphicsFibNode(key);
     x->referencePoint = this->referencePoint;
+    if(Nodes.isEmpty())
+        x->setPos(this->referencePoint);
+
     FibHeapBase::Insert(x);//Insert(x);
     Nodes << x;
     if(n > 1) {

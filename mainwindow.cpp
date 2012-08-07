@@ -47,7 +47,7 @@ void MainWindow::on_pushButton_DecreaseKey_clicked()
 
 void MainWindow::on_pushButton_SwitchHeap_clicked()
 {
-//    ui->graphicsView->switchHeap();
+    ui->graphicsView->switchHeap();
     updateComponents();
 }
 
@@ -95,5 +95,5 @@ void MainWindow::on_pushButton_Clear_clicked()
 
 void MainWindow::on_pushButton_ClearAll_clicked()
 {
-//    ui->graphicsView->reset(); // reset = clearAll
+    ui->graphicsView->reset(); // reset = clearAll
 }
