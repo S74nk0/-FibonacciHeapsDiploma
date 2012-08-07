@@ -22,49 +22,6 @@ GraphWidget::GraphWidget(QWidget *parent)
     setWindowTitle(tr("Fibonacci Heaps"));
 
     setDragMode(QGraphicsView::ScrollHandDrag);
-//! [0]
-
-//! [1]
-//    GraphicsNodeW *GraphicsNode1 = new GraphicsNodeW();
-//    GraphicsNodeW *GraphicsNode2 = new GraphicsNodeW();
-//    GraphicsNodeW *GraphicsNode3 = new GraphicsNodeW();
-//    GraphicsNodeW *GraphicsNode4 = new GraphicsNodeW();
-//    centerGraphicsNode = new GraphicsNodeW();
-//    GraphicsNodeW *GraphicsNode6 = new GraphicsNodeW();
-//    GraphicsNodeW *GraphicsNode7 = new GraphicsNodeW();
-//    GraphicsNodeW *GraphicsNode8 = new GraphicsNodeW();
-//    GraphicsNodeW *GraphicsNode9 = new GraphicsNodeW();
-//    scene->addItem(GraphicsNode1);
-//    scene->addItem(GraphicsNode2);
-//    scene->addItem(GraphicsNode3);
-//    scene->addItem(GraphicsNode4);
-//    scene->addItem(centerGraphicsNode);
-//    scene->addItem(GraphicsNode6);
-//    scene->addItem(GraphicsNode7);
-//    scene->addItem(GraphicsNode8);
-//    scene->addItem(GraphicsNode9);
-//    scene->addItem(new GraphicsEdge<GraphicsNodeW>(GraphicsNode1, GraphicsNode2));
-//    scene->addItem(new GraphicsEdge<GraphicsNodeW>(GraphicsNode2, GraphicsNode3));
-//    scene->addItem(new GraphicsEdge<GraphicsNodeW>(GraphicsNode2, centerGraphicsNode));
-//    scene->addItem(new GraphicsEdge<GraphicsNodeW>(GraphicsNode3, GraphicsNode6));
-//    scene->addItem(new GraphicsEdge<GraphicsNodeW>(GraphicsNode4, GraphicsNode1));
-//    scene->addItem(new GraphicsEdge<GraphicsNodeW>(GraphicsNode4, centerGraphicsNode));
-//    scene->addItem(new GraphicsEdge<GraphicsNodeW>(centerGraphicsNode, GraphicsNode6));
-//    scene->addItem(new GraphicsEdge<GraphicsNodeW>(centerGraphicsNode, GraphicsNode8));
-//    scene->addItem(new GraphicsEdge<GraphicsNodeW>(GraphicsNode6, GraphicsNode9));
-//    scene->addItem(new GraphicsEdge<GraphicsNodeW>(GraphicsNode7, GraphicsNode4));
-//    scene->addItem(new GraphicsEdge<GraphicsNodeW>(GraphicsNode8, GraphicsNode7));
-//    scene->addItem(new GraphicsEdge<GraphicsNodeW>(GraphicsNode9, GraphicsNode8));
-
-//    GraphicsNode1->setPos(-50, -50);
-//    GraphicsNode2->setPos(0, -50);
-//    GraphicsNode3->setPos(50, -50);
-//    GraphicsNode4->setPos(-50, 0);
-//    centerGraphicsNode->setPos(0, 0);
-//    GraphicsNode6->setPos(50, 0);
-//    GraphicsNode7->setPos(-50, 50);
-//    GraphicsNode8->setPos(0, 50);
-//    GraphicsNode9->setPos(50, 50);
 
     for (int i = 1; i < 21; ++i)
     {
@@ -86,7 +43,7 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
         break;
         //debuging
     case Qt::Key_D:
-        minExtr << fibheap.ExtractMin(0);
+        delete fibheap.ExtractMin(0);
         break;
         //debuging
     default:
