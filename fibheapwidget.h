@@ -1,6 +1,10 @@
 #ifndef FIBHEAPWIDGET_H
 #define FIBHEAPWIDGET_H
 
+#include <QtGui/QGraphicsView>
+
+#include "fibheapgraphics.h"
+
 class FibHeapWidget : public QGraphicsView
 {
     Q_OBJECT

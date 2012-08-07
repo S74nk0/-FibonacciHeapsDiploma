@@ -17,55 +17,55 @@ MainWindow::~MainWindow()
 
 void MainWindow::resizeEvent(QResizeEvent *e)
 {
-    ui->graphicsView->resize(MainWindow::width()/*-20*/, MainWindow::height()-105);
+    ui->fibHeapView->resize(MainWindow::width()/*-20*/, MainWindow::height()-105);
 }
 
 void MainWindow::on_pushButton_Insert_clicked()
 {
-    ui->graphicsView->insertNode(ui->spinBox->value());
+    ui->fibHeapView->insertNode(ui->spinBox->value());
 //    ui->spinBox->clear();
 }
 
 void MainWindow::on_pushButton_ExtractMin_clicked()
 {
-    ui->graphicsView->extractMin();
+    ui->fibHeapView->extractMin();
     updateComponents();
 }
 
 void MainWindow::on_pushButton_Delete_clicked()
 {
-    ui->graphicsView->deleteNode();
+    ui->fibHeapView->deleteNode();
     updateComponents();
 }
 
 void MainWindow::on_pushButton_DecreaseKey_clicked()
 {
-    ui->graphicsView->decreaseKey(ui->spinBox->value());
+    ui->fibHeapView->decreaseKey(ui->spinBox->value());
 //    ui->spinBox->clear();
     updateComponents();
 }
 
 void MainWindow::on_pushButton_SwitchHeap_clicked()
 {
-    ui->graphicsView->switchHeap();
+    ui->fibHeapView->switchHeap();
     updateComponents();
 }
 
 void MainWindow::on_pushButton_Union_clicked()
 {
-//    ui->graphicsView->unionOperation();
+//    ui->fibHeapView->unionOperation();
     updateComponents();
 }
 
 void MainWindow::on_pushButton_NextStep_clicked()
 {
-    ui->graphicsView->nextStep();
+    ui->fibHeapView->nextStep();
     updateComponents();
 }
 
 void MainWindow::updateComponents()
 {
-    bool enabled = !ui->graphicsView->blockComponents();
+    bool enabled = !ui->fibHeapView->blockComponents();
     ui->pushButton_Clear->setEnabled(enabled);
     ui->pushButton_DecreaseKey->setEnabled(enabled);
     ui->pushButton_Delete->setEnabled(enabled);
@@ -80,20 +80,20 @@ void MainWindow::updateComponents()
 
 void MainWindow::on_actionSave_Selected_Heap_triggered()
 {
-    ui->graphicsView->ExportHeap();
+    ui->fibHeapView->ExportHeap();
 }
 
 void MainWindow::on_actionLoad_To_selected_Heap_triggered()
 {
-//    ui->graphicsView->ImportHeap();
+//    ui->fibHeapView->ImportHeap();
 }
 
 void MainWindow::on_pushButton_Clear_clicked()
 {
-    ui->graphicsView->clearSelected();
+    ui->fibHeapView->clearSelected();
 }
 
 void MainWindow::on_pushButton_ClearAll_clicked()
 {
-    ui->graphicsView->reset(); // reset = clearAll
+    ui->fibHeapView->reset(); // reset = clearAll
 }
