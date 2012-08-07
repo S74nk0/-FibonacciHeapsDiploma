@@ -4,7 +4,6 @@
 
 //#include <math.h>
 
-//! [0]
 GraphWidget::GraphWidget(QWidget *parent)
     : QGraphicsView(parent)
 {
@@ -29,9 +28,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     }
     delete fibheap.ExtractMin(0);
 }
-//! [1]
 
-//! [3]
 void GraphWidget::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
@@ -50,17 +47,12 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
         QGraphicsView::keyPressEvent(event);
     }
 }
-//! [3]
 
-
-//! [5]
 void GraphWidget::wheelEvent(QWheelEvent *event)
 {
     scaleView(pow((double)2, -event->delta() / 240.0));
 }
-//! [5]
 
-//! [7]
 void GraphWidget::scaleView(qreal scaleFactor)
 {
     qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
@@ -69,7 +61,6 @@ void GraphWidget::scaleView(qreal scaleFactor)
 
     scale(scaleFactor, scaleFactor);
 }
-//! [7]
 
 void GraphWidget::zoomIn()
 {

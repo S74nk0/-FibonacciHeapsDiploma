@@ -1,6 +1,7 @@
 #ifndef FIBNODEBASE_H
 #define FIBNODEBASE_H
 
+template <class Derived>
 class FibNodeBase
 {
 public:
@@ -16,6 +17,11 @@ public:
     int key; // ta vrednost se hrani v NodeBase
     int degree;
     bool mark;
+
+    inline Derived *child() const { return static_cast<Derived *>(this->Child); }
+    inline Derived *parent() const { return static_cast<Derived *>(this->Parent); }
+    inline Derived *next() const { return static_cast<Derived *>(this->Next); }
+    inline Derived *prev() const { return static_cast<Derived *>(this->Prev); }
 
     void insertAfter(FibNodeBase *newFNode);
     void insertBefore(FibNodeBase *newFNode);

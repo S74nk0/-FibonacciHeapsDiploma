@@ -83,7 +83,7 @@ Node *FibHeapBase<Node>::ExtractMin(bool deleteFunc/* = false*/)
         if(z->Child != 0)
         {
 //            z->unChildList(); // seznam povezemo z seznamom oceta
-            Node *ChildListStart = static_cast<Node *>(z->Child);
+            Node *ChildListStart = z->child();
 //            Node *ChildListEnd = ChildListStart;
             for(int i = 0; i < z->degree; ++i)
             {
@@ -286,7 +286,6 @@ template<class Node>
 void FibHeapBase<Node>::Cut(Node *x/*, Node *y*/) // y nepotreben zaradi unChild funkcije
 {
     x->unChild(); // 3. korak pokrit
-//    this->min->insertAfter(x); // daj insert na last
     this->insertLast(x);
     x->mark = false;
 }

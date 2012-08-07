@@ -23,7 +23,6 @@ public:
     void DecreaseKey(Node *x, int k);
     void Delete(Node *x);
 
-//private: // komentiraj zacasno
 protected:
     Node *min;
     int n;
