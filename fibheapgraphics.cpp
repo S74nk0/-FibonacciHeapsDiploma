@@ -18,8 +18,9 @@ GraphicsFibNode *FibHeapGraphics::Insert(int key)
 GraphicsFibNode *FibHeapGraphics::ExtractMin(int fake)
 {
     GraphicsFibNode *ret = FibHeapBase::ExtractMin(false);
+
     //Update the lists
-    if(!Nodes.removeOne(ret))
+    if(!Nodes.removeOne(ret) && !Nodes.isEmpty())
         qDebug("Nodes remove error");
     this->unlinkEdges();
     if(!Edges.isEmpty())
@@ -28,6 +29,8 @@ GraphicsFibNode *FibHeapGraphics::ExtractMin(int fake)
         Edges.pop_back();
     }
     this->linkEdges();
+
+    return ret;
 }
 
 void FibHeapGraphics::unlinkEdges()
@@ -45,14 +48,16 @@ void FibHeapGraphics::linkEdges()
     foreach(GraphicsFibNode *node, Nodes)
     {
         if(node->Parent != 0)
-            Edges[edgeIndex++]->setNodes(static_cast<GraphicsFibNode *>(node->Parent), node);
+            Edges[edgeIndex++]->setNodes(node->parent(), node);
     }
 
-    GraphicsFibNode *start = static_cast<GraphicsFibNode *>(this->LastNode->Next);
+    GraphicsFibNode *start = 0;
+    if(this->LastNode)
+        start = this->LastNode->next();
+
     while (start != this->LastNode) {
-        Edges[edgeIndex++]->setNodes(start,
-                                     static_cast<GraphicsFibNode *>(start->Next) );
-        start = static_cast<GraphicsFibNode *>(start->Next);
+        Edges[edgeIndex++]->setNodes(start, start->next() );
+        start = start->next();
     }
 }
 

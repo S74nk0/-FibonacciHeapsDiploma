@@ -1,7 +1,6 @@
 #ifndef NODEBASE_H
 #define NODEBASE_H
 
-
 #include "DijkstraEnumStates.h"
 
 template <class EdgeTemplate>

@@ -66,13 +66,11 @@ GraphWidget::GraphWidget(QWidget *parent)
 //    GraphicsNode8->setPos(0, 50);
 //    GraphicsNode9->setPos(50, 50);
 
-    for (int i = 1; i < 7/*21*/; ++i)
+    for (int i = 1; i < 21; ++i)
     {
         addNode(fibheap.Insert(i));
     }
     delete fibheap.ExtractMin(0);
-//    fibheap.unlinkEdges();
-//    fibheap.linkEdges();
 }
 //! [1]
 
@@ -88,7 +86,7 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
         break;
         //debuging
     case Qt::Key_D:
-        fibheap.unlinkEdges();
+        minExtr << fibheap.ExtractMin(0);
         break;
         //debuging
     default:

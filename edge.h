@@ -1,7 +1,6 @@
 #ifndef EDGE_H
 #define EDGE_H
 
-
 // Edge class template
 template <class Node>
 class Edge

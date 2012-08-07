@@ -1,7 +1,6 @@
 #ifndef FIBHEAPBASE_H
 #define FIBHEAPBASE_H
 
-
 #include <limits>
 #include <vector> // temporary ?
 #include "QDebug"

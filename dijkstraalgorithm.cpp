@@ -5,7 +5,6 @@
 //#include <QList>
 
 
-
 // LessThan funkcija za q sort pride kot friend funkcija
 template <class Node>
 bool keyLessThan(const Node *n1, const Node *n2)

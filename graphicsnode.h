@@ -1,7 +1,6 @@
 #ifndef GRAPHICSNODE_H
 #define GRAPHICSNODE_H
 
-
 #include <QGraphicsItem>
 #include <QList>
 

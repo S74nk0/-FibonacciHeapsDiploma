@@ -1,7 +1,6 @@
 #ifndef DNODE_H
 #define DNODE_H
 
-
 #include "edge.h"
 #include "nodebase.h"
 

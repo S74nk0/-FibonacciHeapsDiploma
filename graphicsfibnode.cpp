@@ -54,3 +54,76 @@ void GraphicsFibNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
+void GraphicsFibNode::setStates()
+{
+    GraphicsFibNode *first = this;
+    GraphicsFibNode *tmp = first->prev();
+
+    tmp->setPos(0 , 0);
+
+    GraphicsFibNode * fNode;
+    GraphicsFibNode * sNode;
+    float offset = 1;
+
+    do
+    {
+        fNode = tmp;
+        sNode = tmp->prev();
+        offset = (float)getOffset(tmp/*, true*/)/*+2*/;//tmp->degree;
+        if(offset <= 4)
+            offset += 6;
+        offset = offset*((5*offset+offset)/(offset*0.7));
+
+        sNode->setPos(fNode->x()-offset/*(50*offset)*1.3*/, fNode->y());
+
+        formTree(tmp->child());
+        tmp = tmp->prev();
+    } while (tmp != first);
+    formTree(tmp->child());
+}
+
+void GraphicsFibNode::formTree(GraphicsFibNode * node)
+{
+    if(!node)
+        return;
+
+    GraphicsFibNode *tmp = node->prev();
+
+    GraphicsFibNode *pNode = node->parent();
+    tmp->setPos(pNode->x(), pNode->y()+50);
+
+    GraphicsFibNode * fNode;
+    GraphicsFibNode * sNode;
+    float offset = 1;
+
+//    int y = tmp->node->y();
+    while(tmp != node)
+    {
+        fNode = tmp;
+        sNode = tmp->prev();
+        offset = (float)getOffset(tmp/*, true*/)/*+2*/;// * (int)(100/(tmp->degree+1));
+        if(offset <= 4)
+            offset += 5;
+        offset = offset*((5*offset+offset)/(offset*0.7));
+
+        sNode->setPos(fNode->x()-offset/*(50*offset)*/, /*y+(50*offset)*/ fNode->y());
+
+        formTree(tmp->child());
+        tmp = tmp->prev();
+    }
+    formTree(tmp->child());
+}
+
+int GraphicsFibNode::getOffset(GraphicsFibNode *node)
+{
+    int off = node->degree+1;
+    GraphicsFibNode *child = node->child();
+    if(child == 0)
+        return off;
+    do {
+        off++;
+        off += getOffset(child);
+        child = child->next();
+    } while (child != node->child());
+    return off;
+}

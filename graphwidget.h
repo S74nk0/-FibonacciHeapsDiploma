@@ -1,7 +1,6 @@
 #ifndef GRAPHWIDGET_H
 #define GRAPHWIDGET_H
 
-
 #include <QtGui/QGraphicsView>
 
 #include "fibheapgraphics.h"
@@ -28,6 +27,7 @@ private:
     void addNode(GraphicsFibNode *node);
 //    GraphicsNode<GraphicsEdge<GraphicsNode> > *centerGraphicsNode;
 //    GraphicsNodeW *centerGraphicsNode;
+    QList<GraphicsFibNode *> minExtr;
     FibHeapGraphics fibheap;
 };
 

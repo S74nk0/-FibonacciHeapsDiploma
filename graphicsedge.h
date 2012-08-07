@@ -1,7 +1,6 @@
 #ifndef GRAPHICSEDGE_H
 #define GRAPHICSEDGE_H
 
-
 #include <QGraphicsItem>
 #include "edge.h"
 

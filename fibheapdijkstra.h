@@ -1,7 +1,6 @@
 #ifndef FIBHEAPDIJKSTRA_H
 #define FIBHEAPDIJKSTRA_H
 
-
 #include "fibheapbasetemplate.h"
 #include "dfnode.h"
 

@@ -1,7 +1,6 @@
 #ifndef FIBNODEBASE_H
 #define FIBNODEBASE_H
 
-
 class FibNodeBase
 {
 public:

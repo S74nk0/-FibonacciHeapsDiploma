@@ -1,7 +1,6 @@
 #ifndef FIBHEAPGRAPHICS_H
 #define FIBHEAPGRAPHICS_H
 
-
 #include "fibheapbasetemplate.h"
 #include "graphicsfibnode.h"
 #include "graphicsfibedge.h"
