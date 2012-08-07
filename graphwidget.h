@@ -5,13 +5,17 @@
 
 #include "fibheapgraphics.h"
 
-//! [0]
+
 class GraphWidget : public QGraphicsView
 {
     Q_OBJECT
 
 public:
     GraphWidget(QWidget *parent = 0);
+
+    void extractMin();
+    void decreaseKey();
+    void deleteNode();
 
 public slots:
     void zoomIn();
@@ -25,9 +29,9 @@ protected:
 
 private:
     void addNode(GraphicsFibNode *node);
-//    GraphicsNode<GraphicsEdge<GraphicsNode> > *centerGraphicsNode;
-//    GraphicsNodeW *centerGraphicsNode;
-    QList<GraphicsFibNode *> minExtr;
+    void updateMin();
+
+    FibHeapGraphics *selectedHeap;
     FibHeapGraphics fibheap;
 };
 

@@ -13,6 +13,14 @@ GraphicsFibNode::GraphicsFibNode() : GraphicsNode(), FibNodeBase()
 GraphicsFibNode::GraphicsFibNode(int k) : GraphicsNode(), FibNodeBase(k)
 {}
 
+GraphicsFibNode::~GraphicsFibNode()
+{
+    if(this->selected == this)
+    {
+        this->selected = 0;
+    }
+}
+
 void GraphicsFibNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QRadialGradient gradient(-3, -3, 10);
@@ -59,7 +67,8 @@ void GraphicsFibNode::setStates()
     GraphicsFibNode *first = this;
     GraphicsFibNode *tmp = first->prev();
 
-    tmp->setPos(0 , 0);
+    tmp->setPos(referencePoint); // 0 , 0
+//    tmp->positions << tmp->pos();
 
     GraphicsFibNode * fNode;
     GraphicsFibNode * sNode;
@@ -75,11 +84,15 @@ void GraphicsFibNode::setStates()
         offset = offset*((5*offset+offset)/(offset*0.7));
 
         sNode->setPos(fNode->x()-offset/*(50*offset)*1.3*/, fNode->y());
+//        sNode->positions << sNode->pos();
 
         formTree(tmp->child());
         tmp = tmp->prev();
     } while (tmp != first);
     formTree(tmp->child());
+
+    //save states positions
+    savePositions(this); // otherwise the positions are screwed
 }
 
 void GraphicsFibNode::formTree(GraphicsFibNode * node)
@@ -91,6 +104,7 @@ void GraphicsFibNode::formTree(GraphicsFibNode * node)
 
     GraphicsFibNode *pNode = node->parent();
     tmp->setPos(pNode->x(), pNode->y()+50);
+//    tmp->positions << tmp->pos();
 
     GraphicsFibNode * fNode;
     GraphicsFibNode * sNode;
@@ -107,6 +121,7 @@ void GraphicsFibNode::formTree(GraphicsFibNode * node)
         offset = offset*((5*offset+offset)/(offset*0.7));
 
         sNode->setPos(fNode->x()-offset/*(50*offset)*/, /*y+(50*offset)*/ fNode->y());
+//        sNode->positions << sNode->pos();
 
         formTree(tmp->child());
         tmp = tmp->prev();
@@ -126,4 +141,18 @@ int GraphicsFibNode::getOffset(GraphicsFibNode *node)
         child = child->next();
     } while (child != node->child());
     return off;
+}
+
+void GraphicsFibNode::savePositions(GraphicsFibNode *node)
+{
+    if(!node)
+        return;
+
+    GraphicsFibNode *nodeSet = node;
+    do
+    {
+        nodeSet->positions << nodeSet->pos();
+        savePositions(nodeSet->child());
+        nodeSet = nodeSet->next();
+    } while(nodeSet != node);
 }

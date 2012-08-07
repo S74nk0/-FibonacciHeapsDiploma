@@ -122,7 +122,7 @@ Node *FibHeapBase<Node>::ExtractMin(bool deleteFunc/* = false*/)
             }
 
             //this part of the code isn't for the alghorithm but for the template to satisfy one function for both graphical node and non graphical
-            this->min->setStates(); // the setStates
+            this->LastNode->next()->setStates();//this->min->setStates(); // the setStates
             //end of template function
 
             this->Consolidate();
@@ -165,7 +165,7 @@ template<class Node>
 void FibHeapBase<Node>::Delete(Node *x)
 {
     this->DecreaseKey(x, std::numeric_limits<int>::min() );
-    Node *deleteNode = static_cast<Node *>( this->ExtractMin(true) );
+    Node *deleteNode = this->ExtractMin(true);//static_cast<Node *>( this->ExtractMin(true) );
     delete deleteNode;
 }
 
@@ -216,7 +216,7 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
                     this->min = x;
 
                 this->Link(y, x);// states change
-                this->min->setStates(); // again this part is only for the graphical representation and not esential to the algorithm it has no part in the pseudocode in the alghorithm
+                this->LastNode->next()->setStates();//this->min->setStates(); // again this part is only for the graphical representation and not esential to the algorithm it has no part in the pseudocode in the alghorithm
 
                 if(x->Next == x)
                     this->min = x;

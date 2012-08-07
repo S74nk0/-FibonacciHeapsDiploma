@@ -2,8 +2,6 @@
 
 #include <QtGui>
 
-//#include <math.h>
-
 GraphWidget::GraphWidget(QWidget *parent)
     : QGraphicsView(parent)
 {
@@ -22,11 +20,13 @@ GraphWidget::GraphWidget(QWidget *parent)
 
     setDragMode(QGraphicsView::ScrollHandDrag);
 
-    for (int i = 1; i < 21; ++i)
-    {
-        addNode(fibheap.Insert(i));
-    }
-    delete fibheap.ExtractMin(0);
+    selectedHeap = &fibheap;
+
+//    for (int i = 1; i < 7/*21*/; ++i)
+//    {
+//        addNode(fibheap.Insert(i));
+//    }
+//    fibheap.setStates();
 }
 
 void GraphWidget::keyPressEvent(QKeyEvent *event)
@@ -38,10 +38,28 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Minus:
         zoomOut();
         break;
+
+    case Qt::Key_M:
+        this->extractMin();
+        break;
         //debuging
     case Qt::Key_D:
-        delete fibheap.ExtractMin(0);
+
+        this->decreaseKey();
+
         break;
+    case Qt::Key_A:
+
+        this->selectedHeap->animate(420);
+
+        break;
+
+    case Qt::Key_I:
+
+        addNode(selectedHeap->Insert(5));
+
+        break;
+
         //debuging
     default:
         QGraphicsView::keyPressEvent(event);
@@ -81,7 +99,34 @@ void GraphWidget::addNode(GraphicsFibNode *node)
 
     if(node->edges().count() == 1)
     {
-        scene()->addItem(node->edges()[0]);
+        scene()->addItem(node->edges().first());
     }
+    selectedHeap->animateInsert();
 }
 
+void GraphWidget::extractMin()
+{
+    delete selectedHeap->ExtractMin(0);
+    GraphicsFibNode::minfNode = selectedHeap->Min();
+    this->updateMin();
+}
+
+void GraphWidget::decreaseKey()
+{
+    if(!GraphicsFibNode::selected)
+        return;
+
+    selectedHeap->DecreaseKey(GraphicsFibNode::selected, -8);
+    selectedHeap->updateEdges();
+    this->updateMin();
+}
+
+void GraphWidget::updateMin()
+{
+    GraphicsFibNode *oldMin = GraphicsFibNode::minfNode;
+    GraphicsFibNode::minfNode = fibheap.Min();
+    if(GraphicsFibNode::minfNode)
+        GraphicsFibNode::minfNode->update();
+    if(oldMin && oldMin != GraphicsFibNode::minfNode)
+        oldMin->update();
+}

@@ -11,6 +11,7 @@ class GraphicsFibNode : public GraphicsNode<GraphicsEdge<GraphicsFibNode> >,
 public:
     GraphicsFibNode();
     GraphicsFibNode(int k);
+    ~GraphicsFibNode();
 
     //static members
     static GraphicsFibNode *minfNode;
@@ -19,6 +20,9 @@ public:
 
     //implement this function
     void setStates();
+    void savePositions(GraphicsFibNode *node);
+    QList<QPointF> positions;
+    QPointF referencePoint; // this could be done in a better way, it's kinda stupid to do it like this but what the heck
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);

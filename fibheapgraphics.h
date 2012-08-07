@@ -13,6 +13,14 @@ public:
 
     void unlinkEdges();
     void linkEdges();
+    void setStates();
+    void updateEdges();
+
+    void animate(int timemil);
+    void animateInsert();
+    void setFirstPositions();
+
+    QPointF referencePoint;
 
 private:
     QList<GraphicsFibEdge *> Edges;
