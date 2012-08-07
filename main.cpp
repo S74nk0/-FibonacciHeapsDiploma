@@ -20,23 +20,23 @@
 //    return 0;
 //}
 
-#include <QtGui>
+//#include <QtGui>
 
-#include "graphwidget.h"
+//#include "graphwidget.h"
 
-int main(int argc, char **argv)
-{
-    QApplication app(argc, argv);
-    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
+//int main(int argc, char **argv)
+//{
+//    QApplication app(argc, argv);
+//    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
 
-    GraphWidget *widget = new GraphWidget;
+//    GraphWidget *widget = new GraphWidget;
 
-    QMainWindow mainWindow;
-    mainWindow.setCentralWidget(widget);
-    mainWindow.show();
+//    QMainWindow mainWindow;
+//    mainWindow.setCentralWidget(widget);
+//    mainWindow.show();
 
-    return app.exec();
-}
+//    return app.exec();
+//}
 
 
 
@@ -55,3 +55,17 @@ int main(int argc, char **argv)
 
 //    return 0;
 //}
+
+
+//cel program z graficnim vmesnikom
+#include <QtGui/QApplication>
+#include "mainwindow.h"
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+
+    return a.exec();
+}

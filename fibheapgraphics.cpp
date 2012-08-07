@@ -21,9 +21,8 @@ GraphicsFibNode *FibHeapGraphics::Insert(int key)
 
 GraphicsFibNode *FibHeapGraphics::ExtractMin(int fake)
 {
-    foreach (GraphicsFibNode *node, Nodes) {
-        node->positions << node->pos();
-    }
+    saveCurrentPositions();
+
     GraphicsFibNode *ret = FibHeapBase::ExtractMin(false);
 
     //Update the lists
@@ -146,4 +145,47 @@ void FibHeapGraphics::animateInsert()
     QObject::connect (timeline, SIGNAL(finished()), animation, SLOT(deleteLater()));
 
     timeline->start();
+}
+
+void FibHeapGraphics::saveCurrentPositions()
+{
+    foreach (GraphicsFibNode *node, Nodes) {
+        node->positions << node->pos();
+    }
+}
+
+bool FibHeapGraphics::blockComponents()
+{
+    if(!Nodes.isEmpty())
+        if(!Nodes.first()->positions.isEmpty())
+            return true;
+
+    return false;
+}
+
+void FibHeapGraphics::clearPositions()
+{
+    foreach (GraphicsFibNode *node, Nodes) {
+        node->positions.clear();
+    }
+}
+
+
+void FibHeapGraphics::clear()
+{
+    while(!Edges.isEmpty())
+    {
+        delete Edges.first();
+        Edges.pop_front();
+        delete Nodes.first();
+        Nodes.pop_front();
+    }
+    while(!Nodes.isEmpty())
+    {
+        delete Nodes.first();
+        Nodes.pop_front();
+    }
+
+    this->min = this->LastNode = 0;
+    this->n = 0;
 }

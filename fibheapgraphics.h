@@ -15,10 +15,15 @@ public:
     void linkEdges();
     void setStates();
     void updateEdges();
+    void clear();
 
     void animate(int timemil);
     void animateInsert();
     void setFirstPositions();
+    void saveCurrentPositions();
+    void clearPositions();
+
+    bool blockComponents();
 
     QPointF referencePoint;
 

@@ -1,9 +1,10 @@
 #include "graphwidget.h"
 
 #include <QtGui>
+#include <limits>
 
 GraphWidget::GraphWidget(QWidget *parent)
-    : QGraphicsView(parent)
+    : QGraphicsView(parent), isDelete(false)
 {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -15,12 +16,13 @@ GraphWidget::GraphWidget(QWidget *parent)
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
     scale(qreal(0.8), qreal(0.8));
-    setMinimumSize(400, 400);
+    setMinimumSize(500, 500);
     setWindowTitle(tr("Fibonacci Heaps"));
 
     setDragMode(QGraphicsView::ScrollHandDrag);
 
     selectedHeap = &fibheap;
+    selectedMin = &GraphicsFibNode::minfNode;
 
 //    for (int i = 1; i < 7/*21*/; ++i)
 //    {
@@ -45,7 +47,7 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
         //debuging
     case Qt::Key_D:
 
-        this->decreaseKey();
+        this->decreaseKey(-20);
 
         break;
     case Qt::Key_A:
@@ -57,6 +59,11 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
     case Qt::Key_I:
 
         addNode(selectedHeap->Insert(5));
+
+        break;
+    case Qt::Key_R:
+
+        deleteNode();
 
         break;
 
@@ -101,6 +108,7 @@ void GraphWidget::addNode(GraphicsFibNode *node)
     {
         scene()->addItem(node->edges().first());
     }
+    updateMin();
     selectedHeap->animateInsert();
 }
 
@@ -111,22 +119,65 @@ void GraphWidget::extractMin()
     this->updateMin();
 }
 
-void GraphWidget::decreaseKey()
+void GraphWidget::decreaseKey(int key)
 {
     if(!GraphicsFibNode::selected)
         return;
 
-    selectedHeap->DecreaseKey(GraphicsFibNode::selected, -8);
+    GraphicsFibNode *Selected = GraphicsFibNode::selected;
+    GraphicsFibNode::selected = 0;
+    selectedHeap->saveCurrentPositions();
+    selectedHeap->DecreaseKey(Selected, key);
     selectedHeap->updateEdges();
     this->updateMin();
+    selectedHeap->setFirstPositions(); // set first
+    selectedHeap->animate(300);
+}
+
+void GraphWidget::deleteNode()
+{
+    if(!GraphicsFibNode::selected)
+        return;
+
+    this->decreaseKey(std::numeric_limits<int>::min());
+
+    isDelete = true;
 }
 
 void GraphWidget::updateMin()
 {
     GraphicsFibNode *oldMin = GraphicsFibNode::minfNode;
-    GraphicsFibNode::minfNode = fibheap.Min();
+    GraphicsFibNode::minfNode = selectedHeap->Min();
     if(GraphicsFibNode::minfNode)
         GraphicsFibNode::minfNode->update();
     if(oldMin && oldMin != GraphicsFibNode::minfNode)
         oldMin->update();
+}
+
+bool GraphWidget::blockComponents()
+{
+    return selectedHeap->blockComponents();
+}
+
+void GraphWidget::nextStep()
+{
+    if(isDelete)
+    {
+        selectedHeap->clearPositions();
+        isDelete = false;
+        this->extractMin();
+    }
+    else
+        this->selectedHeap->animate(420);
+}
+
+void GraphWidget::insertNode(int key)
+{
+    addNode(selectedHeap->Insert(key));
+}
+
+void GraphWidget::clearSelected()
+{
+    selectedHeap->clear();
+    GraphicsFibNode::minfNode = 0;
 }

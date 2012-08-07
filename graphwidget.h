@@ -13,9 +13,14 @@ class GraphWidget : public QGraphicsView
 public:
     GraphWidget(QWidget *parent = 0);
 
+    bool blockComponents();
+    void nextStep();
+    void insertNode(int key);
+
     void extractMin();
-    void decreaseKey();
+    void decreaseKey(int key);
     void deleteNode();
+    void clearSelected();
 
 public slots:
     void zoomIn();
@@ -31,8 +36,10 @@ private:
     void addNode(GraphicsFibNode *node);
     void updateMin();
 
+    GraphicsFibNode **selectedMin;
     FibHeapGraphics *selectedHeap;
     FibHeapGraphics fibheap;
+    bool isDelete;
 };
 
 #endif // GRAPHWIDGET_H
