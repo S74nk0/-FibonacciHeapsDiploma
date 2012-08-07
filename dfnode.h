@@ -3,9 +3,9 @@
 
 #include "edge.h"
 #include "nodebase.h"
-#include "fibnodebase.h"
+#include "fibnodebasetemplate.h"
 
-class DFNode : public FibNodeBase, public NodeBase<Edge<DFNode> >
+class DFNode : public FibNodeBase<DFNode>, public NodeBase<Edge<DFNode> >
 {
 public:
     DFNode() : FibNodeBase(), NodeBase() {}

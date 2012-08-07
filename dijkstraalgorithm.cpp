@@ -137,14 +137,14 @@ void DijkstraAlgorithm<Node>::doAlg(DNode)
                 if(u->toEdges[i]->endNode()->state == UNLABELED)
                 {
                     u->toEdges[i]->endNode()->state = LABELED;
-                    u->toEdges[i]->endNode()->prev = u;
+                    u->toEdges[i]->endNode()->prevScaned = u;
                     u->toEdges[i]->endNode()->key = altDistance;
                     //fibheap insert Node
                 }
                 else if(altDistance < u->toEdges[i]->endNode()->key)
                 {
                     u->toEdges[i]->endNode()->key = altDistance; // fib heap decrease key
-                    u->toEdges[i]->endNode()->prev = u;
+                    u->toEdges[i]->endNode()->prevScaned = u;
                 }
 
                 take = Q.takeAt(Q.indexOf(u->toEdges[i]->endNode()));

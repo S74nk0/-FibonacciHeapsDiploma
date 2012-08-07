@@ -88,12 +88,12 @@ Node *FibHeapBase<Node>::ExtractMin(bool deleteFunc/* = false*/)
             for(int i = 0; i < z->degree; ++i)
             {
                 ChildListStart->Parent = 0;
-                ChildListStart = static_cast<Node *>(ChildListStart->Next);
+                ChildListStart = ChildListStart->next();
             }
 
-            ChildListEnd = static_cast<Node *>(ChildListStart->Prev);
+            ChildListEnd = ChildListStart->prev();
 
-            Node *FirstNode = static_cast<Node *>(this->LastNode->Next);
+            Node *FirstNode = this->LastNode->next();
 
             ChildListStart->Prev = this->LastNode;
             this->LastNode->Next = ChildListStart;
@@ -113,9 +113,9 @@ Node *FibHeapBase<Node>::ExtractMin(bool deleteFunc/* = false*/)
         {
             //ce je z = LastNode
             if(z == LastNode)
-                LastNode = static_cast<Node *>(z->Prev);
+                LastNode = z->prev();
 
-            this->min = static_cast<Node *>(z->Next);
+            this->min = z->next();
             if(this->min->Child != 0 && !deleteFunc && ChildListEnd != 0) // za strukturo (obliko fibHeapa, ni bistveno za kopico sam zgradi jo po moji volji -> lepsa je)
             {
                 this->min = ChildListEnd;
@@ -146,7 +146,7 @@ void FibHeapBase<Node>::DecreaseKey(Node *x, int k)
     x->key = k;
     x->update(); // for the graphics/visuals nothing to do with the algorithm
 
-    Node *y = static_cast<Node *>(x->Parent);
+    Node *y = x->parent();
 
     if(y != 0 && x->key < y->key)
     {
@@ -164,7 +164,7 @@ void FibHeapBase<Node>::DecreaseKey(Node *x, int k)
 template<class Node>
 void FibHeapBase<Node>::Delete(Node *x)
 {
-    this->DecreaseKey(x, std::numeric_limits<int>::min()/*MININF*/);
+    this->DecreaseKey(x, std::numeric_limits<int>::min() );
     Node *deleteNode = static_cast<Node *>( this->ExtractMin(true) );
     delete deleteNode;
 }
@@ -227,7 +227,7 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
         }
         A[d] = x;
 
-        x = static_cast<Node *>(x->Next);
+        x = x->next();
     }while(x != this->min);
 
     for(int i = 0; i < D; ++i)
@@ -248,7 +248,7 @@ template<class Node>
 void FibHeapBase<Node>::Link(Node *y, Node *x)
 {
     if(y == LastNode)
-        LastNode = static_cast<Node *>(y->Prev);
+        LastNode = y->prev();
 
     y->unlink();
 
@@ -293,7 +293,7 @@ void FibHeapBase<Node>::Cut(Node *x/*, Node *y*/) // y nepotreben zaradi unChild
 template<class Node>
 void FibHeapBase<Node>::CascadingCut(Node *y)
 {
-    Node *z = static_cast<Node *>(y->Parent);
+    Node *z = y->parent();
     if(z != 0)
     {
         if(y->mark == false)
