@@ -25,11 +25,11 @@ GraphicsFibNode *FibHeapGraphics::Insert(int key)
     return x;
 }
 
-GraphicsFibNode *FibHeapGraphics::ExtractMin(int fake)
+GraphicsFibNode *FibHeapGraphics::ExtractMin(bool deleteFunc /*= false*/)
 {
     saveCurrentPositions();
 
-    GraphicsFibNode *ret = FibHeapBase::ExtractMin(false);
+    GraphicsFibNode *ret = FibHeapBase::ExtractMin(deleteFunc);
 
     //Update the lists
     if(!Nodes.removeOne(ret) && !Nodes.isEmpty())
@@ -78,7 +78,7 @@ void FibHeapGraphics::linkEdges()
 
 void FibHeapGraphics::setStates()
 {
-    this->min->setStates();
+    this->LastNode->next()->setStates();
 }
 
 void FibHeapGraphics::updateEdges()
@@ -224,6 +224,16 @@ FibHeapGraphics *FibHeapGraphics::Union(FibHeapGraphics *H2)
     newHeap->setFirstPositions();
 
     return newHeap;
+}
+
+void FibHeapGraphics::DecreaseKey(GraphicsFibNode *x, int k)
+{
+    this->saveCurrentPositions();
+    FibHeapBase::DecreaseKey(x, k);
+    this->setStates();
+    this->updateEdges();
+    this->setFirstPositions(); // set first
+    this->animate(300);
 }
 
 QList<GraphicsFibEdge *> FibHeapGraphics::edges() const

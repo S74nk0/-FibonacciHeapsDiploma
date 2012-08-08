@@ -34,13 +34,6 @@ FibHeapWidget::FibHeapWidget(QWidget *parent)
     //the ref points are for node positioning
 
     selectedHeap = firstFibHeap;
-
-
-//    for (int i = 1; i < 7/*21*/; ++i)
-//    {
-//        addNode(fibheap.Insert(i));
-//    }
-//    fibheap.setStates();
 }
 
 void FibHeapWidget::keyPressEvent(QKeyEvent *event)
@@ -51,6 +44,9 @@ void FibHeapWidget::keyPressEvent(QKeyEvent *event)
         break;
     case Qt::Key_Minus:
         zoomOut();
+        break;
+    case Qt::Key_A:
+        selectedHeap->updateEdges();
         break;
     default:
         QGraphicsView::keyPressEvent(event);
@@ -81,8 +77,7 @@ void FibHeapWidget::zoomOut()
     scaleView(1 / qreal(1.2));
 }
 
-//NEW SHIT
-//******************///////////
+// FibHeap
 
 void FibHeapWidget::addNode(GraphicsFibNode *node)
 {
@@ -98,7 +93,7 @@ void FibHeapWidget::addNode(GraphicsFibNode *node)
 
 void FibHeapWidget::extractMin()
 {
-    delete selectedHeap->ExtractMin(0);
+    delete selectedHeap->ExtractMin(isDelete);
     if(isFirst)
         GraphicsFibNode::minfNode = selectedHeap->Min();
     else
@@ -114,12 +109,8 @@ void FibHeapWidget::decreaseKey(int key)
 
     GraphicsFibNode *Selected = GraphicsFibNode::selected;
     GraphicsFibNode::selected = 0;
-    selectedHeap->saveCurrentPositions();
     selectedHeap->DecreaseKey(Selected, key);
-    selectedHeap->updateEdges();
     this->updateMin();
-    selectedHeap->setFirstPositions(); // set first
-    selectedHeap->animate(300);
 }
 
 void FibHeapWidget::deleteNode()
@@ -134,8 +125,8 @@ void FibHeapWidget::deleteNode()
 
 void FibHeapWidget::updateMin()
 {
-    GraphicsFibNode *oldMin = 0;//GraphicsFibNode::minfNode;
-    GraphicsFibNode *newMin = 0;//GraphicsFibNode::minfNode;
+    GraphicsFibNode *oldMin = 0;
+    GraphicsFibNode *newMin = 0;
     if(isFirst)
     {
         oldMin = GraphicsFibNode::minfNode;
@@ -165,8 +156,8 @@ void FibHeapWidget::nextStep()
     if(isDelete)
     {
         selectedHeap->clearPositions();
-        isDelete = false;
         this->extractMin();
+        isDelete = false;
     }
     else
         this->selectedHeap->animate(420);

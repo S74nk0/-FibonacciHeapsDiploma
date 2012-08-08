@@ -10,8 +10,9 @@ class FibHeapGraphics : public FibHeapBase<GraphicsFibNode>
 public:
     ~FibHeapGraphics();
     GraphicsFibNode *Insert(int key);
-    GraphicsFibNode *ExtractMin(int fake);
+    GraphicsFibNode *ExtractMin(bool deleteFunc = false);
     FibHeapGraphics *Union(FibHeapGraphics *H2);
+    void DecreaseKey(GraphicsFibNode *x, int k);
 
     void unlinkEdges();
     void linkEdges();

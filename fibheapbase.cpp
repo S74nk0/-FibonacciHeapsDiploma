@@ -151,7 +151,7 @@ void FibHeapBase<Node>::DecreaseKey(Node *x, int k)
     if(y != 0 && x->key < y->key)
     {
         this->Cut(x/*, y*/);
-        this->min->setStates(); // for the graphics/visuals nothing to do with the algorithm
+//        this->min->setStates(); // for the graphics/visuals nothing to do with the algorithm
         this->CascadingCut(y);
     }
 
@@ -304,7 +304,7 @@ void FibHeapBase<Node>::CascadingCut(Node *y)
         else
         {
             this->Cut(y/*, z*/);
-            this->min->setStates(); // for the graphics/visuals nothing to do with the algorithm
+//            this->min->setStates(); // for the graphics/visuals nothing to do with the algorithm
             this->CascadingCut(z);
         }
     }

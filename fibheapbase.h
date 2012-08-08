@@ -43,7 +43,7 @@ protected:
     void Link(Node *y, Node *x);
 
     //19.3
-    void Cut(Node *x/*, FNode *y*/);
+    void Cut(Node *x/*, Node *y*/);
     void CascadingCut(Node *y);
 
     //O
