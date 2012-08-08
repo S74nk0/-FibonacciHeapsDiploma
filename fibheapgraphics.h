@@ -13,11 +13,9 @@ public:
     GraphicsFibNode *ExtractMin(bool deleteFunc = false);
     FibHeapGraphics *Union(FibHeapGraphics *H2);
     void DecreaseKey(GraphicsFibNode *x, int k);
+    void ImportHeap(QString &fileName, QGraphicsScene *scene);
 
-    void unlinkEdges();
-    void linkEdges();
     void setStates();
-    void updateEdges();
     void clear();
 
     void animate(int timemil);
@@ -36,6 +34,11 @@ public:
 private:
     QList<GraphicsFibEdge *> Edges;
     QList<GraphicsFibNode *> Nodes;
+    void importNodes(GraphicsFibNode *node, QGraphicsScene *scene);
+    void unlinkEdges();
+    void linkEdges();
+    void linkEdgesNew(QGraphicsScene *scene);
+    void updateEdges();
 };
 
 #endif // FIBHEAPGRAPHICS_H

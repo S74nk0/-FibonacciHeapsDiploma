@@ -245,3 +245,51 @@ QList<GraphicsFibNode *> FibHeapGraphics::nodes() const
 {
     return this->Nodes;
 }
+
+void FibHeapGraphics::ImportHeap(QString &fileName, QGraphicsScene *scene)
+{
+    FibHeapBase::ImportHeap(fileName);
+
+    importNodes(this->min, scene);
+    linkEdgesNew(scene);
+    setStates();
+    clearPositions();
+}
+
+void FibHeapGraphics::importNodes(GraphicsFibNode *node, QGraphicsScene *scene)
+{
+    if(!node)
+        return;
+
+    GraphicsFibNode *nodeTmp = node;
+    do
+    {
+        nodeTmp->referencePoint = this->referencePoint;
+        Nodes << nodeTmp;
+        scene->addItem(nodeTmp);
+        importNodes(nodeTmp->child(), scene);
+        nodeTmp = nodeTmp->next();
+    } while(nodeTmp != node);
+}
+
+void FibHeapGraphics::linkEdgesNew(QGraphicsScene *scene)
+{
+    foreach(GraphicsFibNode *node, Nodes)
+    {
+        if(node->Parent != 0)
+        {
+            Edges << new GraphicsFibEdge(node->parent(), node);
+            scene->addItem(Edges.last());
+        }
+    }
+
+    GraphicsFibNode *start = 0;
+    if(this->LastNode)
+        start = this->LastNode->next();
+
+    while (start != this->LastNode) {
+        Edges << new GraphicsFibEdge(start, start->next() );
+        scene->addItem(Edges.last());
+        start = start->next();
+    }
+}

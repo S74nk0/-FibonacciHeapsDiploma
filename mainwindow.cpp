@@ -85,7 +85,7 @@ void MainWindow::on_actionSave_Selected_Heap_triggered()
 
 void MainWindow::on_actionLoad_To_selected_Heap_triggered()
 {
-//    ui->fibHeapView->ImportHeap();
+    ui->fibHeapView->ImportHeap();
 }
 
 void MainWindow::on_pushButton_Clear_clicked()

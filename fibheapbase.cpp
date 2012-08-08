@@ -410,3 +410,114 @@ QDomElement FibHeapBase<Node>::createElement(QDomDocument &document, Node *node)
 
     return retElement;
 }
+
+template<class Node>
+void FibHeapBase<Node>::ImportHeap(QString &fileName)
+{
+    QString errorMsg;
+    int errorLine = 0;
+    int errorColumn = 0;
+
+    QDomDocument doc;
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+    if (!doc.setContent(qUncompress(file.readAll()), &errorMsg, &errorLine, &errorColumn))
+    {
+        file.close();
+        return;
+    }
+//    if (!doc.setContent(&file, &errorMsg, &errorLine, &errorColumn))
+//    {
+//        file.close();
+//        return;
+//    }
+    file.close();
+
+    QDomElement root = doc.documentElement();
+
+    NodesFromDomRoot(root);
+}
+
+template<class Node>
+void FibHeapBase<Node>::NodesFromDomRoot(QDomElement &root)
+{
+    QDomElement elt = root.firstChildElement();
+    QDomElement last = root.lastChildElement();
+    QDomElement childElem = elt.firstChildElement();
+
+    Node *tmpNode = getNode(elt);
+    NodesFromDomEl(childElem, tmpNode);
+    elt = elt.nextSiblingElement();
+    this->LastNode = tmpNode;
+    this->min = tmpNode;
+
+    int indexMinCount = 1;
+    int minIndex = root.attribute("minNode").toInt();
+    this->n = root.attribute("n").toInt();
+
+    for (; !elt.isNull(); elt = elt.nextSiblingElement())
+    {
+        tmpNode = getNode(elt);
+        this->LastNode->insertAfter(tmpNode);
+        childElem = elt.firstChildElement();
+        NodesFromDomEl(childElem, tmpNode);
+        this->LastNode = tmpNode;
+
+        if(minIndex == indexMinCount)
+            this->min = tmpNode;
+
+        indexMinCount++;
+    }
+    this->LastNode = tmpNode;
+}
+
+template<class Node>
+void FibHeapBase<Node>::NodesFromDomEl(QDomElement &elem, Node *NodeParent)
+{
+    if(elem.isNull())
+        return;
+
+    QDomElement elt = elem;
+    QDomElement childElem = elt.firstChildElement();
+    Node *tmpNode = getNode(elt);
+    NodeParent->makeChild(tmpNode);
+    NodesFromDomEl(childElem, tmpNode);
+    elt = elt.nextSiblingElement();
+    Node *Last = tmpNode;
+
+    for(; !elt.isNull(); elt = elt.nextSiblingElement())
+    {
+        tmpNode = getNode(elt);
+        Last->insertAfter(tmpNode);
+        childElem = elt.firstChildElement();
+        NodesFromDomEl(childElem, tmpNode);
+        tmpNode->Parent = NodeParent;
+
+
+        Last = tmpNode;
+    }
+}
+
+template<class Node>
+Node *FibHeapBase<Node>::getNode(QDomElement &elem)
+{
+    QString StrKey = "key";
+    QString StrDegree = "degree";
+    QString StrMark = "mark";
+    int key, degree;
+    bool mark = false;
+
+    StrKey = elem.attribute(StrKey);
+    StrDegree = elem.attribute(StrDegree);
+    StrMark = elem.attribute(StrMark);
+
+    if(StrMark == "true")
+        mark = true;
+    key = StrKey.toInt();
+    degree = StrDegree.toInt();
+
+    Node *node = new Node(key,degree,mark);
+
+    return node;
+}

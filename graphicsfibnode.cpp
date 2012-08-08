@@ -13,6 +13,9 @@ GraphicsFibNode::GraphicsFibNode() : GraphicsNode(), FibNodeBase()
 GraphicsFibNode::GraphicsFibNode(int k) : GraphicsNode(), FibNodeBase(k)
 {}
 
+GraphicsFibNode::GraphicsFibNode(int k, int d, bool m) : GraphicsNode(), FibNodeBase(k,d,m)
+{}
+
 GraphicsFibNode::~GraphicsFibNode()
 {
     if(this->selected == this)
@@ -57,7 +60,7 @@ void GraphicsFibNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void GraphicsFibNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-//    this->setPos(newPos); // temporary
+    this->setPos(newPos);
     update();
     QGraphicsItem::mouseReleaseEvent(event);
 }

@@ -45,9 +45,6 @@ void FibHeapWidget::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Minus:
         zoomOut();
         break;
-    case Qt::Key_A:
-        selectedHeap->updateEdges();
-        break;
     default:
         QGraphicsView::keyPressEvent(event);
     }
@@ -55,7 +52,7 @@ void FibHeapWidget::keyPressEvent(QKeyEvent *event)
 
 void FibHeapWidget::wheelEvent(QWheelEvent *event)
 {
-    scaleView(pow((double)2, -event->delta() / 240.0));
+    scaleView(pow((double)2, +event->delta() / 240.0));
 }
 
 void FibHeapWidget::scaleView(qreal scaleFactor)
@@ -243,4 +240,16 @@ void FibHeapWidget::unionOperation()
     Min2->update();
     scene()->addItem(selectedHeap->edges().last());
     selectedHeap->animate(300);
+}
+
+void FibHeapWidget::ImportHeap()
+{
+    if(selectedHeap->Min())
+        return;
+
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"));
+
+    selectedHeap->ImportHeap(fileName, this->scene());
+
+    updateMin();
 }

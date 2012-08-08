@@ -30,6 +30,7 @@ public:
 
     //O
     void ExportHeap(QString &fileName);
+    void ImportHeap(QString &fileName);
 
 protected:
     Node *min;
@@ -50,6 +51,10 @@ protected:
     int InsertElements(QDomDocument &document, QDomElement &root, Node *firstNode); // vrne index minimalnega vozlisca
     void InsertElement(QDomDocument &document, QDomElement &root, Node *node);
     QDomElement createElement(QDomDocument &document, Node *node);
+
+    void NodesFromDomRoot(QDomElement &root);
+    void NodesFromDomEl(QDomElement &elem, Node *NodeParent);
+    Node *getNode(QDomElement &elem);
 
 };
 

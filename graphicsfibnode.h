@@ -11,6 +11,7 @@ class GraphicsFibNode : public GraphicsNode<GraphicsEdge<GraphicsFibNode> >,
 public:
     GraphicsFibNode();
     GraphicsFibNode(int k);
+    GraphicsFibNode(int k, int d, bool m);
     ~GraphicsFibNode();
 
     //static members

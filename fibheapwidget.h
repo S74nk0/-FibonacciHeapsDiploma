@@ -16,7 +16,7 @@ public:
     void nextStep();
     void insertNode(int key);
     void ExportHeap();
-
+    void ImportHeap();
     void switchHeap();
 
     void extractMin();
