@@ -13,6 +13,15 @@ FibNodeBase<Derived>::FibNodeBase(int k, int d, bool m) : Child(0), Prev(this), 
 {}
 
 template <class Derived>
+FibNodeBase<Derived>::~FibNodeBase()
+{
+    this->Child = 0;
+    this->Prev = 0;
+    this->Next = 0;
+    this->Parent = 0;
+}
+
+template <class Derived>
 void FibNodeBase<Derived>::insertAfter(FibNodeBase *newFNode)
 {
     newFNode->Next = this->Next;

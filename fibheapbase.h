@@ -29,6 +29,7 @@ public:
     void Delete(Node *x);
 
     //O
+    void Generate(int numOfFNodes, int randRange = RAND_MAX);
     void ExportHeap(QString &fileName);
     void ImportHeap(QString &fileName);
 

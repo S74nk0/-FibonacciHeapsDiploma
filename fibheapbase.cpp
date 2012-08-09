@@ -1,6 +1,7 @@
 #include "fibheapbase.h"
 
 #include <math.h>
+#include <QTime>
 
 template<class Node>
 FibHeapBase<Node>::FibHeapBase() : min(0), n(0), LastNode(0) //MakeFibHeap
@@ -520,4 +521,19 @@ Node *FibHeapBase<Node>::getNode(QDomElement &elem)
     Node *node = new Node(key,degree,mark);
 
     return node;
+}
+
+template<class Node>
+void FibHeapBase<Node>::Generate(int numOfFNodes, int randRange)
+{
+    QTime mid(0,0,0);
+    qsrand( mid.secsTo(QTime::currentTime()) );
+    int randomNumber = 0;
+    for(int i = 0; i < numOfFNodes; ++i)
+    {
+        randomNumber = (qrand() % randRange)+1; // ne zelimo kljuca ki je manjsi od ena
+        this->Insert(randomNumber);
+    }
+//    FNode * del = this->Insert(1);
+//    this->Delete(del);
 }

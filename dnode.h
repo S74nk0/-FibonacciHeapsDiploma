@@ -7,8 +7,9 @@
 class DNode : public NodeBase<Edge<DNode> >
 {
 public:
-    DNode() : NodeBase() {}
-    DNode(int id, int key) : NodeBase(id, key) {}
+    DNode() : NodeBase(), key(-1) {}
+    DNode(int id, int key) : NodeBase(id), key(key) {}
+    int key;
 };
 
 #endif // DNODE_H

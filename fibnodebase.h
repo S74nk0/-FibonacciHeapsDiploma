@@ -8,6 +8,7 @@ public:
     FibNodeBase();
     FibNodeBase(int k);
     FibNodeBase(int k, int d, bool m);
+    ~FibNodeBase();
 
     FibNodeBase *Child;
     FibNodeBase *Prev;

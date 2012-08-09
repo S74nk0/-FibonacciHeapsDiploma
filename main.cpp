@@ -15,15 +15,30 @@
 //}
 
 
-//cel program z graficnim vmesnikom
-#include <QtGui/QApplication>
-#include "mainwindow.h"
+////cel program z graficnim vmesnikom
+//#include <QtGui/QApplication>
+//#include "mainwindow.h"
+
+//int main(int argc, char *argv[])
+//{
+//    QApplication a(argc, argv);
+//    MainWindow w;
+//    w.show();
+
+//    return a.exec();
+//}
+
+//TEST TIMES
+
+#include "benchmark.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
 
-    return a.exec();
+    Benchmark bench;
+
+//    bench.worstCaseExtractMin(10000);
+    bench.worstCaseExtractMinOutFiles(20, 20);
+
+    return 0;
 }

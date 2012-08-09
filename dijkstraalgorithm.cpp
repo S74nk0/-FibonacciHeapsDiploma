@@ -198,14 +198,14 @@ void DijkstraAlgorithm<Node>::doAlg(DFNode)
                 if(u->toEdges[i]->endNode()->state == UNLABELED)
                 {
                     u->toEdges[i]->endNode()->state = LABELED;
-                    u->toEdges[i]->endNode()->prev = u;
+                    u->toEdges[i]->endNode()->prevScaned = u;
                     u->toEdges[i]->endNode()->key = altDistance;
                     heap.Insert(u->toEdges[i]->endNode());
                 }
                 else if(altDistance < u->toEdges[i]->endNode()->key)
                 {
                     heap.DecreaseKey(u->toEdges[i]->endNode(), altDistance);
-                    u->toEdges[i]->endNode()->prev = u;
+                    u->toEdges[i]->endNode()->prevScaned = u;
                 }
             }
         }
