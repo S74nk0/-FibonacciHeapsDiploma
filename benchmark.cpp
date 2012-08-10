@@ -17,11 +17,11 @@ void Benchmark::worstCaseExtractMinTest(int nodes)
 {
     FibHeapBenchmark *heap = new FibHeapBenchmark(nodes); // 10000000 = OK, 50000000 = too high
     heap->GenerateWorsCase();
-    QElapsedTimer time;
-    time.start();
-    heap->ExtractMin();
+//    QElapsedTimer time;
+//    time.start();
+//    heap->ExtractMin();
 //    std::cout << nodes << ": " << time.elapsed() << " ms" << std::endl;
-    std::cout << nodes << ": " << time.nsecsElapsed() << " ns" << std::endl;
+//    std::cout << nodes << ": " << time.nsecsElapsed() << " ns" << std::endl;
     delete heap;
 }
 

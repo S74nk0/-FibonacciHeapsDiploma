@@ -1,18 +1,18 @@
-////TEST BINARY
-//#include "dijkstraalgorithmtemplate.h"
+//TEST BINARY
+#include "dijkstraalgorithmtemplate.h"
 
-//int main(int argc, char *argv[])
-//{
-//    DijkstraAlgorithm<DFNode> dij;
-//    QString name = "scotland_big.txt";
-////    QString name = "primerGraf.txt";
-//    QString fake = "sdddefefefefefe";
-//    dij.loadGraph(name);
+int main(int argc, char *argv[])
+{
+    DijkstraAlgorithm<DFNode, Edge<DFNode> > dij;
+    QString name = "scotland_big.txt";
+//    QString name = "primerGraf.txt";
+    QString fake = "sdddefefefefefe";
+    dij.loadGraph(name);
 
-//    dij.doAlg();
+    dij.doAlg();
 
-//    return 0;
-//}
+    return 0;
+}
 
 
 ////cel program z graficnim vmesnikom
@@ -28,17 +28,21 @@
 //    return a.exec();
 //}
 
-//TEST TIMES
+////TEST TIMES
 
-#include "benchmark.h"
+//#include "benchmark.h"
 
-int main(int argc, char *argv[])
-{
+//int main(int argc, char *argv[])
+//{
 
-    Benchmark bench;
+//    Benchmark bench;
 
-//    bench.worstCaseExtractMin(10000);
-    bench.worstCaseExtractMinOutFiles(20, 20);
+////    bench.worstCaseExtractMin(10000);
+////    bench.worstCaseExtractMinTest(10000000);
 
-    return 0;
-}
+////    bench.worstCaseExtractMinOutFiles(50000000, 30); // to bo miki generiral podatke
+
+
+
+//    return 0;
+//}

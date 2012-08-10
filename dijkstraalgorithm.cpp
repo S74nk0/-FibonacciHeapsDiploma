@@ -14,13 +14,13 @@ bool keyLessThan(const Node *n1, const Node *n2)
 
 //DijkstraAlgorithm
 
-template <class Node>
-DijkstraAlgorithm<Node>::DijkstraAlgorithm()
+template <class Node, class EdgeTemplate>
+DijkstraAlgorithm<Node, EdgeTemplate>::DijkstraAlgorithm()
 {
 }
 
-template <class Node>
-DijkstraAlgorithm<Node>::~DijkstraAlgorithm()
+template <class Node, class EdgeTemplate>
+DijkstraAlgorithm<Node, EdgeTemplate>::~DijkstraAlgorithm()
 {
     for(int i=0; i<Nodes.size(); ++i)
         delete Nodes[i];
@@ -29,8 +29,8 @@ DijkstraAlgorithm<Node>::~DijkstraAlgorithm()
         delete Edges[i];
 }
 
-template <class Node>
-void DijkstraAlgorithm<Node>::loadGraph(QString &fileName)
+template <class Node, class EdgeTemplate>
+void DijkstraAlgorithm<Node, EdgeTemplate>::loadGraph(QString &fileName)
 {
     QFile graph(fileName);
     QString tempRead;
@@ -54,7 +54,7 @@ void DijkstraAlgorithm<Node>::loadGraph(QString &fileName)
         Nodes.push_back(newNode);
     }
 
-    Edge<Node> *newEdge = 0;
+    EdgeTemplate *newEdge = 0;
     QStringList vals;
     while(!graph.atEnd())
     {
@@ -71,15 +71,15 @@ void DijkstraAlgorithm<Node>::loadGraph(QString &fileName)
         int end = vals.at(1).toInt();
         int price = vals.at(2).toInt();
 
-        newEdge = new Edge<Node>(Nodes[start], Nodes[end], price);
+        newEdge = new EdgeTemplate(Nodes[start], Nodes[end], price);
         Edges.push_back(newEdge);
     }
 
     graph.close();
 }
 
-template <class Node>
-void DijkstraAlgorithm<Node>::doAlg()
+template <class Node, class EdgeTemplate>
+void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg()
 {
     //inicializacija je izvedena v branju grafa
     if(Nodes.empty())
@@ -91,8 +91,8 @@ void DijkstraAlgorithm<Node>::doAlg()
     doAlg(this->reflect);
 }
 
-template <class Node>
-void DijkstraAlgorithm<Node>::printResaults()
+template <class Node, class EdgeTemplate>
+void DijkstraAlgorithm<Node, EdgeTemplate>::printResaults()
 {
     Node *tmp = Nodes[0];
     qDebug(QString::number(tmp->key).toAscii());
@@ -100,13 +100,13 @@ void DijkstraAlgorithm<Node>::printResaults()
     {
         QString str = QString::number(tmp->nodeId) + " - ";
         qDebug(str.toAscii());
-        tmp = static_cast<Node *>(tmp->prev);
+        tmp = static_cast<Node *>(tmp->prevScaned);
     }
 }
 
 
-template <class Node>
-void DijkstraAlgorithm<Node>::doAlg(DNode)
+template <class Node, class EdgeTemplate>
+void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DNode)
 {
     //start node, iz njega razvejemo drevo poti
     int sourceIndex = Nodes.size()-1;
@@ -159,8 +159,8 @@ void DijkstraAlgorithm<Node>::doAlg(DNode)
     printResaults();
 }
 
-template <class Node>
-void DijkstraAlgorithm<Node>::doAlg(DFNode)
+template <class Node, class EdgeTemplate>
+void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DFNode)
 {
     //inicializacija je izvedena v branju grafa
     if(Nodes.empty())
@@ -211,5 +211,5 @@ void DijkstraAlgorithm<Node>::doAlg(DFNode)
         }
     }
 
-//    printResaults();
+    printResaults();
 }
