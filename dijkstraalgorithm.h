@@ -22,7 +22,7 @@ public:
     void printResaults();
 
 
-private:
+protected:
     Node reflect; // reflect is for function overloading (reflection workaround)
     // START graph
     QVector<EdgeTemplate *> Edges;

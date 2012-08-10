@@ -9,6 +9,7 @@ class GraphicsEdge : public QGraphicsItem, public Edge<GNode>
 {
 public:
     GraphicsEdge(GNode *startNode, GNode *endNode);
+    GraphicsEdge(GNode *startNode, GNode *endNode, int Price);
 
     enum { Type = UserType + 2 };
     int type() const { return Type; }

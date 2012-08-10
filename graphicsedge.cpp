@@ -14,6 +14,17 @@ GraphicsEdge<GNode>::GraphicsEdge(GNode *startNode, GNode *endNode)
 }
 
 template <class GNode>
+GraphicsEdge<GNode>::GraphicsEdge(GNode *startNode, GNode *endNode, int Price)
+    : Edge<GNode>(startNode,endNode, Price), arrowSize(20)
+{
+    setAcceptedMouseButtons(0);
+    setZValue(-2);
+    this->startN->addEdge(this);
+    this->endN->addEdge(this);
+    adjust();
+}
+
+template <class GNode>
 void GraphicsEdge<GNode>::adjust()
 {
     if (!this->startN || !this->endN)

@@ -1,18 +1,18 @@
-//TEST BINARY
-#include "dijkstraalgorithmtemplate.h"
+////TEST BINARY
+//#include "dijkstraalgorithmtemplate.h"
 
-int main(int argc, char *argv[])
-{
-    DijkstraAlgorithm<DFNode, Edge<DFNode> > dij;
-    QString name = "scotland_big.txt";
-//    QString name = "primerGraf.txt";
-    QString fake = "sdddefefefefefe";
-    dij.loadGraph(name);
+//int main(int argc, char *argv[])
+//{
+//    DijkstraAlgorithm<DFNode, Edge<DFNode> > dij;
+//    QString name = "scotland_big.txt";
+////    QString name = "primerGraf.txt";
+//    QString fake = "sdddefefefefefe";
+//    dij.loadGraph(name);
 
-    dij.doAlg();
+//    dij.doAlg();
 
-    return 0;
-}
+//    return 0;
+//}
 
 
 ////cel program z graficnim vmesnikom
@@ -46,3 +46,32 @@ int main(int argc, char *argv[])
 
 //    return 0;
 //}
+
+////DijkstraGraphics
+#include <QtGui>
+
+//#include "dijkstragraphics.h"
+
+#include "dijkstrawidget.h"
+
+int main(int argc, char **argv)
+{
+
+//    DijkstraGraphics dij;
+
+//    QString name = "scotland_big.txt";
+//    QString fake = "sdddefefefefefe";
+//    dij.loadGraph(name);
+//    dij.loadGraph(fake);
+
+    QApplication app(argc, argv);
+    DijkstraWidget *widget = new DijkstraWidget;
+
+    QMainWindow mainWindow;
+    mainWindow.setCentralWidget(widget);
+
+    mainWindow.show();
+    return app.exec();
+
+}
+
