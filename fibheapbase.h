@@ -2,7 +2,6 @@
 #define FIBHEAPBASE_H
 
 #include <limits>
-#include <vector> // temporary ?
 #include "QDebug"
 
 //xml in file

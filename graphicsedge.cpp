@@ -4,7 +4,7 @@
 
 template <class GNode>
 GraphicsEdge<GNode>::GraphicsEdge(GNode *startNode, GNode *endNode)
-    : Edge<GNode>(startNode,endNode), arrowSize(20) // nism sigurn ce je arrow size potreben? !!!! zgleda da ni
+    : Edge<GNode>(startNode,endNode), arrowSize(10) // nism sigurn ce je arrow size potreben? !!!! zgleda da ni
 {
     setAcceptedMouseButtons(0);
     setZValue(-2);

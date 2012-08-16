@@ -67,7 +67,7 @@ public:
 
         QTime mid(0,0,0);
         qsrand( mid.secsTo(QTime::currentTime()) );
-        int randomNumber = 0;
+//        int randomNumber = 0;
         int numNodes = aloccSize-resetCount;
         for(int i = 0; i < numNodes; ++i)
         {

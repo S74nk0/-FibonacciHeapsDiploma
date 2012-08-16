@@ -15,18 +15,18 @@
 //}
 
 
-////cel program z graficnim vmesnikom
-//#include <QtGui/QApplication>
-//#include "mainwindow.h"
+//cel program z graficnim vmesnikom
+#include <QtGui/QApplication>
+#include "mainwindow.h"
 
-//int main(int argc, char *argv[])
-//{
-//    QApplication a(argc, argv);
-//    MainWindow w;
-//    w.show();
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
 
-//    return a.exec();
-//}
+    return a.exec();
+}
 
 ////TEST TIMES
 
@@ -47,31 +47,22 @@
 //    return 0;
 //}
 
-////DijkstraGraphics
-#include <QtGui>
+//////DijkstraGraphics
+//#include <QtGui>
 
-//#include "dijkstragraphics.h"
+//#include "dijkstrawidget.h"
 
-#include "dijkstrawidget.h"
+//int main(int argc, char **argv)
+//{
+//    QApplication app(argc, argv);
+//    app.setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
 
-int main(int argc, char **argv)
-{
+//    DijkstraWidget *widget = new DijkstraWidget;
 
-//    DijkstraGraphics dij;
+//    QMainWindow mainWindow;
+//    mainWindow.setCentralWidget(widget);
 
-//    QString name = "scotland_big.txt";
-//    QString fake = "sdddefefefefefe";
-//    dij.loadGraph(name);
-//    dij.loadGraph(fake);
-
-    QApplication app(argc, argv);
-    DijkstraWidget *widget = new DijkstraWidget;
-
-    QMainWindow mainWindow;
-    mainWindow.setCentralWidget(widget);
-
-    mainWindow.show();
-    return app.exec();
-
-}
+//    mainWindow.show();
+//    return app.exec();
+//}
 

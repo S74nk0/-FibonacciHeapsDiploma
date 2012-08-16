@@ -3,6 +3,8 @@
 #include <math.h>
 #include <QTime>
 
+static double ln = log(2.0);
+
 template<class Node>
 FibHeapBase<Node>::FibHeapBase() : min(0), n(0), LastNode(0) //MakeFibHeap
 {
@@ -26,7 +28,8 @@ void FibHeapBase<Node>::Insert(Node *newNode)
     }
     else
     {
-        this->insertLast(newNode);
+        this->insertLast(newNode); // before
+//        this->min->insertBefore(newNode);
         if(newNode->key < this->min->key)
         {
             this->min = newNode;
@@ -83,9 +86,7 @@ Node *FibHeapBase<Node>::ExtractMin(bool deleteFunc/* = false*/)
         Node *ChildListEnd = 0;
         if(z->Child != 0)
         {
-//            z->unChildList(); // seznam povezemo z seznamom oceta
             Node *ChildListStart = z->child();
-//            Node *ChildListEnd = ChildListStart;
             for(int i = 0; i < z->degree; ++i)
             {
                 ChildListStart->Parent = 0;
@@ -186,13 +187,14 @@ void FibHeapBase<Node>::insertLast(Node *newNode)
 template<class Node>
 void FibHeapBase<Node>::Consolidate() // # fixed!
 {
-    double f = log((double) this->n)/ log(2.0);
-    int D = (int)(f)+2;//D();
-    std::vector<Node * > A;
+    double f = log( static_cast<double>(this->n) )/ln;
+    int D = qRound(f) + 1/*2*/;//D();
+
+    Node **A = new Node*[D];
 
     for(int i = 0; i < D; ++i)
     {
-        A.push_back(0);
+        A[i] = 0;
     }
 
     Node *x, *y, *tmp;
@@ -218,9 +220,6 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
 
                 this->Link(y, x);// states change
                 this->LastNode->next()->setStates();//this->min->setStates(); // again this part is only for the graphical representation and not esential to the algorithm it has no part in the pseudocode in the alghorithm
-
-                if(x->Next == x)
-                    this->min = x;
             }
 
             A[d] = 0;
@@ -231,18 +230,19 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
         x = x->next();
     }while(x != this->min);
 
+
     for(int i = 0; i < D; ++i)
     {
         if(A[i] != 0)
         {
-            if(A[i]->key < this->min->key || (this->min->key == A[i]->key && A[i]->degree > this->min->degree)) // or v primeru istih kljucev, brez tega inf loop
+            if(A[i]->key < this->min->key || (this->min->key == A[i]->key && A[i]->degree < this->min->degree)) // speed up if we set the min node as also th node with the min degree
             {
                 this->min = A[i];
             }
         }
     }
 
-    A.clear();
+    delete[] A;
 }
 
 template<class Node>
@@ -276,7 +276,6 @@ void FibHeapBase<Node>::Link(Node *y, Node *x)
 
     // lll
     x->degree++;
-//    y->Parent = x; // ponavljas se
     y->mark = false;
     //the update fuction is only for the visuals/ graphics and has nothing to do with the algorithm
     y->update(); //

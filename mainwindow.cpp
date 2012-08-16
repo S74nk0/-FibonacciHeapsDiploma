@@ -17,6 +17,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::resizeEvent(QResizeEvent *e)
 {
+    Q_UNUSED(e);
     ui->fibHeapView->resize(MainWindow::width()/*-20*/, MainWindow::height()-105);
 }
 

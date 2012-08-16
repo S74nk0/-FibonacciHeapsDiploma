@@ -162,13 +162,6 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DNode)
 template <class Node, class EdgeTemplate>
 void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DFNode)
 {
-    //inicializacija je izvedena v branju grafa
-    if(Nodes.empty())
-    {
-        qDebug("Not initialized!");
-        return;
-    }
-
     //start node, iz njega razvejemo drevo poti
     int sourceIndex = Nodes.size()-1;
     Nodes[sourceIndex]->key = 0;
@@ -211,5 +204,5 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DFNode)
         }
     }
 
-    printResaults();
+//    printResaults();
 }
