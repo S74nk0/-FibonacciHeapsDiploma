@@ -124,7 +124,7 @@ Node *FibHeapBase<Node>::ExtractMin(bool deleteFunc/* = false*/)
             }
 
             //this part of the code isn't for the alghorithm but for the template to satisfy one function for both graphical node and non graphical
-            this->LastNode->next()->setStates();//this->min->setStates(); // the setStates
+            this->LastNode->next()->setStates(); // the setStates
             //end of template function
 
             this->Consolidate();
@@ -153,7 +153,7 @@ void FibHeapBase<Node>::DecreaseKey(Node *x, int k)
     if(y != 0 && x->key < y->key)
     {
         this->Cut(x/*, y*/);
-//        this->min->setStates(); // for the graphics/visuals nothing to do with the algorithm
+        this->LastNode->next()->setStates(); // for the graphics/visuals nothing to do with the algorithm
         this->CascadingCut(y);
     }
 
@@ -219,7 +219,7 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
                     this->min = x;
 
                 this->Link(y, x);// states change
-                this->LastNode->next()->setStates();//this->min->setStates(); // again this part is only for the graphical representation and not esential to the algorithm it has no part in the pseudocode in the alghorithm
+                this->LastNode->next()->setStates(); // again this part is only for the graphical representation and not esential to the algorithm it has no part in the pseudocode in the alghorithm
             }
 
             A[d] = 0;
@@ -288,6 +288,7 @@ void FibHeapBase<Node>::Cut(Node *x/*, Node *y*/) // y nepotreben zaradi unChild
     x->unChild(); // 3. korak pokrit
     this->insertLast(x);
     x->mark = false;
+//    x->update(); // for the graphics/visuals nothing to do with the algorithm
 }
 
 template<class Node>
@@ -304,7 +305,7 @@ void FibHeapBase<Node>::CascadingCut(Node *y)
         else
         {
             this->Cut(y/*, z*/);
-//            this->min->setStates(); // for the graphics/visuals nothing to do with the algorithm
+            this->LastNode->next()->setStates(); // for the graphics/visuals nothing to do with the algorithm
             this->CascadingCut(z);
         }
     }

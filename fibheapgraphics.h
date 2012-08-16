@@ -25,6 +25,7 @@ public:
     void clearPositions();
 
     bool blockComponents();
+    bool oneStatesLeft();
 
     QPointF referencePoint;
 

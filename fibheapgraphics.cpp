@@ -169,6 +169,15 @@ bool FibHeapGraphics::blockComponents()
     return false;
 }
 
+bool FibHeapGraphics::oneStatesLeft()
+{
+    if(!Nodes.isEmpty())
+        if(Nodes.first()->positions.count() == 1)
+            return true;
+
+    return false;
+}
+
 void FibHeapGraphics::clearPositions()
 {
     foreach (GraphicsFibNode *node, Nodes) {

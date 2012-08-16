@@ -150,7 +150,7 @@ bool FibHeapWidget::blockComponents()
 
 void FibHeapWidget::nextStep()
 {
-    if(isDelete)
+    if(isDelete && selectedHeap->oneStatesLeft())
     {
         selectedHeap->clearPositions();
         this->extractMin();
