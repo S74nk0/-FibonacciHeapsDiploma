@@ -4,7 +4,7 @@
 #include <limits>
 #include "QDebug"
 
-//xml in file
+//xml and file
 #include <QDomDocument>
 #include <QFile>
 #include <QTextStream>

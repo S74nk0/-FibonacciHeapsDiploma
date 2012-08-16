@@ -3,7 +3,7 @@
 #include <math.h>
 #include <QTime>
 
-static double ln = log(2.0);
+static const double ln = log(2.0);
 
 template<class Node>
 FibHeapBase<Node>::FibHeapBase() : min(0), n(0), LastNode(0) //MakeFibHeap
