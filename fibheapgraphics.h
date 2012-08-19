@@ -8,6 +8,7 @@
 class FibHeapGraphics : public FibHeapBase<GraphicsFibNode>
 {
 public:
+    FibHeapGraphics();
     ~FibHeapGraphics();
     GraphicsFibNode *Insert(int key);
     GraphicsFibNode *ExtractMin(bool deleteFunc = false);
@@ -26,6 +27,7 @@ public:
 
     bool blockComponents();
     bool oneStatesLeft();
+    bool decreaseKeyTmpNode() const;
 
     QPointF referencePoint;
 
@@ -40,6 +42,11 @@ private:
     void linkEdges();
     void linkEdgesNew(QGraphicsScene *scene);
     void updateEdges();
+
+    //decrease key graphics
+    void DecreaseKeyGraphics(GraphicsFibNode *x, int k);
+    void CascadingCutGraphics(GraphicsFibNode *y);
+    GraphicsFibNode *decreaseKeyTempNode;
 };
 
 #endif // FIBHEAPGRAPHICS_H

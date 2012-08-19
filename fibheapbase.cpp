@@ -153,7 +153,6 @@ void FibHeapBase<Node>::DecreaseKey(Node *x, int k)
     if(y != 0 && x->key < y->key)
     {
         this->Cut(x/*, y*/);
-        this->LastNode->next()->setStates(); // for the graphics/visuals nothing to do with the algorithm
         this->CascadingCut(y);
     }
 
@@ -288,7 +287,10 @@ void FibHeapBase<Node>::Cut(Node *x/*, Node *y*/) // y nepotreben zaradi unChild
     x->unChild(); // 3. korak pokrit
     this->insertLast(x);
     x->mark = false;
-//    x->update(); // for the graphics/visuals nothing to do with the algorithm
+
+    //graphics functions
+    x->update(); // for the graphics/visuals nothing to do with the algorithm
+    this->LastNode->next()->setStates(); // for the graphics/visuals nothing to do with the algorithm
 }
 
 template<class Node>
@@ -305,7 +307,6 @@ void FibHeapBase<Node>::CascadingCut(Node *y)
         else
         {
             this->Cut(y/*, z*/);
-            this->LastNode->next()->setStates(); // for the graphics/visuals nothing to do with the algorithm
             this->CascadingCut(z);
         }
     }
@@ -338,20 +339,11 @@ void FibHeapBase<Node>::ExportHeap(QString &fileName)
     QDomElement r2 = document.documentElement(); // bris
 
     //Write to file
-//    QFile outFile(fileName);
-//    if( !outFile.open( QIODevice::WriteOnly | QIODevice::Text ) )
-//        qDebug( "Failed to open file for writing." );
-
-//    QTextStream stream( &outFile );
-//    stream << document.toString();
-
     QFile compressed(fileName + ".fibh");
 
     compressed.open(QIODevice::WriteOnly);
     compressed.write(qCompress(document.toByteArray()));
     compressed.close();
-
-//    outFile.close();
 }
 
 template<class Node>
@@ -428,11 +420,6 @@ void FibHeapBase<Node>::ImportHeap(QString &fileName)
         file.close();
         return;
     }
-//    if (!doc.setContent(&file, &errorMsg, &errorLine, &errorColumn))
-//    {
-//        file.close();
-//        return;
-//    }
     file.close();
 
     QDomElement root = doc.documentElement();
@@ -534,6 +521,4 @@ void FibHeapBase<Node>::Generate(int numOfFNodes, int randRange)
         randomNumber = (qrand() % randRange)+1; // ne zelimo kljuca ki je manjsi od ena
         this->Insert(randomNumber);
     }
-//    FNode * del = this->Insert(1);
-//    this->Delete(del);
 }

@@ -2,6 +2,11 @@
 #include <QTimeLine>
 #include <QGraphicsItemAnimation>
 
+
+
+FibHeapGraphics::FibHeapGraphics() : FibHeapBase(), decreaseKeyTempNode(0)
+{}
+
 FibHeapGraphics::~FibHeapGraphics()
 {
     Nodes.clear();
@@ -143,7 +148,6 @@ void FibHeapGraphics::animateInsert()
     timeline->setCurveShape (QTimeLine::EaseInOutCurve); // OK = EaseOutCurve
     QObject::connect (timeline, SIGNAL(finished()), timeline, SLOT(deleteLater()));
 
-//    LastNode->setPos(LastNode->x(),LastNode->y());
     QGraphicsItemAnimation *animation = new QGraphicsItemAnimation;
     animation->setItem(LastNode);
     animation->setTimeLine(timeline);
@@ -238,8 +242,21 @@ FibHeapGraphics *FibHeapGraphics::Union(FibHeapGraphics *H2)
 void FibHeapGraphics::DecreaseKey(GraphicsFibNode *x, int k)
 {
     this->saveCurrentPositions();
-    FibHeapBase::DecreaseKey(x, k);
-    this->setStates();
+
+    GraphicsFibNode *tmpParent = 0;
+    if(this->decreaseKeyTempNode)
+    {
+        tmpParent = this->decreaseKeyTempNode->parent();
+        this->Cut(this->decreaseKeyTempNode);
+
+        if(tmpParent)
+        {
+            this->CascadingCutGraphics(tmpParent);
+        }
+    }
+    else
+        this->DecreaseKeyGraphics(x,k);
+
     this->updateEdges();
     this->setFirstPositions(); // set first
     this->animate(300);
@@ -301,4 +318,52 @@ void FibHeapGraphics::linkEdgesNew(QGraphicsScene *scene)
         scene->addItem(Edges.last());
         start = start->next();
     }
+}
+
+void FibHeapGraphics::DecreaseKeyGraphics(GraphicsFibNode *x, int k)
+{
+    if(k > x->key)
+    {
+        return;
+    }
+
+    x->key = k;
+    x->update(); // for the graphics/visuals nothing to do with the algorithm
+
+    GraphicsFibNode *y = x->parent();
+
+    if(y != 0 && x->key < y->key)
+    {
+        this->Cut(x); //base function
+        this->CascadingCutGraphics(y);
+    }
+
+    if(x->key < this->min->key)
+    {
+        this->min = x;
+    }
+}
+
+void FibHeapGraphics::CascadingCutGraphics(GraphicsFibNode *y)
+{
+    GraphicsFibNode *z = y->parent();
+    if(z != 0)
+    {
+        if(y->mark == false)
+        {
+            y->mark = true;
+            y->update(); // for the graphics/visuals nothing to do with the algorithm
+        }
+        else
+        {
+            this->decreaseKeyTempNode = y;
+            return;
+        }
+    }
+    this->decreaseKeyTempNode = 0;
+}
+
+bool FibHeapGraphics::decreaseKeyTmpNode() const
+{
+    return this->decreaseKeyTempNode;
 }

@@ -150,11 +150,16 @@ bool FibHeapWidget::blockComponents()
 
 void FibHeapWidget::nextStep()
 {
-    if(isDelete && selectedHeap->oneStatesLeft())
+    if(isDelete && selectedHeap->oneStatesLeft() && !selectedHeap->decreaseKeyTmpNode())
     {
         selectedHeap->clearPositions();
         this->extractMin();
         isDelete = false;
+    }
+    else if(selectedHeap->decreaseKeyTmpNode())
+    {
+        selectedHeap->clearPositions();
+        selectedHeap->DecreaseKey(selectedHeap->Min(), std::numeric_limits<int>::max());
     }
     else
         this->selectedHeap->animate(420);
