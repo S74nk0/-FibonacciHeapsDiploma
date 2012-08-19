@@ -28,41 +28,41 @@
 //    return a.exec();
 //}
 
-//TEST TIMES
+////TEST TIMES
 
-#include "benchmark.h"
+//#include "benchmark.h"
 
-int main(int argc, char *argv[])
-{
-
-    Benchmark bench;
-
-//    bench.worstCaseExtractMin(10000);
-//    bench.worstCaseExtractMinTest(10000000);
-
-//    bench.worstCaseExtractMinOutFiles(50000000, 30); // to bo miki generiral podatke
-
-
-
-    return 0;
-}
-
-//////DijkstraGraphics
-//#include <QtGui>
-
-//#include "dijkstrawidget.h"
-
-//int main(int argc, char **argv)
+//int main(int argc, char *argv[])
 //{
-//    QApplication app(argc, argv);
-//    app.setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
 
-//    DijkstraWidget *widget = new DijkstraWidget;
+//    Benchmark bench;
 
-//    QMainWindow mainWindow;
-//    mainWindow.setCentralWidget(widget);
+////    bench.worstCaseExtractMin(10000);
+////    bench.worstCaseExtractMinTest(10000000);
 
-//    mainWindow.show();
-//    return app.exec();
+////    bench.worstCaseExtractMinOutFiles(50000000, 30); // to bo miki generiral podatke
+
+
+
+//    return 0;
 //}
+
+////DijkstraGraphics
+#include <QtGui>
+
+#include "dijkstrawidget.h"
+
+int main(int argc, char **argv)
+{
+    QApplication app(argc, argv);
+    app.setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
+
+    DijkstraWidget *widget = new DijkstraWidget;
+
+    QMainWindow mainWindow;
+    mainWindow.setCentralWidget(widget);
+
+    mainWindow.show();
+    return app.exec();
+}
 

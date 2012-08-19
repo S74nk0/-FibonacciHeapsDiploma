@@ -15,6 +15,7 @@ class DijkstraGraphics
 {
 public:
     DijkstraGraphics();
+    ~DijkstraGraphics();
 
     void calculatePositions();
 
@@ -28,6 +29,10 @@ public:
 private:
     void doAlgPriorityList();
     void doAlgFibHeaps();
+
+//    QVector<DijkstraGraphicsEdge *> markedEdges;
+
+    QVector<GraphicsEdge<DijkstraGraphicsNode> *> markedEdges;
 
     qint64 ElapsedTime;
 };

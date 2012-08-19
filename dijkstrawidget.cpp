@@ -10,8 +10,8 @@ DijkstraWidget::DijkstraWidget(QWidget *parent)
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     scene->setSceneRect(-20000, -20000, 40000, 40000);
 
-    QString name = "scotland_big.txt";
-//    QString name = "primerGraf.txt";
+//    QString name = "scotland_big.txt";
+    QString name = "primerGraf.txt";
 //    QString name = "primerGraf2.txt";
     dijkstraGraph.loadGraph(name);
     dijkstraGraph.addToScene(scene);

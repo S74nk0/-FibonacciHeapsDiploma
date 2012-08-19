@@ -6,6 +6,11 @@ DijkstraGraphics::DijkstraGraphics() : DijkstraAlgorithm(), FibHeap(false), Elap
 {
 }
 
+DijkstraGraphics::~DijkstraGraphics()
+{
+    markedEdges.clear();
+}
+
 void DijkstraGraphics::addToScene(QGraphicsScene *scene)
 {
     foreach(DijkstraGraphicsNode *node, this->Nodes) {
@@ -58,13 +63,19 @@ void DijkstraGraphics::doAlg()
 void DijkstraGraphics::markRoute()
 {
     DijkstraGraphicsNode *tmp = Nodes.first();//Nodes[0];
-//    qDebug(QString::number(tmp->key).toAscii());
     DijkstraGraphicsNode *tmpPrev = 0;
     while(tmp)
     {
         tmp->routeNode = true;
         tmp->update();
         tmpPrev = static_cast<DijkstraGraphicsNode *>(tmp->prevScaned);
+
+        for(int i=0; i < tmp->edges().count(); ++i) {
+            if(tmp->edges().at(i)->startNode() == tmpPrev)
+                markedEdges.push_back(
+                            tmp->edges().at(i)
+                            );
+        }
 
         tmp = tmpPrev;
     }
@@ -141,18 +152,6 @@ void DijkstraGraphics::calculatePositions()
             x = 0;
             ++y;
         }
-
-//        int rotate = node->edges().count();
-//        foreach (GraphicsEdge<DijkstraGraphicsNode> *edge, node->edges()) {
-//            DijkstraGraphicsNode *tmpNode = edge->startNode();
-//            if(edge->startNode() != node)
-//            {
-//                tmpNode = edge->endNode();
-//            }
-
-//            tmpNode->moveBy(15*rotate,15*rotate);
-////            --rotate;
-//        }
     }
 }
 
@@ -166,16 +165,12 @@ void DijkstraGraphics::hideUnmarked()
 
             node->hide();
         }
-//        else
-//        {
-////            GraphicsEdge<DijkstraGraphicsNode> *edgeMin = 0;
-//            DijkstraGraphicsNode *prevScan = static_cast<DijkstraGraphicsNode *>(node->prevScaned);
-
-//            foreach(GraphicsEdge<DijkstraGraphicsNode> *edge, node->edges())
-//                if(prevScan != edge->startNode() && node != edge->endNode() ||
-//                        node != edge->startNode() && prevScan != edge->endNode())
-//                    edge->hide();
-//        }
+        else
+        {
+            foreach(GraphicsEdge<DijkstraGraphicsNode> *edge, node->edges())
+                if(!markedEdges.contains(edge))
+                    edge->hide();
+        }
     }
 }
 
