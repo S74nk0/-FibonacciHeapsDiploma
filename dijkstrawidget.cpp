@@ -29,7 +29,6 @@ DijkstraWidget::DijkstraWidget(QWidget *parent)
 
 
     dijkstraGraph.calculatePositions();
-//    dijkstraGraph.calculateForces();
 }
 
 
