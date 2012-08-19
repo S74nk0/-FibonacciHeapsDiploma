@@ -1,7 +1,6 @@
 #ifndef GRAPHICSFIBEDGE_H
 #define GRAPHICSFIBEDGE_H
 
-//#include "graphicsedgetemplate.h"
 #include "graphicsfibnode.h"
 
 class GraphicsFibEdge : public GraphicsEdge<GraphicsFibNode>

@@ -15,37 +15,37 @@
 //}
 
 
-//cel program z graficnim vmesnikom
-#include <QtGui/QApplication>
-#include "mainwindow.h"
-
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
-
-    return a.exec();
-}
-
-////TEST TIMES
-
-//#include "benchmark.h"
+////cel program z graficnim vmesnikom
+//#include <QtGui/QApplication>
+//#include "mainwindow.h"
 
 //int main(int argc, char *argv[])
 //{
+//    QApplication a(argc, argv);
+//    MainWindow w;
+//    w.show();
 
-//    Benchmark bench;
-
-////    bench.worstCaseExtractMin(10000);
-////    bench.worstCaseExtractMinTest(10000000);
-
-////    bench.worstCaseExtractMinOutFiles(50000000, 30); // to bo miki generiral podatke
-
-
-
-//    return 0;
+//    return a.exec();
 //}
+
+//TEST TIMES
+
+#include "benchmark.h"
+
+int main(int argc, char *argv[])
+{
+
+    Benchmark bench;
+
+//    bench.worstCaseExtractMin(10000);
+//    bench.worstCaseExtractMinTest(10000000);
+
+//    bench.worstCaseExtractMinOutFiles(50000000, 30); // to bo miki generiral podatke
+
+
+
+    return 0;
+}
 
 //////DijkstraGraphics
 //#include <QtGui>
