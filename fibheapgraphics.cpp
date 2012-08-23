@@ -255,7 +255,10 @@ void FibHeapGraphics::DecreaseKey(GraphicsFibNode *x, int k)
         }
     }
     else
+    {
         this->DecreaseKeyGraphics(x,k);
+        this->setStates();
+    }
 
     this->updateEdges();
     this->setFirstPositions(); // set first

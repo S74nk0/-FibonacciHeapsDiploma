@@ -159,7 +159,7 @@ void FibHeapWidget::nextStep()
     else if(selectedHeap->decreaseKeyTmpNode())
     {
         selectedHeap->clearPositions();
-        selectedHeap->DecreaseKey(selectedHeap->Min(), std::numeric_limits<int>::max());
+        selectedHeap->DecreaseKey(selectedHeap->Min(), std::numeric_limits<int>::max()); // dummy parameters
     }
     else
         this->selectedHeap->animate(420);
