@@ -8,6 +8,7 @@
 #include <QFile>
 #include <limits>
 
+
 template <class Node, class EdgeTemplate>
 class DijkstraAlgorithm
 {
@@ -22,8 +23,10 @@ public:
     void printResaults();
 
 
-protected:
+private:
     Node reflect; // reflect is for function overloading (reflection workaround)
+
+protected:
     // START graph
     QVector<EdgeTemplate *> Edges;
     QVector<Node *> Nodes;

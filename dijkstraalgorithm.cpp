@@ -155,7 +155,6 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DNode)
         qSort(Q.begin(), Q.begin()+sortEndIndex, keyLessThan<DNode>); // sortira po vrsi
     }
 
-
     printResaults();
 }
 
@@ -204,5 +203,5 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DFNode)
         }
     }
 
-//    printResaults();
+    printResaults();
 }

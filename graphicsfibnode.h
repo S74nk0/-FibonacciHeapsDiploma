@@ -14,6 +14,8 @@ public:
     GraphicsFibNode(int k, int d, bool m);
     ~GraphicsFibNode();
 
+    void makeChild(GraphicsFibNode *child);
+
     //static members
     static GraphicsFibNode *minfNode;
     static GraphicsFibNode *minfNode2;

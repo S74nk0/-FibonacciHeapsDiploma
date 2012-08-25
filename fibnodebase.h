@@ -24,12 +24,13 @@ public:
     inline Derived *next() const { return static_cast<Derived *>(this->Next); }
     inline Derived *prev() const { return static_cast<Derived *>(this->Prev); }
 
-    void insertAfter(FibNodeBase *newFNode);
-    void insertBefore(FibNodeBase *newFNode);
+    inline void insertAfter(FibNodeBase *newFNode);
+    inline void insertBefore(FibNodeBase *newFNode);
     bool contains(FibNodeBase *x);
-    bool unlink(); // FNode not derstroyed, returns
-    void unChild();
-    void makeChild(FibNodeBase *child);
+    inline bool unlink(); // FNode not derstroyed, returns
+    inline void unlink2();
+    inline void unChild();
+    inline void makeChild(FibNodeBase *child);
 };
 
 #endif // FIBNODEBASE_H

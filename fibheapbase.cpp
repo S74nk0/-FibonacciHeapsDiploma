@@ -218,7 +218,7 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
                     this->min = x;
 
                 this->Link(y, x);// states change
-                this->LastNode->next()->setStates(); // again this part is only for the graphical representation and not esential to the algorithm it has no part in the pseudocode in the alghorithm
+
             }
 
             A[d] = 0;
@@ -250,34 +250,32 @@ void FibHeapBase<Node>::Link(Node *y, Node *x)
     if(y == LastNode)
         LastNode = y->prev();
 
-    y->unlink();
 
-    if(x->Next == x)
-    {
-        this->min = x;
-    }
-    y->Next = y;
-    y->Prev = y;
-    y->Parent = x;
+//    if(x->Next == x) // remove this?
+//    {
+//        this->min = x;
+//    }
 
-    if(x->Child == 0)
-    {
-        x->Child = y;
-    }
+    y->unlink2();
 
-    y->Next = x->Child;
-    y->Prev = x->Child->Prev;
-    x->Child->Prev->Next = y;
-    x->Child->Prev = y;
+    x->makeChild(y);
+//    y->Parent = x;
+//    if(!x->Child)
+//    {
+//        x->Child = y;
+//    }
+//    y->Next = x->Child;
+//    y->Prev = x->Child->Prev;
+//    x->Child->Prev->Next = y;
+//    x->Child->Prev = y;
+//    ++x->degree;
+//    y->mark = false;
 
-    if(x->Child->degree < y->degree)
-        x->Child = y;
 
-    // lll
-    x->degree++;
-    y->mark = false;
+
     //the update fuction is only for the visuals/ graphics and has nothing to do with the algorithm
     y->update(); //
+    this->LastNode->next()->setStates(); // again this part is only for the graphical representation and not esential to the algorithm it has no part in the pseudocode in the alghorithm
 }
 
 //19.3

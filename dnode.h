@@ -10,6 +10,10 @@ public:
     DNode() : NodeBase(), key(-1) {}
     DNode(int id, int key) : NodeBase(id), key(key) {}
     int key;
+
+    bool operator<(const DNode& b) {
+      return this->key < b.key;
+    }
 };
 
 #endif // DNODE_H

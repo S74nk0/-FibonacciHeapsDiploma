@@ -71,9 +71,18 @@ bool FibNodeBase<Derived>::unlink() // FNode not derstroyed, returns
 }
 
 template <class Derived>
+void FibNodeBase<Derived>::unlink2()
+{
+    this->Next->Prev = this->Prev;
+    this->Prev->Next = this->Next;
+    this->Next = this;
+    this->Prev = this;
+}
+
+template <class Derived>
 void FibNodeBase<Derived>::unChild()
 {
-    if(this->Parent != 0)
+    if(this->Parent)
     {
         if(this->Parent->Child == this) // ce je trenutni otrok kazalec na otroka
         {
@@ -96,6 +105,18 @@ void FibNodeBase<Derived>::unChild()
 template <class Derived>
 void FibNodeBase<Derived>::makeChild(FibNodeBase *child)
 {
-    this->Child = child;
+//    this->Child = child;
     child->Parent = this;
+    if(!this->Child)
+    {
+        this->Child = child;
+    }
+
+    child->Next = this->Child;
+    child->Prev = this->Child->Prev;
+    this->Child->Prev->Next = child;
+    this->Child->Prev = child;
+
+    ++this->degree;
+    child->mark = false;
 }

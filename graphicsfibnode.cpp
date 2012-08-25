@@ -24,8 +24,18 @@ GraphicsFibNode::~GraphicsFibNode()
     }
 }
 
+void GraphicsFibNode::makeChild(GraphicsFibNode *child)
+{
+    FibNodeBase::makeChild(child);
+    if(this->Child->degree < child->degree)
+        this->Child = child;
+}
+
 void GraphicsFibNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+
     QRadialGradient gradient(-3, -3, 10);
     if (option->state & QStyle::State_Sunken || this == this->selected) {
         gradient.setColorAt(0, Qt::blue);
