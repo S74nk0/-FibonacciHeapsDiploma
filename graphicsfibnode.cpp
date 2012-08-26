@@ -24,9 +24,9 @@ GraphicsFibNode::~GraphicsFibNode()
     }
 }
 
-void GraphicsFibNode::makeChild(GraphicsFibNode *child)
+void GraphicsFibNode::makeChildLink(GraphicsFibNode *child)
 {
-    FibNodeBase::makeChild(child);
+    FibNodeBase::makeChildLink(child);
     if(this->Child->degree < child->degree)
         this->Child = child;
 }

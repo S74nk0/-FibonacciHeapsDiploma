@@ -146,7 +146,6 @@ void FibHeapBase<Node>::DecreaseKey(Node *x, int k)
     }
 
     x->key = k;
-    x->update(); // for the graphics/visuals nothing to do with the algorithm
 
     Node *y = x->parent();
 
@@ -218,7 +217,6 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
                     this->min = x;
 
                 this->Link(y, x);// states change
-
             }
 
             A[d] = 0;
@@ -258,22 +256,9 @@ void FibHeapBase<Node>::Link(Node *y, Node *x)
 
     y->unlink2();
 
-    x->makeChild(y);
-//    y->Parent = x;
-//    if(!x->Child)
-//    {
-//        x->Child = y;
-//    }
-//    y->Next = x->Child;
-//    y->Prev = x->Child->Prev;
-//    x->Child->Prev->Next = y;
-//    x->Child->Prev = y;
-//    ++x->degree;
-//    y->mark = false;
+    x->makeChildLink(y);
 
-
-
-    //the update fuction is only for the visuals/ graphics and has nothing to do with the algorithm
+//    //the update fuction is only for the visuals/ graphics and has nothing to do with the algorithm
     y->update(); //
     this->LastNode->next()->setStates(); // again this part is only for the graphical representation and not esential to the algorithm it has no part in the pseudocode in the alghorithm
 }
@@ -285,10 +270,6 @@ void FibHeapBase<Node>::Cut(Node *x/*, Node *y*/) // y nepotreben zaradi unChild
     x->unChild(); // 3. korak pokrit
     this->insertLast(x);
     x->mark = false;
-
-    //graphics functions
-    x->update(); // for the graphics/visuals nothing to do with the algorithm
-    this->LastNode->next()->setStates(); // for the graphics/visuals nothing to do with the algorithm
 }
 
 template<class Node>
@@ -300,7 +281,6 @@ void FibHeapBase<Node>::CascadingCut(Node *y)
         if(y->mark == false)
         {
             y->mark = true;
-            y->update(); // for the graphics/visuals nothing to do with the algorithm
         }
         else
         {

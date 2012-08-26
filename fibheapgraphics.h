@@ -16,6 +16,8 @@ public:
     void DecreaseKey(GraphicsFibNode *x, int k);
     void ImportHeap(QString &fileName, QGraphicsScene *scene);
 
+
+
     void setStates();
     void clear();
 
@@ -45,8 +47,16 @@ private:
 
     //decrease key graphics
     void DecreaseKeyGraphics(GraphicsFibNode *x, int k);
-    void CascadingCutGraphics(GraphicsFibNode *y);
     GraphicsFibNode *decreaseKeyTempNode;
+
+
+    //19.2
+//    void Link(GraphicsFibNode *y, GraphicsFibNode *x);
+
+    //19.3
+    void Cut(GraphicsFibNode *x);
+    void CascadingCut(GraphicsFibNode *y);
+
 };
 
 #endif // FIBHEAPGRAPHICS_H

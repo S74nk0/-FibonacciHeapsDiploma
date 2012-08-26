@@ -31,6 +31,7 @@ public:
     inline void unlink2();
     inline void unChild();
     inline void makeChild(FibNodeBase *child);
+    inline void makeChildLink(FibNodeBase *child);
 };
 
 #endif // FIBNODEBASE_H

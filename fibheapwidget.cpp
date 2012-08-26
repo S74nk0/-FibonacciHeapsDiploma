@@ -254,7 +254,8 @@ void FibHeapWidget::ImportHeap()
 
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"));
 
-    selectedHeap->ImportHeap(fileName, this->scene());
+    if(fileName != "")
+        selectedHeap->ImportHeap(fileName, this->scene());
 
     updateMin();
 }
