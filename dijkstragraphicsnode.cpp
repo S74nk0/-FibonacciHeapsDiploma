@@ -17,23 +17,8 @@ DijkstraGraphicsNode::DijkstraGraphicsNode(int id, int key)
 
 void DijkstraGraphicsNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-//    QRadialGradient gradient(-3, -3, 10);
-//    if (option->state & QStyle::State_Sunken) {
-//        gradient.setColorAt(0, Qt::blue);
-//    }
-//    else {
-//        if(this->routeNode)
-//            gradient.setColorAt(0, Qt::darkYellow);
-//        else
-//            gradient.setColorAt(0, Qt::yellow);
-//    }
-
-//    if (this->searchEndNode == this) {
-//        gradient.setColorAt(0, Qt::blue);
-//    }
-//    if (this->searchStartNode == this) {
-//        gradient.setColorAt(0, Qt::green);
-//    }
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
 
     painter->setBrush(QBrush(Qt::yellow));
     painter->setPen(QPen(Qt::black, 0));

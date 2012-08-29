@@ -11,6 +11,13 @@ FibHeapBase<Node>::FibHeapBase() : min(0), n(0), LastNode(0) //MakeFibHeap
 }
 
 template<class Node>
+FibHeapBase<Node>::~FibHeapBase()
+{
+    min = 0;
+    LastNode = 0;
+}
+
+template<class Node>
 Node *FibHeapBase<Node>::Insert(int key)
 {
     Node *x = new Node(key);
@@ -28,8 +35,7 @@ void FibHeapBase<Node>::Insert(Node *newNode)
     }
     else
     {
-        this->insertLast(newNode); // before
-//        this->min->insertBefore(newNode);
+        this->insertLast(newNode);
         if(newNode->key < this->min->key)
         {
             this->min = newNode;
@@ -51,7 +57,6 @@ FibHeapBase<Node> *FibHeapBase<Node>::Union(FibHeapBase *H2)
     newH->min = this->min;
     newH->LastNode = this->LastNode;
 
-//    newH.min->insertEnd(this->LastNode, H2.min); // povezava
     if(this->min != 0 && H2->min != 0)
     {
         Node *FirstNode = this->LastNode->next();
@@ -123,9 +128,11 @@ Node *FibHeapBase<Node>::ExtractMin(bool deleteFunc/* = false*/)
                 this->min = ChildListEnd;
             }
 
+#ifdef FIBHEAPGRAPHICS_H
             //this part of the code isn't for the alghorithm but for the template to satisfy one function for both graphical node and non graphical
             this->LastNode->next()->setStates(); // the setStates
             //end of template function
+#endif
 
             this->Consolidate();
         }
@@ -185,17 +192,18 @@ void FibHeapBase<Node>::insertLast(Node *newNode)
 template<class Node>
 void FibHeapBase<Node>::Consolidate() // # fixed!
 {
-    double f = log( static_cast<double>(this->n) )/ln;
-    int D = qRound(f) + 1/*2*/;//D();
+    double f = log( static_cast<double>(this->n) )/ln; // ln(n) = log(n)/log(2.0)
+    int D = qRound(f) + 1;//D();
 
-    Node **A = new Node*[D];
+//    Node **A = new Node*[D];
+    Node *A[D]; // microoptimization stack
 
     for(int i = 0; i < D; ++i)
     {
         A[i] = 0;
     }
 
-    Node *x, *y, *tmp;
+    Node *x = 0, *y = 0, *tmp = 0;
 
     x = this->min;
     do
@@ -230,7 +238,7 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
 
     for(int i = 0; i < D; ++i)
     {
-        if(A[i] != 0)
+        if(A[i])
         {
             if(A[i]->key < this->min->key || (this->min->key == A[i]->key && A[i]->degree < this->min->degree)) // speed up if we set the min node as also th node with the min degree
             {
@@ -239,7 +247,7 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
         }
     }
 
-    delete[] A;
+//    delete[] A;
 }
 
 template<class Node>
@@ -255,12 +263,11 @@ void FibHeapBase<Node>::Link(Node *y, Node *x)
 //    }
 
     y->unlink2();
-
     x->makeChildLink(y);
 
-//    //the update fuction is only for the visuals/ graphics and has nothing to do with the algorithm
-    y->update(); //
+#ifdef FIBHEAPGRAPHICS_H
     this->LastNode->next()->setStates(); // again this part is only for the graphical representation and not esential to the algorithm it has no part in the pseudocode in the alghorithm
+#endif
 }
 
 //19.3

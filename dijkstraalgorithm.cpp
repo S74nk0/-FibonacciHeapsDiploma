@@ -95,7 +95,7 @@ template <class Node, class EdgeTemplate>
 void DijkstraAlgorithm<Node, EdgeTemplate>::printResaults()
 {
     Node *tmp = Nodes[0];
-    qDebug(QString::number(tmp->key).toAscii());
+    qDebug("distance price: "+QString::number(tmp->key).toAscii());
     while(tmp)
     {
         QString str = QString::number(tmp->nodeId) + " - ";

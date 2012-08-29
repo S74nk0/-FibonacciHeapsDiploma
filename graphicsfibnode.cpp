@@ -29,32 +29,34 @@ void GraphicsFibNode::makeChildLink(GraphicsFibNode *child)
     FibNodeBase::makeChildLink(child);
     if(this->Child->degree < child->degree)
         this->Child = child;
+
+    //the update fuction is only for the visuals/ graphics and has nothing to do with the algorithm
+    child->update(); //
 }
 
 void GraphicsFibNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(option);
     Q_UNUSED(widget);
 
-    QRadialGradient gradient(-3, -3, 10);
+    QBrush brush(Qt::yellow);
     if (option->state & QStyle::State_Sunken || this == this->selected) {
-        gradient.setColorAt(0, Qt::blue);
+        brush.setColor(Qt::blue);
     }
     else {
         if(this->mark)
-            gradient.setColorAt(0, Qt::darkYellow);
+            brush.setColor(Qt::darkYellow);
         else if(this == this->minfNode || this == this->minfNode2)
-            gradient.setColorAt(0, Qt::red);
+            brush.setColor(Qt::red);
         else
-            gradient.setColorAt(0, Qt::yellow);
+            brush.setColor(Qt::yellow);
 
     }
-    painter->setBrush(gradient);
+    painter->setBrush(brush);
     painter->setPen(QPen(Qt::black, 0));
     painter->drawEllipse(-10, -10, 20, 20);
 
     QString num = QString::number(this->key);
-    painter->drawText(-5*num.size(),5, num);//painter->drawText(-5,5, QString::number(fNode->key));
+    painter->drawText(-5*num.size(),5, num);
 }
 
 void GraphicsFibNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -63,14 +65,14 @@ void GraphicsFibNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
     this->selected = this;
     if(tmpNode != 0) // tu se pojavlja problem sigsegv, najverjetneje kaze an zbrisano lokacijo
         tmpNode->update();
-    newPos = this->pos();
+    Pos = this->pos();
     update();
     QGraphicsItem::mousePressEvent(event);
 }
 
 void GraphicsFibNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    this->setPos(newPos);
+    this->setPos(Pos);
     update();
     QGraphicsItem::mouseReleaseEvent(event);
 }

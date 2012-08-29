@@ -33,7 +33,7 @@ protected:
 
 //private:
     QList<GEdgeTemplate *> edgeList;
-    QPointF newPos;
+    QPointF Pos;
 };
 
 #endif // GRAPHICSNODE_H

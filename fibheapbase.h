@@ -16,6 +16,7 @@ public:
 
     //19.2
     FibHeapBase(); // MakeFibHeap
+    ~FibHeapBase();
     Node *Insert(int key);
     void Insert(Node *newNode);
     Node *Min() const;

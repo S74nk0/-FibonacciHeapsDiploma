@@ -112,7 +112,6 @@ void FibNodeBase<Derived>::makeChild(FibNodeBase *child)
 template <class Derived>
 void FibNodeBase<Derived>::makeChildLink(FibNodeBase *child)
 {
-//    this->Child = child;
     child->Parent = this;
     if(!this->Child)
     {
