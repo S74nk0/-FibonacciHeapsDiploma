@@ -7,8 +7,8 @@ typedef DijkstraAlgorithm<DNode, Edge<DNode> > DijkstraPriorityList;
 
 int main(int argc, char *argv[])
 {
-//    DijkstraFib dij;
-    DijkstraPriorityList dij;
+    DijkstraFib dij;
+//    DijkstraPriorityList dij;
 
     if(argc == 2)
     {
