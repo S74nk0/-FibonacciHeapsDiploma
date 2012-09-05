@@ -240,6 +240,12 @@ FibHeapGraphics *FibHeapGraphics::Union(FibHeapGraphics *H2)
 
 void FibHeapGraphics::DecreaseKey(GraphicsFibNode *x, int k)
 {
+    if(!Nodes.contains(x)) // check if node is part of current heap
+    {
+        x->update();
+        return;
+    }
+
     this->saveCurrentPositions();
 
     GraphicsFibNode *tmpParent = 0;

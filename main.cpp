@@ -1,42 +1,42 @@
-//TEST BINARY
-#include "dijkstraalgorithmtemplate.h"
-#include <iostream>
+////TEST BINARY
+//#include "dijkstraalgorithmtemplate.h"
+//#include <iostream>
 
-typedef DijkstraAlgorithm<DFNode, Edge<DFNode> > DijkstraFib;
-typedef DijkstraAlgorithm<DNode, Edge<DNode> > DijkstraPriorityList;
-
-int main(int argc, char *argv[])
-{
-    DijkstraFib dij;
-//    DijkstraPriorityList dij;
-
-    if(argc == 2)
-    {
-        QString name = argv[1];
-        dij.loadGraph(name);
-        dij.doAlg();
-    }
-    else
-    {
-        std::cout << "File name missing\n";
-    }
-
-    return 0;
-}
-
-
-////cel program z graficnim vmesnikom
-//#include <QtGui/QApplication>
-//#include "mainwindow.h"
+//typedef DijkstraAlgorithm<DFNode, Edge<DFNode> > DijkstraFib;
+//typedef DijkstraAlgorithm<DNode, Edge<DNode> > DijkstraPriorityList;
 
 //int main(int argc, char *argv[])
 //{
-//    QApplication a(argc, argv);
-//    MainWindow w;
-//    w.show();
+//    DijkstraFib dij;
+////    DijkstraPriorityList dij;
 
-//    return a.exec();
+//    if(argc == 2)
+//    {
+//        QString name = argv[1];
+//        dij.loadGraph(name);
+//        dij.doAlg();
+//    }
+//    else
+//    {
+//        std::cout << "File name missing\n";
+//    }
+
+//    return 0;
 //}
+
+
+//cel program z graficnim vmesnikom
+#include <QtGui/QApplication>
+#include "mainwindow.h"
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+
+    return a.exec();
+}
 
 ////TEST TIMES
 
