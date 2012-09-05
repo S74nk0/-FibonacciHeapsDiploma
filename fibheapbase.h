@@ -39,6 +39,7 @@ protected:
     Node *LastNode;
 
     void insertLast(Node *newNode);
+    inline void linkNeighbours(Node *next, Node *prev) const;
 
     //19.2
     void Consolidate(); // # fixed!

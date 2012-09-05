@@ -19,10 +19,6 @@ public:
         this->degree = 0;
         this->mark = false;
     }
-
-    //dummdy functions to satisfy the template (there is probably a better way but this is for now the easiest way and with no pefrormance penaulty (extremaley small if any, probabley none))
-    inline void setStates() const {}
-    inline void update() const {}
 };
 
 class FibHeapBenchmark : public FibHeapBase<FNode>

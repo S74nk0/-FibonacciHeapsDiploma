@@ -15,7 +15,7 @@ public:
     FibNodeBase *Next;
     FibNodeBase *Parent;
 
-    int key; // ta vrednost se hrani v NodeBase
+    int key;
     int degree;
     bool mark;
 

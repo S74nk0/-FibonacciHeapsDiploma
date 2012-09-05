@@ -31,7 +31,6 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
-//private:
     QList<GEdgeTemplate *> edgeList;
     QPointF Pos;
 };

@@ -17,7 +17,6 @@ public:
     void ImportHeap(QString &fileName, QGraphicsScene *scene);
 
 
-
     void setStates();
     void clear();
 
@@ -48,10 +47,6 @@ private:
     //decrease key graphics
     void DecreaseKeyGraphics(GraphicsFibNode *x, int k);
     GraphicsFibNode *decreaseKeyTempNode;
-
-
-    //19.2
-//    void Link(GraphicsFibNode *y, GraphicsFibNode *x);
 
     //19.3
     void Cut(GraphicsFibNode *x);

@@ -2,7 +2,6 @@
 
 #include <QStringList>
 #include <QtAlgorithms>
-//#include <QList>
 
 
 // LessThan funkcija za q sort pride kot friend funkcija
@@ -11,6 +10,101 @@ bool keyLessThan(const Node *n1, const Node *n2)
 {
     return n1->key < n2->key;
 }
+
+class PrQue {
+public:
+    PrQue() : heap_size(0) {}
+
+    int heap_size;
+    QList<DNode *> A;
+
+    int parent(int i) {
+        return (int)(i/2);
+    }
+
+    int left(int i) {
+        return 2*i;
+    }
+
+    int right(int i) {
+        return 2*i+1;
+    }
+
+    void MinHeapify(int i) {
+        int l = left(i);
+        int r = right(i);
+
+        int smallest = -1;
+
+        if(l < heap_size/*A.size()*/ && A[l] < A[i]) {
+            smallest = l;
+        }
+        else {
+            smallest = i;
+        }
+        if(r < heap_size/*A.size()*/ && A[r] < A[smallest] ) {
+            smallest = r;
+        }
+        if(smallest != i) {
+            A.swap(i, smallest);
+            MinHeapify(smallest);
+        }
+    }
+
+    void BuildMinHeap() {
+        heap_size = A.size();
+        for(int i=(int)(A.size()/2); i>=0; --i ) { // 0
+            MinHeapify(i);
+        }
+    }
+
+    void HeapSort() {
+        BuildMinHeap();
+        for(int i=A.size()-1; i>=1; --i) { // 1
+            A.swap(0,i);
+            --heap_size;
+            MinHeapify(0);
+        }
+    }
+
+
+    DNode *HeapExtractMin() {
+        if(heap_size < 1) {
+            qDebug("heap uderflow");
+            return 0;
+        }
+        DNode *min = A.takeFirst();
+//        A[0] = A[heap_size-1];
+        heap_size = heap_size-1;
+        MinHeapify(1);
+        return min;
+    }
+
+    void HeapDecreaseKey(int i, int key) {
+        if(key > A[i]->key) {
+            qDebug("new key is larger");
+            return;
+        }
+        A[i]->key = key;
+        while(i > 1 && A[parent(i)] > A[i]) { // 0
+            A.swap(i, parent(i));
+            i = parent(i);
+        }
+    }
+
+    void MinHeapInsert(DNode *node, int key) {
+        ++heap_size;
+        A.push_back(node);
+        HeapDecreaseKey(heap_size-1, key);
+    }
+
+    void HeapMinimum() {
+
+    }
+};
+
+// END heapsort binary heap
+
 
 //DijkstraAlgorithm
 
@@ -119,15 +213,17 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DNode)
     if(sourceIndex != 0)
         Q.swap(0,sourceIndex);
 
+    DNode *take = 0;
+    int sortEndIndex = 1;
     while(!Q.empty())
     {
-        int sortEndIndex = 1;
+        sortEndIndex = 1;
         DNode *u = Q.takeFirst(); // extract min
         S << u;
 
         u->state = SCANNED;
 
-        DNode *take = 0;
+        take = 0;
         for(int i=0; i<u->toEdges.size(); ++i)
         {
 

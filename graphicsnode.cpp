@@ -32,9 +32,6 @@ QList<GEdgeTemplate *> GraphicsNode<GEdgeTemplate>::edges() const
 template <class GEdgeTemplate>
 QRectF GraphicsNode<GEdgeTemplate>::boundingRect() const
 {
-//    qreal adjust = 2;
-//    return QRectF( -10 - adjust, -10 - adjust,
-//                  23 + adjust, 23 + adjust);
     qreal adjust = 20;
     return QRectF(-10 - adjust, -10 - adjust,
                   /*23 + adjust*/100, 23 + adjust);

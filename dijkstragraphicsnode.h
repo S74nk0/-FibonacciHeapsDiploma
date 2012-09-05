@@ -22,9 +22,6 @@ public:
     static void resetCount() { selectCount = 0; }
     bool routeNode;
 
-    //dummdy functions to satisfy the template (there is probably a better way but this is for now the easiest way and with no pefrormance penaulty (extremaley small if any, probabley none))
-    inline void setStates() const {}
-    inline void update() const {}
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);

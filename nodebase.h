@@ -7,12 +7,11 @@ template <class EdgeTemplate>
 class NodeBase
 {
 public:
-    NodeBase() : nodeId(0), /*key(0),*/ state(UNLABELED), prevScaned(0) {}
-//    NodeBase(int key) : nodeId(-1), key(key), state(UNLABELED), prevScaned(0) {}
-    NodeBase(int id/*, int key*/) : nodeId(id), /*key(key),*/ state(UNLABELED), prevScaned(0) {}
+    NodeBase() : nodeId(0), state(UNLABELED), prevScaned(0) {}
+    NodeBase(int id) : nodeId(id), state(UNLABELED), prevScaned(0) {}
 
     int nodeId;
-//    int key;
+
     State state;
     NodeBase *prevScaned; // prevous scanned
 

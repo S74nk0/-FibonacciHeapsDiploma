@@ -40,7 +40,6 @@ private:
     void addNode(GraphicsFibNode *node);
     void updateMin();
 
-//    GraphicsFibNode **selectedMin;
     FibHeapGraphics *selectedHeap;
     FibHeapGraphics *firstFibHeap;
     FibHeapGraphics *secondFibHeap;

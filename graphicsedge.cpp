@@ -50,13 +50,8 @@ QRectF GraphicsEdge<GNode>::boundingRect() const
     if (!this->startN || !this->endN)
         return QRectF();
 
-//    qreal penWidth = 1;
-//    qreal extra = (penWidth + arrowSize) / 2.0;
-
     return QRectF(startPoint, QSizeF(endPoint.x() - startPoint.x(),
                                       endPoint.y() - startPoint.y()));
-//        .normalized()
-//        .adjusted(-extra, -extra, extra, extra);
 }
 
 template <class GNode>

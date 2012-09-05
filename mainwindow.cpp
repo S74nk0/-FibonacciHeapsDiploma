@@ -24,7 +24,6 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 void MainWindow::on_pushButton_Insert_clicked()
 {
     ui->fibHeapView->insertNode(ui->spinBox->value());
-//    ui->spinBox->clear();
 }
 
 void MainWindow::on_pushButton_ExtractMin_clicked()
@@ -42,7 +41,6 @@ void MainWindow::on_pushButton_Delete_clicked()
 void MainWindow::on_pushButton_DecreaseKey_clicked()
 {
     ui->fibHeapView->decreaseKey(ui->spinBox->value());
-//    ui->spinBox->clear();
     updateComponents();
 }
 

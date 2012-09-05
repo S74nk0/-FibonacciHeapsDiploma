@@ -62,11 +62,8 @@ FibHeapBase<Node> *FibHeapBase<Node>::Union(FibHeapBase *H2)
         Node *FirstNode = this->LastNode->next();
         Node *H2FirstNode = H2->LastNode->next();
 
-        this->LastNode->Next = H2FirstNode;
-        H2FirstNode->Prev = this->LastNode;
-
-        H2->LastNode->Next = FirstNode;
-        FirstNode->Prev = H2->LastNode;
+        linkNeighbours(this->LastNode, H2FirstNode);
+        linkNeighbours(H2->LastNode, FirstNode);
 
         newH->LastNode = H2->LastNode;
     }
@@ -102,11 +99,8 @@ Node *FibHeapBase<Node>::ExtractMin(bool deleteFunc/* = false*/)
 
             Node *FirstNode = this->LastNode->next();
 
-            ChildListStart->Prev = this->LastNode;
-            this->LastNode->Next = ChildListStart;
-
-            ChildListEnd->Next = FirstNode;
-            FirstNode->Prev = ChildListEnd;
+            linkNeighbours(this->LastNode, ChildListStart);
+            linkNeighbours(ChildListEnd, FirstNode);
 
             this->LastNode = ChildListEnd;
         }
@@ -188,6 +182,13 @@ void FibHeapBase<Node>::insertLast(Node *newNode)
     this->LastNode = newNode;
 }
 
+template<class Node>
+void FibHeapBase<Node>::linkNeighbours(Node *next, Node *prev) const
+{
+    next->Next = prev;
+    prev->Prev = next;
+}
+
 //19.2
 template<class Node>
 void FibHeapBase<Node>::Consolidate() // # fixed!
@@ -257,7 +258,7 @@ void FibHeapBase<Node>::Link(Node *y, Node *x)
         LastNode = y->prev();
 
 
-//    if(x->Next == x) // remove this?
+//    if(x->Next == x) // remove this
 //    {
 //        this->min = x;
 //    }

@@ -6,8 +6,8 @@
 
 //int main(int argc, char *argv[])
 //{
-//    DijkstraFib dij;
-////    DijkstraPriorityList dij;
+////    DijkstraFib dij;
+//    DijkstraPriorityList dij;
 
 //    QString name = "scotland_big.txt";
 ////    QString name = "primerGraf.txt";

@@ -119,13 +119,11 @@ void GraphicsFibNode::formTree(GraphicsFibNode * node)
 
     GraphicsFibNode *pNode = node->parent();
     tmp->setPos(pNode->x(), pNode->y()+50);
-//    tmp->positions << tmp->pos();
 
     GraphicsFibNode * fNode;
     GraphicsFibNode * sNode;
     float offset = 1;
 
-//    int y = tmp->node->y();
     while(tmp != node)
     {
         fNode = tmp;
@@ -136,7 +134,6 @@ void GraphicsFibNode::formTree(GraphicsFibNode * node)
         offset = offset*((5*offset+offset)/(offset*0.7));
 
         sNode->setPos(fNode->x()-offset/*(50*offset)*/, /*y+(50*offset)*/ fNode->y());
-//        sNode->positions << sNode->pos();
 
         formTree(tmp->child());
         tmp = tmp->prev();

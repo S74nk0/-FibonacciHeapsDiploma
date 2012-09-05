@@ -22,7 +22,6 @@ protected:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-//private:
     QPointF startPoint;
     QPointF endPoint;
     qreal arrowSize; // ni potrebno
