@@ -113,8 +113,8 @@ Node *FibHeapBase<Node>::ExtractMin(bool deleteFunc/* = false*/)
         else
         {
             //ce je z = LastNode
-            if(z == LastNode)
-                LastNode = z->prev();
+            if(z == this->LastNode)
+                this->LastNode = z->prev();
 
             this->min = z->next();
             if(this->min->Child != 0 && !deleteFunc && ChildListEnd != 0) // za strukturo (obliko fibHeapa, ni bistveno za kopico sam zgradi jo po moji volji -> lepsa je)
@@ -123,9 +123,8 @@ Node *FibHeapBase<Node>::ExtractMin(bool deleteFunc/* = false*/)
             }
 
 #ifdef FIBHEAPGRAPHICS_H
-            //this part of the code isn't for the alghorithm but for the template to satisfy one function for both graphical node and non graphical
+            //this part of the code isn't for the alghorithm but for the template graphical node
             this->LastNode->next()->setStates(); // the setStates
-            //end of template function
 #endif
 
             this->Consolidate();
@@ -166,7 +165,7 @@ template<class Node>
 void FibHeapBase<Node>::Delete(Node *x)
 {
     this->DecreaseKey(x, std::numeric_limits<int>::min() );
-    Node *deleteNode = this->ExtractMin(true);//static_cast<Node *>( this->ExtractMin(true) );
+    Node *deleteNode = this->ExtractMin(true);
     delete deleteNode;
 }
 
@@ -194,7 +193,7 @@ template<class Node>
 void FibHeapBase<Node>::Consolidate() // # fixed!
 {
     double f = log( static_cast<double>(this->n) )/ln; // ln(n) = log(n)/log(2.0)
-    int D = qRound(f) + 1;//D();
+    int D = qRound(f) + 1;//D(n); // potential
 
 //    Node **A = new Node*[D];
     Node *A[D]; // microoptimization stack
@@ -241,7 +240,7 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
     {
         if(A[i])
         {
-            if(A[i]->key < this->min->key || (this->min->key == A[i]->key && A[i]->degree < this->min->degree)) // speed up if we set the min node as also th node with the min degree
+            if(A[i]->key < this->min->key /*|| (this->min->key == A[i]->key && A[i]->degree < OR > this->min->degree)*/) // ????speed up if we set the min node as also th node with the min degree
             {
                 this->min = A[i];
             }

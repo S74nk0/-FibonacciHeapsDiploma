@@ -25,6 +25,25 @@ public:
 
 private:
     Node reflect; // reflect is for function overloading (reflection workaround)
+    int Parent(int i) {
+        return (int)(i/2);
+    }
+    int indexOf(std::vector<DNode *> &Q, DNode *node) {
+        int start = 0;
+        int end = (int)Q.size();
+        --end;
+
+        while(start <= end) {
+            if(Q[start] == node)
+                return start;
+            if(Q[end] == node)
+                return end;
+
+            ++start;
+            --end;
+        }
+        return -1; // should never happen in our case
+    }
 
 protected:
     // START graph
