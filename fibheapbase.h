@@ -33,12 +33,18 @@ public:
     void ExportHeap(QString &fileName);
     void ImportHeap(QString &fileName);
 
+    inline Node *empty() {
+        return min;
+    }
+
 protected:
     Node *min;
     int n;
+#ifdef FIBHEAPGRAPHICS_H
     Node *LastNode;
+#endif
 
-    void insertLast(Node *newNode);
+    inline void insertLast(Node *newNode);
     inline void linkNeighbours(Node *next, Node *prev) const;
 
     //19.2

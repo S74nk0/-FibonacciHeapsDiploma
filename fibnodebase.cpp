@@ -31,6 +31,22 @@ void FibNodeBase<Derived>::insertAfter(FibNodeBase *newFNode)
 }
 
 template <class Derived>
+void FibNodeBase<Derived>::insertAfter(FibNodeBase *newFNode, FibNodeBase *newFNodeLast)
+{
+    if(newFNode != newFNodeLast)
+    {
+        newFNodeLast->Next = this->Next;
+        this->Next->Prev = newFNodeLast;
+        newFNode->Prev = this;
+        this->Next = newFNode;
+    }
+    else
+    {
+        insertAfter(newFNode);
+    }
+}
+
+template <class Derived>
 void FibNodeBase<Derived>::insertBefore(FibNodeBase *newFNode)
 {
     newFNode->Prev = this->Prev;

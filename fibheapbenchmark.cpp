@@ -31,7 +31,7 @@ void FibHeapBenchmark::ResetWorsCase(int randRange) // using vector for the spee
 {
     this->n = 0;
     this->min = 0;
-    this->LastNode = 0;
+//    this->LastNode = 0;
 
     ++resetCount;
 
@@ -52,7 +52,7 @@ bool FibHeapBenchmark::WorsCaseOneUp(int randRange)
 
     this->n = 0;
     this->min = 0;
-    this->LastNode = 0;
+//    this->LastNode = 0;
 
     QTime mid(0,0,0);
     qsrand( mid.secsTo(QTime::currentTime()) );
@@ -74,7 +74,7 @@ bool FibHeapBenchmark::WorsCaseUp(int randRange)
 
     this->n = 0;
     this->min = 0;
-    this->LastNode = 0;
+//    this->LastNode = 0;
 
     ++upCount;
 

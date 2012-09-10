@@ -25,6 +25,7 @@ public:
     inline Derived *prev() const { return static_cast<Derived *>(this->Prev); }
 
     inline void insertAfter(FibNodeBase *newFNode);
+    inline void insertAfter(FibNodeBase *newFNode, FibNodeBase *newFNodeLast);
     inline void insertBefore(FibNodeBase *newFNode);
     bool contains(FibNodeBase *x);
     inline bool unlink(); // FNode not derstroyed, returns

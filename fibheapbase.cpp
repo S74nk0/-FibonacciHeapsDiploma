@@ -6,15 +6,20 @@
 static const double ln = log(2.0);
 
 template<class Node>
-FibHeapBase<Node>::FibHeapBase() : min(0), n(0), LastNode(0) //MakeFibHeap
+FibHeapBase<Node>::FibHeapBase() : min(0), n(0)//MakeFibHeap
 {
+#ifdef FIBHEAPGRAPHICS_H
+    LastNode = 0;
+#endif
 }
 
 template<class Node>
 FibHeapBase<Node>::~FibHeapBase()
 {
     min = 0;
+#ifdef FIBHEAPGRAPHICS_H
     LastNode = 0;
+#endif
 }
 
 template<class Node>
@@ -31,11 +36,18 @@ void FibHeapBase<Node>::Insert(Node *newNode)
     if(this->min == 0)
     {
         this->min = newNode;
+        #ifdef FIBHEAPGRAPHICS_H
         this->LastNode = newNode;
+        #endif
     }
     else
     {
+#ifdef FIBHEAPGRAPHICS_H
         this->insertLast(newNode);
+#else
+//        min->insertBefore(newNode);
+        min->insertAfter(newNode);
+#endif
         if(newNode->key < this->min->key)
         {
             this->min = newNode;
@@ -85,9 +97,12 @@ Node *FibHeapBase<Node>::ExtractMin(bool deleteFunc/* = false*/)
 
     if(z != 0)
     {
+        #ifdef FIBHEAPGRAPHICS_H
         Node *ChildListEnd = 0;
+        #endif
         if(z->Child != 0)
         {
+            #ifdef FIBHEAPGRAPHICS_H
             Node *ChildListStart = z->child();
             for(int i = 0; i < z->degree; ++i)
             {
@@ -103,29 +118,44 @@ Node *FibHeapBase<Node>::ExtractMin(bool deleteFunc/* = false*/)
             linkNeighbours(ChildListEnd, FirstNode);
 
             this->LastNode = ChildListEnd;
+            #else
+
+            Node *ChildListStart = z->child();
+            for(int i = 0; i < z->degree; ++i)
+            {
+                ChildListStart->Parent = 0;
+//                min->insertBefore(ChildListStart);
+
+                ChildListStart = ChildListStart->next();
+            }
+            min->insertAfter(ChildListStart, ChildListStart->prev()); // ta funkcija lahko da ne bo potrebna ob pravilni implementaciji dvojno povezanega seznama
+            #endif
         }
 
         if(z->unlink())
         {
             this->min = 0;
+            #ifdef FIBHEAPGRAPHICS_H
             this->LastNode = 0;
+            #endif
         }
         else
         {
+            #ifdef FIBHEAPGRAPHICS_H
             //ce je z = LastNode
             if(z == this->LastNode)
                 this->LastNode = z->prev();
+            #endif
 
             this->min = z->next();
+            #ifdef FIBHEAPGRAPHICS_H
             if(this->min->Child != 0 && !deleteFunc && ChildListEnd != 0) // za strukturo (obliko fibHeapa, ni bistveno za kopico sam zgradi jo po moji volji -> lepsa je)
             {
                 this->min = ChildListEnd;
             }
-
-#ifdef FIBHEAPGRAPHICS_H
             //this part of the code isn't for the alghorithm but for the template graphical node
             this->LastNode->next()->setStates(); // the setStates
-#endif
+            #endif
 
             this->Consolidate();
         }
@@ -253,14 +283,16 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
 template<class Node>
 void FibHeapBase<Node>::Link(Node *y, Node *x)
 {
+    #ifdef FIBHEAPGRAPHICS_H
     if(y == LastNode)
         LastNode = y->prev();
+    #endif
 
 
-//    if(x->Next == x) // remove this
-//    {
-//        this->min = x;
-//    }
+    if(x->Next == x) // remove this
+    {
+        this->min = x;
+    }
 
     y->unlink2();
     x->makeChildLink(y);
@@ -275,24 +307,46 @@ template<class Node>
 void FibHeapBase<Node>::Cut(Node *x/*, Node *y*/) // y nepotreben zaradi unChild funkcije
 {
     x->unChild(); // 3. korak pokrit
+
+    #ifdef FIBHEAPGRAPHICS_H
     this->insertLast(x);
+    #else
+    min->insertAfter(x);
+    #endif
+
     x->mark = false;
 }
 
 template<class Node>
 void FibHeapBase<Node>::CascadingCut(Node *y)
 {
+//    Node *z = y->parent();
+//    if(z != 0)
+//    {
+//        if(y->mark == false)
+//        {
+//            y->mark = true;
+//        }
+//        else
+//        {
+//            this->Cut(y/*, z*/);
+//            this->CascadingCut(z);
+//        }
+//    }
+
     Node *z = y->parent();
-    if(z != 0)
+
+    while(z != 0)
     {
-        if(y->mark == false)
+        if(!y->mark)
         {
             y->mark = true;
+            break;
         }
         else
         {
-            this->Cut(y/*, z*/);
-            this->CascadingCut(z);
+            this->Cut(y);
+            z = z->parent();
         }
     }
 }
