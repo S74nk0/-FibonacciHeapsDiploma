@@ -15,7 +15,6 @@ template<class Node>
 class FibHeapBase
 {
 public:
-
     //19.2
     FibHeapBase(); // MakeFibHeap
     ~FibHeapBase();

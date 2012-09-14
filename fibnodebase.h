@@ -27,6 +27,7 @@ public:
     inline void insertAfter(FibNodeBase *newFNode);
     inline void insertAfter(FibNodeBase *newFNode, FibNodeBase *newFNodeLast); // splice
     inline void insertBefore(FibNodeBase *newFNode);
+    inline void insertBefore(FibNodeBase *newFNode, FibNodeBase *newFNodeLast); // splice
     inline bool unlink(); // FNode not derstroyed, returns
     inline void unlink2();
     inline void unChild();

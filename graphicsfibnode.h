@@ -25,6 +25,7 @@ public:
     void setStates();
     void savePositions(GraphicsFibNode *node);
     QList<QPointF> positions;
+    bool root;
     QPointF referencePoint; // this could be done in a better way, it's kinda stupid to do it like this but what the heck
 
 protected:

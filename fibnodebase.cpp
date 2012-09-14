@@ -56,6 +56,22 @@ void FibNodeBase<Derived>::insertBefore(FibNodeBase *newFNode)
 }
 
 template <class Derived>
+void FibNodeBase<Derived>::insertBefore(FibNodeBase *newFNode, FibNodeBase *newFNodeLast)
+{
+    if(newFNode != newFNodeLast)
+    {
+        newFNode->Prev = this->Prev;
+        this->Prev->Next = newFNode;
+        newFNodeLast->Next = this;
+        this->Prev = newFNodeLast;
+    }
+    else
+    {
+        insertBefore(newFNode);
+    }
+}
+
+template <class Derived>
 bool FibNodeBase<Derived>::unlink() // FNode not derstroyed, returns
 {
     if(this->Next == this)

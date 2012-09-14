@@ -17,27 +17,28 @@ void FibHeapGraphics::Insert(int key, QGraphicsScene *scene)
     GraphicsFibEdge *tmpEdge = 0;
     GraphicsFibNode *x = new GraphicsFibNode(key);
     x->referencePoint = this->referencePoint;
+    QPointF oldMin;
     if(Nodes.isEmpty())
         x->setPos(this->referencePoint);
+    else
+       oldMin = this->min->pos();
 
-    FibHeapBase::Insert(x);//Insert(x);
+    FibHeapBase::Insert(x);
     Nodes << x;
     scene->addItem(x);
     if(n > 1) {
-//        Edges << new GraphicsFibEdge(tmpLast, x);
-//        this->LastNode->setPos(tmpLast->pos()); // for animation
         tmpEdge = new GraphicsFibEdge(min, x);
         Edges << tmpEdge;
-        x->setPos(min->x(),min->y()+2);
+        x->setPos(oldMin);
         scene->addItem(tmpEdge);
     }
-//    saveCurrentPositions(); // error
+    saveCurrentPositions(); // error
     this->unlinkEdges();
     setStates();
     this->linkEdges();
     setFirstPositions(); // set first
     animate(300);
-
+    animate(300);
 }
 
 GraphicsFibNode *FibHeapGraphics::ExtractMin()
@@ -74,6 +75,9 @@ void FibHeapGraphics::unlinkEdges()
 
 void FibHeapGraphics::linkEdges()
 {
+    if(!this->min)
+        return;
+
     int edgeIndex = 0;
     foreach(GraphicsFibNode *node, Nodes)
     {
@@ -127,6 +131,9 @@ void FibHeapGraphics::animate(int timemil)
         animation->setItem(Nodes.value(i));
         animation->setTimeLine(timeline);
         animation->setPosAt(1.0, Nodes.value(i)->positions[0]);
+
+        Nodes[i]->root = isRoot(Nodes.value(i)->positions[0].y());
+
         QObject::connect (timeline, SIGNAL(finished()), animation, SLOT(deleteLater()));
     }
 
@@ -147,6 +154,10 @@ void FibHeapGraphics::setFirstPositions()
     foreach (GraphicsFibNode *node, Nodes)
     {
         node->setPos(node->positions.first() );
+    }
+    foreach (GraphicsFibNode *node, Nodes)
+    {
+        node->root = this->isRoot(node);
     }
 }
 
@@ -227,7 +238,6 @@ FibHeapGraphics *FibHeapGraphics::Union(FibHeapGraphics *H2)
     FibHeapGraphics *newHeap = new FibHeapGraphics();
     newHeap->min = newHeapUnion->min;
     newHeap->n = newHeapUnion->n;
-//    newHeap->LastNode = newHeapUnion->LastNode;
     newHeap->rootList.setFirst(newHeapUnion->rootList.getFirst());
 
     newHeap->referencePoint = this->referencePoint;
@@ -240,7 +250,6 @@ FibHeapGraphics *FibHeapGraphics::Union(FibHeapGraphics *H2)
             << H2->Nodes;
     newHeap->Edges << this->Edges
                    << H2->Edges
-//                      << new GraphicsFibEdge(this->LastNode, H2->LastNode->next());
                    << new GraphicsFibEdge(this->rootList.getLast(), H2->rootList.getFirst());
 
     newHeap->saveCurrentPositions();
@@ -327,17 +336,18 @@ void FibHeapGraphics::linkEdgesNew(QGraphicsScene *scene)
         {
             Edges << new GraphicsFibEdge(node->parent(), node);
             scene->addItem(Edges.last());
+            node->root = false;
         }
     }
 
     GraphicsFibNode *start = this->rootList.getFirst();
     GraphicsFibNode *end = this->rootList.getLast();
-//    if(this->LastNode)
-//        start = this->LastNode->next();
 
-    while (start != end/*this->LastNode*/) {
+    end->root = true;
+    while (start != end) {
         Edges << new GraphicsFibEdge(start, start->next() );
         scene->addItem(Edges.last());
+        start->root = true;
         start = start->next();
     }
 }
@@ -372,7 +382,6 @@ void FibHeapGraphics::Cut(GraphicsFibNode *x)
 
     //graphics functions
     x->update(); // for the graphics/visuals nothing to do with the algorithm
-//    this->LastNode->next()->setStates(); // for the graphics/visuals nothing to do with the algorithm
     this->setStates();
 }
 
@@ -400,3 +409,13 @@ bool FibHeapGraphics::decreaseKeyTmpNode() const
     return this->decreaseKeyTempNode;
 }
 
+bool FibHeapGraphics::isRoot(const GraphicsFibNode *node) {
+    int nodeY = node->y();
+    int minY = this->min->y();
+    return nodeY == minY;
+}
+
+bool FibHeapGraphics::isRoot(int y) {
+    int minY = this->referencePoint.y();//this->min->y();
+    return y == minY;
+}

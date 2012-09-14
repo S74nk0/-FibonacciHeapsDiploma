@@ -43,6 +43,8 @@ private:
     void linkEdges();
     void linkEdgesNew(QGraphicsScene *scene);
     void updateEdges();
+    bool isRoot(const GraphicsFibNode *node);
+    bool isRoot(int y);
 
     //decrease key graphics
     void DecreaseKeyGraphics(GraphicsFibNode *x, int k);

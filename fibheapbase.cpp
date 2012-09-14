@@ -34,7 +34,11 @@ void FibHeapBase<Node>::Insert(Node *newNode)
     }
     else
     {
+        #ifdef FIBHEAPGRAPHICS_H
+        min->insertBefore(newNode);
+        #else
         min->insertAfter(newNode);
+        #endif
         if(newNode->key < this->min->key)
         {
             this->min = newNode;
@@ -242,8 +246,11 @@ template<class Node>
 void FibHeapBase<Node>::Cut(Node *x/*, Node *y*/) // y nepotreben zaradi unChild funkcije
 {
     x->unChild(); // 3. korak pokrit
+    #ifdef FIBHEAPGRAPHICS_H
+    min->insertBefore(x);
+    #else
     min->insertAfter(x);
-
+    #endif
     x->mark = false;
 }
 

@@ -7,13 +7,13 @@ GraphicsFibNode *GraphicsFibNode::selected = 0;
 
 
 
-GraphicsFibNode::GraphicsFibNode() : GraphicsNode(), FibNodeBase()
+GraphicsFibNode::GraphicsFibNode() : GraphicsNode(), FibNodeBase(), root(true)
 {}
 
-GraphicsFibNode::GraphicsFibNode(int k) : GraphicsNode(), FibNodeBase(k)
+GraphicsFibNode::GraphicsFibNode(int k) : GraphicsNode(), FibNodeBase(k), root(true)
 {}
 
-GraphicsFibNode::GraphicsFibNode(int k, int d, bool m) : GraphicsNode(), FibNodeBase(k,d,m)
+GraphicsFibNode::GraphicsFibNode(int k, int d, bool m) : GraphicsNode(), FibNodeBase(k,d,m), root(true)
 {}
 
 GraphicsFibNode::~GraphicsFibNode()
@@ -38,25 +38,33 @@ void GraphicsFibNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 {
     Q_UNUSED(widget);
 
-    QBrush brush(Qt::yellow);
+    QBrush brush(Qt::lightGray);
+    QPen textPen(Qt::black, 0);
     if (option->state & QStyle::State_Sunken || this == this->selected) {
         brush.setColor(Qt::blue);
     }
     else {
         if(this->mark)
-            brush.setColor(Qt::darkYellow);
+        {
+            brush.setColor(Qt::black);
+            textPen.setColor(Qt::white);
+        }
         else if(this == this->minfNode || this == this->minfNode2)
-            brush.setColor(Qt::red);
+            brush.setColor(Qt::red/*Qt::lightGray*/);
         else
-            brush.setColor(Qt::yellow);
+            brush.setColor(Qt::lightGray);
 
     }
     painter->setBrush(brush);
-    painter->setPen(QPen(Qt::black, 0));
+    painter->setPen(textPen);
     painter->drawEllipse(-10, -10, 20, 20);
 
     QString num = QString::number(this->key);
     painter->drawText(-5*num.size(),5, num);
+//    QTextOption center(Qt::AlignCenter);
+//    painter->drawText(
+//                Pos, num
+//                      , center);
 }
 
 void GraphicsFibNode::mousePressEvent(QGraphicsSceneMouseEvent *event)

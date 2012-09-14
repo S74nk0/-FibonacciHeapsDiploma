@@ -17,19 +17,33 @@ public:
     }
 
     inline void removeUpdate(Node *remove) {
-        if(remove == first && first != first->prev())
+        if(remove == first /*&& first != first->prev()*/)
+        {
+            #ifdef FIBHEAPGRAPHICS_H
+            first = first->prev();
+            #else
             first = first->next();
-    }
-    inline void insertUpdate(Node *insertNode) {
-        if(!first)
-            first = insertNode;
+            #endif
+        }
     }
 
-    inline Node *getFirst() const { return first; }
-    inline Node *getLast() const { return first->prev(); }
+    inline Node *getFirst() const {
+        #ifdef FIBHEAPGRAPHICS_H
+        return first->next();
+        #else
+        return first;
+        #endif
+    }
+    inline Node *getLast() const {
+        #ifdef FIBHEAPGRAPHICS_H
+        return first;
+        #else
+        return first->prev();
+        #endif
+    }
 
 private:
-    Node *first;
+    Node *first; // #ifdef FIBHEAPGRAPHICS_H the node is last
 };
 
 #endif // CDLIST_H
