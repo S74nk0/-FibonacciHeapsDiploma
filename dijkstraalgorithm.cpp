@@ -2,7 +2,7 @@
 
 #include <QStringList>
 #include <QtAlgorithms>
-
+#include "binaryheap.h"
 
 // LessThan funkcija za q sort pride kot friend funkcija
 template <class Node>
@@ -10,117 +10,6 @@ bool keyLessThan(const Node *n1, const Node *n2)
 {
     return n1->key < n2->key;
 }
-
-template<class Node2>
-class PrQue {
-public:
-    PrQue() {}
-    PrQue(QList<Node2 *> a) : A(a) {}
-    QList<Node2 *> A;
-
-    int parent(int i) {
-            return (int)((i-1)/2);
-    }
-
-    int left(int i) {
-            return 2*(i+1)-1;
-    }
-
-    int right(int i) {
-            return 2*(i+1);
-    }
-
-    void MinHeapify(int i) {
-        if(i >= A.count()-1)
-            return;
-
-        int iPlus = i+1;
-        int l = left(i);
-        int r = right(i);
-
-        int smallest = -1;
-
-        if(l < A.size() && A[l]->key < A[i]->key) {
-            smallest = l;
-        }
-        else {
-            smallest = i;
-        }
-        if(r < A.size() && A[r]->key < A[smallest]->key ) {
-            smallest = r;
-        }
-        if(smallest != i) {
-            A.swap(i, smallest);
-            MinHeapify(smallest);
-        }
-        else
-            MinHeapify(iPlus);
-    }
-
-    void BuildMinHeap() {
-        for(int i=(int)(A.size()/2); i>=0; --i ) { // 0
-            MinHeapify(i);
-        }
-    }
-
-    void HeapSort() {
-        BuildMinHeap();
-        for(int i=A.size()-1; i>=1; --i) { // 1
-            A.swap(0,i);
-            MinHeapify(0);
-        }
-    }
-
-    Node2 *ExtractMin() {
-        if(A.count() < 1) {
-            qDebug("heap uderflow");
-            return 0;
-        }
-        Node2 *min = A.takeFirst();
-        MinHeapify(0); //
-
-        return min;
-    }
-
-    void DecreaseKey(int i, int key) {
-        if(key > A[i]->key) {
-            qDebug("new key is larger");
-            return;
-        }
-        A[i]->key = key;
-        while(i > 0 && A[parent(i)]->key >= A[i]->key) { // 0
-            A.swap(i, parent(i));
-            i = parent(i);
-        }
-    }
-
-    void DecreaseKey(Node2 *node, int key) {
-        if(key > node->key) {
-            qDebug("new key is larger");
-            return;
-        }
-        int i = A.indexOf(node);
-        A[i]->key = key;
-        while(i > 0 && A[parent(i)]->key > A[i]->key) { // 0
-            A.swap(i, parent(i));
-            i = parent(i);
-        }
-    }
-
-    void Insert(Node2 *node) {
-        A.push_back(node);
-        DecreaseKey(A.count()-1, node->key);
-    }
-
-    bool empty() const
-    {
-        return A.empty();
-    }
-};
-
-// END heapsort binary heap
-
-
 
 
 //DijkstraAlgorithm
@@ -199,51 +88,7 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg()
         return;
     }
 
-    doAlg(this->reflect); // original
-
-////#define FIBONACCI
-//#ifdef FIBONACCI
-//    FibHeapDijkstra heap;
-//#else
-//    PrQue<Node> heap;
-//#endif
-
-//    //start node, iz njega razvejemo drevo poti
-//    int sourceIndex = Nodes.size()-1;//Nodes.size()-50;//Nodes.size()-1;
-//    Nodes[sourceIndex]->key = 0;
-//    Nodes[sourceIndex]->state = LABELED;
-
-//    heap.Insert(Nodes[sourceIndex]);
-
-//    Node *u = 0;
-//    while(heap.empty())
-//    {
-//        u = heap.ExtractMin(); // extract min
-
-//        u->state = SCANNED;
-
-//        for(int i=0; i<u->toEdges.size(); ++i)
-//        {
-//            if(u->toEdges[i]->endNode()->state != SCANNED)
-//            {
-//                int altDistance = u->key + u->toEdges[i]->getPrice();
-//                if(u->toEdges[i]->endNode()->state == UNLABELED)
-//                {
-//                    u->toEdges[i]->endNode()->state = LABELED;
-//                    u->toEdges[i]->endNode()->prevScaned = u;
-//                    u->toEdges[i]->endNode()->key = altDistance;
-//                    heap.Insert(u->toEdges[i]->endNode());
-//                }
-//                else if(altDistance < u->toEdges[i]->endNode()->key)
-//                {
-//                    heap.DecreaseKey(u->toEdges[i]->endNode(), altDistance);
-//                    u->toEdges[i]->endNode()->prevScaned = u;
-//                }
-//            }
-//        }
-//    }
-
-//    printResaults();
+    doAlg(this->reflect, Nodes.size()-1);
 }
 
 template <class Node, class EdgeTemplate>
@@ -261,17 +106,18 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::printResaults()
 
 
 template <class Node, class EdgeTemplate>
-void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DNode)
+void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DNode, int sourceIndex)
 {
     //start node, iz njega razvejemo drevo poti
-    int sourceIndex = Nodes.size()-50;//Nodes.size()-1;
+//    int sourceIndex = Nodes.size()-1;//Nodes.size()-1;
     Nodes[sourceIndex]->key = 0;
     Nodes[sourceIndex]->state = LABELED;
 
 //    QList<DNode *> S;
-    PrQue<DNode> Q;
+    BinaryHeap Q;
 
-    Q.Insert(Nodes[sourceIndex]);
+    Q.BuildMinHeap();
+    Q.Insert(Nodes[sourceIndex], 0);
 
     DNode *u = 0;
     while(!Q.empty())
@@ -291,8 +137,7 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DNode)
                 {
                     u->toEdges[i]->endNode()->state = LABELED;
                     u->toEdges[i]->endNode()->prevScaned = u;
-                    u->toEdges[i]->endNode()->key = altDistance;
-                    Q.Insert(u->toEdges[i]->endNode());
+                    Q.Insert(u->toEdges[i]->endNode(), altDistance);
                 }
                 else if(altDistance < u->toEdges[i]->endNode()->key)
                 {
@@ -308,16 +153,15 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DNode)
 }
 
 template <class Node, class EdgeTemplate>
-void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DFNode)
+void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DFNode, int sourceIndex)
 {
-    //start node, iz njega razvejemo drevo poti
-    int sourceIndex = Nodes.size()-1;//Nodes.size()-50;//Nodes.size()-1;
+    //sourceIndex, iz njega razvejemo drevo poti
     Nodes[sourceIndex]->key = 0;
     Nodes[sourceIndex]->state = LABELED;
 
     FibHeapDijkstra heap;
 
-    QList<DFNode *> S;
+//    QList<DFNode *> S;
 
     heap.Insert(Nodes[sourceIndex]);
 
@@ -326,7 +170,7 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DFNode)
     {
         // velika pohitritev
         u = heap.ExtractMin(); // extract min
-        S << u;
+//        S << u;
 
         u->state = SCANNED;
 
@@ -352,5 +196,5 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DFNode)
     }
 
 //    qDebug(QString::number(dKey).toAscii());
-    printResaults();
+//    printResaults();
 }

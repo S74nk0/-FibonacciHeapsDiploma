@@ -37,7 +37,6 @@ protected:
     void scaleView(qreal scaleFactor);
 
 private:
-    void addNode(GraphicsFibNode *node);
     void updateMin();
 
     FibHeapGraphics *selectedHeap;

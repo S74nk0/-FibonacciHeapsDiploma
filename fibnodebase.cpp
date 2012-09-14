@@ -56,21 +56,6 @@ void FibNodeBase<Derived>::insertBefore(FibNodeBase *newFNode)
 }
 
 template <class Derived>
-bool FibNodeBase<Derived>::contains(FibNodeBase *x)
-{
-    FibNodeBase *tmp = this->Next;
-    while(this != tmp)
-    {
-        if(tmp == x)
-            return true;
-
-        tmp = tmp->Next;
-    }
-
-    return false;
-}
-
-template <class Derived>
 bool FibNodeBase<Derived>::unlink() // FNode not derstroyed, returns
 {
     if(this->Next == this)

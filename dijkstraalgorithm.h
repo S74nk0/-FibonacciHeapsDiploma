@@ -51,8 +51,8 @@ protected:
     QVector<Node *> Nodes;
     // END graph
 
-    void doAlg(DNode); // daj mogoce raje inline
-    void doAlg(DFNode); // daj mogoce raje inline
+    void doAlg(DNode, int sourceIndex); // daj mogoce raje inline
+    void doAlg(DFNode, int sourceIndex); // daj mogoce raje inline
 };
 
 #endif // DIJKSTRAALGORITHM_H

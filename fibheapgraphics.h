@@ -10,8 +10,8 @@ class FibHeapGraphics : public FibHeapBase<GraphicsFibNode>
 public:
     FibHeapGraphics();
     ~FibHeapGraphics();
-    GraphicsFibNode *Insert(int key);
-    GraphicsFibNode *ExtractMin(bool deleteFunc = false);
+    void Insert(int key, QGraphicsScene *scene);
+    GraphicsFibNode *ExtractMin();
     FibHeapGraphics *Union(FibHeapGraphics *H2);
     void DecreaseKey(GraphicsFibNode *x, int k);
     void ImportHeap(QString &fileName, QGraphicsScene *scene);

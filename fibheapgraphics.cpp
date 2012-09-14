@@ -12,9 +12,9 @@ FibHeapGraphics::~FibHeapGraphics()
     Edges.clear();
 }
 
-GraphicsFibNode *FibHeapGraphics::Insert(int key)
+void FibHeapGraphics::Insert(int key, QGraphicsScene *scene)
 {
-    GraphicsFibNode *tmpLast = this->LastNode;
+    GraphicsFibEdge *tmpEdge = 0;
     GraphicsFibNode *x = new GraphicsFibNode(key);
     x->referencePoint = this->referencePoint;
     if(Nodes.isEmpty())
@@ -22,18 +22,29 @@ GraphicsFibNode *FibHeapGraphics::Insert(int key)
 
     FibHeapBase::Insert(x);//Insert(x);
     Nodes << x;
+    scene->addItem(x);
     if(n > 1) {
-        Edges << new GraphicsFibEdge(tmpLast, x);
-        this->LastNode->setPos(tmpLast->pos()); // for animation
+//        Edges << new GraphicsFibEdge(tmpLast, x);
+//        this->LastNode->setPos(tmpLast->pos()); // for animation
+        tmpEdge = new GraphicsFibEdge(min, x);
+        Edges << tmpEdge;
+        x->setPos(min->x(),min->y()+2);
+        scene->addItem(tmpEdge);
     }
-    return x;
+//    saveCurrentPositions(); // error
+    this->unlinkEdges();
+    setStates();
+    this->linkEdges();
+    setFirstPositions(); // set first
+    animate(300);
+
 }
 
-GraphicsFibNode *FibHeapGraphics::ExtractMin(bool deleteFunc /*= false*/)
+GraphicsFibNode *FibHeapGraphics::ExtractMin()
 {
     saveCurrentPositions();
 
-    GraphicsFibNode *ret = FibHeapBase::ExtractMin(deleteFunc);
+    GraphicsFibNode *ret = FibHeapBase::ExtractMin();
 
     //Update the lists
     if(!Nodes.removeOne(ret) && !Nodes.isEmpty())
@@ -70,11 +81,10 @@ void FibHeapGraphics::linkEdges()
             Edges[edgeIndex++]->setNodes(node->parent(), node);
     }
 
-    GraphicsFibNode *start = 0;
-    if(this->LastNode)
-        start = this->LastNode->next();
+    GraphicsFibNode *start = this->rootList.getFirst();
+    GraphicsFibNode *end = this->rootList.getLast();
 
-    while (start != this->LastNode) {
+    while (start != end) {
         Edges[edgeIndex++]->setNodes(start, start->next() );
         start = start->next();
     }
@@ -82,7 +92,7 @@ void FibHeapGraphics::linkEdges()
 
 void FibHeapGraphics::setStates()
 {
-    this->LastNode->next()->setStates();
+    this->rootList.getFirst()->setStates();
 }
 
 void FibHeapGraphics::updateEdges()
@@ -140,21 +150,21 @@ void FibHeapGraphics::setFirstPositions()
     }
 }
 
-void FibHeapGraphics::animateInsert()
-{
-    QTimeLine *timeline = new QTimeLine;
-    timeline->setDuration (300);
-    timeline->setCurveShape (QTimeLine::EaseInOutCurve); // OK = EaseOutCurve
-    QObject::connect (timeline, SIGNAL(finished()), timeline, SLOT(deleteLater()));
+//void FibHeapGraphics::animateInsert()
+//{
+//    QTimeLine *timeline = new QTimeLine;
+//    timeline->setDuration (300);
+//    timeline->setCurveShape (QTimeLine::EaseInOutCurve); // OK = EaseOutCurve
+//    QObject::connect (timeline, SIGNAL(finished()), timeline, SLOT(deleteLater()));
 
-    QGraphicsItemAnimation *animation = new QGraphicsItemAnimation;
-    animation->setItem(LastNode);
-    animation->setTimeLine(timeline);
-    animation->setPosAt(1.0, QPointF(LastNode->x()+50,LastNode->y()));
-    QObject::connect (timeline, SIGNAL(finished()), animation, SLOT(deleteLater()));
+//    QGraphicsItemAnimation *animation = new QGraphicsItemAnimation;
+//    animation->setItem(LastNode);
+//    animation->setTimeLine(timeline);
+//    animation->setPosAt(1.0, QPointF(LastNode->x()+50,LastNode->y()));
+//    QObject::connect (timeline, SIGNAL(finished()), animation, SLOT(deleteLater()));
 
-    timeline->start();
-}
+//    timeline->start();
+//}
 
 void FibHeapGraphics::saveCurrentPositions()
 {
@@ -204,7 +214,8 @@ void FibHeapGraphics::clear()
         Nodes.pop_front();
     }
 
-    this->min = this->LastNode = 0;
+    this->min = 0;
+    this->rootList.setEmpty();
     this->n = 0;
 }
 
@@ -216,7 +227,8 @@ FibHeapGraphics *FibHeapGraphics::Union(FibHeapGraphics *H2)
     FibHeapGraphics *newHeap = new FibHeapGraphics();
     newHeap->min = newHeapUnion->min;
     newHeap->n = newHeapUnion->n;
-    newHeap->LastNode = newHeapUnion->LastNode;
+//    newHeap->LastNode = newHeapUnion->LastNode;
+    newHeap->rootList.setFirst(newHeapUnion->rootList.getFirst());
 
     newHeap->referencePoint = this->referencePoint;
 
@@ -228,7 +240,8 @@ FibHeapGraphics *FibHeapGraphics::Union(FibHeapGraphics *H2)
             << H2->Nodes;
     newHeap->Edges << this->Edges
                    << H2->Edges
-                   << new GraphicsFibEdge(this->LastNode, H2->LastNode->next());
+//                      << new GraphicsFibEdge(this->LastNode, H2->LastNode->next());
+                   << new GraphicsFibEdge(this->rootList.getLast(), H2->rootList.getFirst());
 
     newHeap->saveCurrentPositions();
     newHeap->setStates();
@@ -317,11 +330,12 @@ void FibHeapGraphics::linkEdgesNew(QGraphicsScene *scene)
         }
     }
 
-    GraphicsFibNode *start = 0;
-    if(this->LastNode)
-        start = this->LastNode->next();
+    GraphicsFibNode *start = this->rootList.getFirst();
+    GraphicsFibNode *end = this->rootList.getLast();
+//    if(this->LastNode)
+//        start = this->LastNode->next();
 
-    while (start != this->LastNode) {
+    while (start != end/*this->LastNode*/) {
         Edges << new GraphicsFibEdge(start, start->next() );
         scene->addItem(Edges.last());
         start = start->next();
@@ -358,7 +372,8 @@ void FibHeapGraphics::Cut(GraphicsFibNode *x)
 
     //graphics functions
     x->update(); // for the graphics/visuals nothing to do with the algorithm
-    this->LastNode->next()->setStates(); // for the graphics/visuals nothing to do with the algorithm
+//    this->LastNode->next()->setStates(); // for the graphics/visuals nothing to do with the algorithm
+    this->setStates();
 }
 
 void FibHeapGraphics::CascadingCut(GraphicsFibNode *y)

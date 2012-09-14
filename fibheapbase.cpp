@@ -6,20 +6,14 @@
 static const double ln = log(2.0);
 
 template<class Node>
-FibHeapBase<Node>::FibHeapBase() : min(0), n(0)//MakeFibHeap
+FibHeapBase<Node>::FibHeapBase() : min(0), n(0) //MakeFibHeap
 {
-#ifdef FIBHEAPGRAPHICS_H
-    LastNode = 0;
-#endif
 }
 
 template<class Node>
 FibHeapBase<Node>::~FibHeapBase()
 {
     min = 0;
-#ifdef FIBHEAPGRAPHICS_H
-    LastNode = 0;
-#endif
 }
 
 template<class Node>
@@ -36,18 +30,11 @@ void FibHeapBase<Node>::Insert(Node *newNode)
     if(this->min == 0)
     {
         this->min = newNode;
-        #ifdef FIBHEAPGRAPHICS_H
-        this->LastNode = newNode;
-        #endif
+        rootList.setFirst(newNode);
     }
     else
     {
-#ifdef FIBHEAPGRAPHICS_H
-        this->insertLast(newNode);
-#else
-//        min->insertBefore(newNode);
         min->insertAfter(newNode);
-#endif
         if(newNode->key < this->min->key)
         {
             this->min = newNode;
@@ -67,17 +54,17 @@ FibHeapBase<Node> *FibHeapBase<Node>::Union(FibHeapBase *H2)
 {
     FibHeapBase *newH = new FibHeapBase();
     newH->min = this->min;
-    newH->LastNode = this->LastNode;
+    newH->rootList.setFirst(this->rootList.getFirst());
 
     if(this->min != 0 && H2->min != 0)
     {
-        Node *FirstNode = this->LastNode->next();
-        Node *H2FirstNode = H2->LastNode->next();
+        Node *FirstNode = this->rootList.getFirst();
+        Node *H2FirstNode = H2->rootList.getFirst();
+        Node *LastNode = this->rootList.getLast();
+        Node *H2LastNode = H2->rootList.getLast();
 
-        linkNeighbours(this->LastNode, H2FirstNode);
-        linkNeighbours(H2->LastNode, FirstNode);
-
-        newH->LastNode = H2->LastNode;
+        linkNeighbours(LastNode, H2FirstNode);
+        linkNeighbours(H2LastNode, FirstNode);
     }
 
     if( this->min == 0 || (H2->min != 0 && H2->min->key < this->min->key) )
@@ -91,70 +78,36 @@ FibHeapBase<Node> *FibHeapBase<Node>::Union(FibHeapBase *H2)
 }
 
 template<class Node>
-Node *FibHeapBase<Node>::ExtractMin(bool deleteFunc/* = false*/)
+Node *FibHeapBase<Node>::ExtractMin()
 {
     Node *z = this->min;
 
     if(z != 0)
     {
-        #ifdef FIBHEAPGRAPHICS_H
-        Node *ChildListEnd = 0;
-        #endif
         if(z->Child != 0)
         {
-            #ifdef FIBHEAPGRAPHICS_H
             Node *ChildListStart = z->child();
             for(int i = 0; i < z->degree; ++i)
             {
                 ChildListStart->Parent = 0;
                 ChildListStart = ChildListStart->next();
             }
-
-            ChildListEnd = ChildListStart->prev();
-
-            Node *FirstNode = this->LastNode->next();
-
-            linkNeighbours(this->LastNode, ChildListStart);
-            linkNeighbours(ChildListEnd, FirstNode);
-
-            this->LastNode = ChildListEnd;
-            #else
-
-            Node *ChildListStart = z->child();
-            for(int i = 0; i < z->degree; ++i)
-            {
-                ChildListStart->Parent = 0;
-//                min->insertBefore(ChildListStart);
-
-                ChildListStart = ChildListStart->next();
-            }
-            min->insertAfter(ChildListStart, ChildListStart->prev()); // ta funkcija lahko da ne bo potrebna ob pravilni implementaciji dvojno povezanega seznama
-            #endif
+            min->insertAfter(ChildListStart, ChildListStart->prev());
         }
 
         if(z->unlink())
         {
             this->min = 0;
-            #ifdef FIBHEAPGRAPHICS_H
-            this->LastNode = 0;
-            #endif
+            rootList.setEmpty();
         }
         else
         {
-            #ifdef FIBHEAPGRAPHICS_H
-            //ce je z = LastNode
-            if(z == this->LastNode)
-                this->LastNode = z->prev();
-            #endif
+            rootList.removeUpdate(z);
 
             this->min = z->next();
             #ifdef FIBHEAPGRAPHICS_H
-            if(this->min->Child != 0 && !deleteFunc && ChildListEnd != 0) // za strukturo (obliko fibHeapa, ni bistveno za kopico sam zgradi jo po moji volji -> lepsa je)
-            {
-                this->min = ChildListEnd;
-            }
             //this part of the code isn't for the alghorithm but for the template graphical node
-            this->LastNode->next()->setStates(); // the setStates
+            rootList.getFirst()->setStates();
             #endif
 
             this->Consolidate();
@@ -200,16 +153,6 @@ void FibHeapBase<Node>::Delete(Node *x)
 }
 
 //private
-
-template<class Node>
-void FibHeapBase<Node>::insertLast(Node *newNode)
-{
-    if(this->LastNode != 0)
-    {
-        this->LastNode->insertAfter(newNode);
-    }
-    this->LastNode = newNode;
-}
 
 template<class Node>
 void FibHeapBase<Node>::linkNeighbours(Node *next, Node *prev) const
@@ -270,7 +213,7 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
     {
         if(A[i])
         {
-            if(A[i]->key < this->min->key /*|| (this->min->key == A[i]->key && A[i]->degree < OR > this->min->degree)*/) // ????speed up if we set the min node as also th node with the min degree
+            if(A[i]->key < this->min->key)
             {
                 this->min = A[i];
             }
@@ -283,22 +226,14 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
 template<class Node>
 void FibHeapBase<Node>::Link(Node *y, Node *x)
 {
-    #ifdef FIBHEAPGRAPHICS_H
-    if(y == LastNode)
-        LastNode = y->prev();
-    #endif
-
-
-    if(x->Next == x) // remove this
-    {
-        this->min = x;
-    }
+    rootList.removeUpdate(y);
 
     y->unlink2();
     x->makeChildLink(y);
 
 #ifdef FIBHEAPGRAPHICS_H
-    this->LastNode->next()->setStates(); // again this part is only for the graphical representation and not esential to the algorithm it has no part in the pseudocode in the alghorithm
+    // again this part is only for the graphical representation and not esential to the algorithm it has no part in the pseudocode in the alghorithm
+    rootList.getFirst()->setStates();
 #endif
 }
 
@@ -307,12 +242,7 @@ template<class Node>
 void FibHeapBase<Node>::Cut(Node *x/*, Node *y*/) // y nepotreben zaradi unChild funkcije
 {
     x->unChild(); // 3. korak pokrit
-
-    #ifdef FIBHEAPGRAPHICS_H
-    this->insertLast(x);
-    #else
     min->insertAfter(x);
-    #endif
 
     x->mark = false;
 }
@@ -335,17 +265,19 @@ void FibHeapBase<Node>::CascadingCut(Node *y)
 //    }
 
     Node *z = y->parent();
+    Node *yy = y;
 
     while(z != 0)
     {
-        if(!y->mark)
+        if(!yy->mark)
         {
-            y->mark = true;
+            yy->mark = true;
             break;
         }
         else
         {
             this->Cut(y);
+            yy = z;
             z = z->parent();
         }
     }
@@ -365,9 +297,9 @@ void FibHeapBase<Node>::ExportHeap(QString &fileName)
     QDomElement root = document.createElement(rootTagName);
     document.appendChild(root);
 
-    if(this->LastNode != 0)
+    if(this->min)
     {
-        Node *FirsRootNode = this->LastNode->next();
+        Node *FirsRootNode = this->rootList.getFirst();
         if(FirsRootNode != 0)
             minNodeIndex = InsertElements(document, root, FirsRootNode);
     }
@@ -470,13 +402,13 @@ template<class Node>
 void FibHeapBase<Node>::NodesFromDomRoot(QDomElement &root)
 {
     QDomElement elt = root.firstChildElement();
-    QDomElement last = root.lastChildElement();
+//    QDomElement last = root.lastChildElement();
     QDomElement childElem = elt.firstChildElement();
 
     Node *tmpNode = getNode(elt);
     NodesFromDomEl(childElem, tmpNode);
     elt = elt.nextSiblingElement();
-    this->LastNode = tmpNode;
+    Node *lastNode = tmpNode;//this->rootList.setFirst(tmpNode);//this->LastNode = tmpNode;
     this->min = tmpNode;
 
     int indexMinCount = 1;
@@ -486,17 +418,17 @@ void FibHeapBase<Node>::NodesFromDomRoot(QDomElement &root)
     for (; !elt.isNull(); elt = elt.nextSiblingElement())
     {
         tmpNode = getNode(elt);
-        this->LastNode->insertAfter(tmpNode);
+        lastNode->insertAfter(tmpNode);//this->rootList.getFirst()->insertAfter(tmpNode);//this->LastNode->insertAfter(tmpNode);
         childElem = elt.firstChildElement();
         NodesFromDomEl(childElem, tmpNode);
-        this->LastNode = tmpNode;
+        lastNode = tmpNode;//this->rootList.setFirst(tmpNode);//this->LastNode = tmpNode;
 
         if(minIndex == indexMinCount)
             this->min = tmpNode;
 
         indexMinCount++;
     }
-    this->LastNode = tmpNode;
+    this->rootList.setFirst(tmpNode->next()); //this->LastNode = tmpNode;
 }
 
 template<class Node>

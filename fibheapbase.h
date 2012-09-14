@@ -9,6 +9,8 @@
 #include <QFile>
 #include <QTextStream>
 
+#include "cdlist.h"
+
 template<class Node>
 class FibHeapBase
 {
@@ -21,7 +23,7 @@ public:
     void Insert(Node *newNode);
     Node *Min() const;
     FibHeapBase<Node> *Union(FibHeapBase *H2);//    Uniting two Fibonacci heaps #fixed!
-    Node *ExtractMin(bool deleteFunc = false);//Extracting the minimum FNode, deleteFunc ce klicemo iz delete zaradi strukture
+    Node *ExtractMin();//Extracting the minimum FNode, deleteFunc ce klicemo iz delete zaradi strukture
 
 
     //19.3
@@ -40,11 +42,8 @@ public:
 protected:
     Node *min;
     int n;
-#ifdef FIBHEAPGRAPHICS_H
-    Node *LastNode;
-#endif
+    CDList<Node> rootList;
 
-    inline void insertLast(Node *newNode);
     inline void linkNeighbours(Node *next, Node *prev) const;
 
     //19.2

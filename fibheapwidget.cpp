@@ -76,21 +76,9 @@ void FibHeapWidget::zoomOut()
 
 // FibHeap
 
-void FibHeapWidget::addNode(GraphicsFibNode *node)
-{
-    scene()->addItem(node);
-
-    if(node->edges().count() == 1)
-    {
-        scene()->addItem(node->edges().first());
-    }
-    updateMin();
-    selectedHeap->animateInsert();
-}
-
 void FibHeapWidget::extractMin()
 {
-    delete selectedHeap->ExtractMin(isDelete);
+    delete selectedHeap->ExtractMin();
     if(isFirst)
         GraphicsFibNode::minfNode = selectedHeap->Min();
     else
@@ -167,7 +155,8 @@ void FibHeapWidget::nextStep()
 
 void FibHeapWidget::insertNode(int key)
 {
-    addNode(selectedHeap->Insert(key));
+    selectedHeap->Insert(key,this->scene());
+    updateMin();
 }
 
 void FibHeapWidget::clearSelected()
@@ -252,7 +241,7 @@ void FibHeapWidget::ImportHeap()
     if(selectedHeap->Min())
         return;
 
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"));
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::currentPath(), tr("FHeap (*.fibh)"));
 
     if(fileName != "")
         selectedHeap->ImportHeap(fileName, this->scene());
