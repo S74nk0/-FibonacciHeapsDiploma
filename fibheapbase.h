@@ -38,10 +38,13 @@ public:
         return min;
     }
 
+
 protected:
     Node *min;
     int n;
     CDList<Node> rootList;
+
+    int deb_val;
 
     inline void linkNeighbours(Node *next, Node *prev) const;
 

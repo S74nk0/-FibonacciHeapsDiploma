@@ -17,7 +17,7 @@ void FibHeapGraphics::Insert(int key, QGraphicsScene *scene)
     GraphicsFibEdge *tmpEdge = 0;
     GraphicsFibNode *x = new GraphicsFibNode(key);
     x->referencePoint = this->referencePoint;
-    QPointF oldMin;
+    QPointF oldMin = this->referencePoint;
     if(Nodes.isEmpty())
         x->setPos(this->referencePoint);
     else

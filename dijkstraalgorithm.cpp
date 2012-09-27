@@ -15,7 +15,7 @@ bool keyLessThan(const Node *n1, const Node *n2)
 //DijkstraAlgorithm
 
 template <class Node, class EdgeTemplate>
-DijkstraAlgorithm<Node, EdgeTemplate>::DijkstraAlgorithm()
+DijkstraAlgorithm<Node, EdgeTemplate>::DijkstraAlgorithm() : sIndex(-1)
 {
 }
 
@@ -88,7 +88,10 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg()
         return;
     }
 
-    doAlg(this->reflect, Nodes.size()-1);
+    if(sIndex == -1)
+        doAlg(this->reflect, Nodes.size()-1);
+    else
+        doAlg(this->reflect, sIndex);
 }
 
 template <class Node, class EdgeTemplate>
@@ -96,12 +99,12 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::printResaults()
 {
     Node *tmp = Nodes[0];
     qDebug("distance price: "+QString::number(tmp->key).toAscii());
-    while(tmp)
-    {
-        QString str = QString::number(tmp->nodeId) + " - ";
-        qDebug(str.toAscii());
-        tmp = static_cast<Node *>(tmp->prevScaned);
-    }
+//    while(tmp)
+//    {
+//        QString str = QString::number(tmp->nodeId) + " - ";
+//        qDebug(str.toAscii());
+//        tmp = static_cast<Node *>(tmp->prevScaned);
+//    }
 }
 
 
@@ -120,6 +123,7 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DNode, int sourceIndex)
     Q.Insert(Nodes[sourceIndex], 0);
 
     DNode *u = 0;
+    int altDistance = 0;
     while(!Q.empty())
     {
         u = Q.ExtractMin();
@@ -132,7 +136,7 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DNode, int sourceIndex)
         {
             if(u->toEdges[i]->endNode()->state != SCANNED)
             {
-                int altDistance = u->key + u->toEdges[i]->getPrice();
+                altDistance = u->key + u->toEdges[i]->getPrice();
                 if(u->toEdges[i]->endNode()->state == UNLABELED)
                 {
                     u->toEdges[i]->endNode()->state = LABELED;
@@ -164,8 +168,12 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DFNode, int sourceIndex)
 //    QList<DFNode *> S;
 
     heap.Insert(Nodes[sourceIndex]);
+//    foreach(DFNode *tmp, Nodes) {
+//        heap.Insert(tmp);
+//    }
 
     DFNode *u = 0;
+    int altDistance = 0;
     while(heap.Min() != 0)
     {
         // velika pohitritev
@@ -178,13 +186,14 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DFNode, int sourceIndex)
         {
             if(u->toEdges[i]->endNode()->state != SCANNED)
             {
-                int altDistance = u->key + u->toEdges[i]->getPrice();
+                altDistance = u->key + u->toEdges[i]->getPrice();
                 if(u->toEdges[i]->endNode()->state == UNLABELED)
                 {
                     u->toEdges[i]->endNode()->state = LABELED;
                     u->toEdges[i]->endNode()->prevScaned = u;
                     u->toEdges[i]->endNode()->key = altDistance;
                     heap.Insert(u->toEdges[i]->endNode());
+//                    heap.DecreaseKey(u->toEdges[i]->endNode(), altDistance);
                 }
                 else if(altDistance < u->toEdges[i]->endNode()->key)
                 {

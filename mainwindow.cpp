@@ -23,6 +23,7 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 
 void MainWindow::on_pushButton_Insert_clicked()
 {
+//    QEvent e
     ui->fibHeapView->insertNode(ui->spinBox->value());
 }
 

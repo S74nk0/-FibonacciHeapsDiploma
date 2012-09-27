@@ -22,28 +22,12 @@ public:
     void doAlg();
     void printResaults();
 
+    void setIndex(int index) { sIndex = index; }
+    int getNodeCount() { return Nodes.count(); }
 
 private:
     Node reflect; // reflect is for function overloading (reflection workaround)
-    int Parent(int i) {
-        return (int)(i/2);
-    }
-    int indexOf(std::vector<DNode *> &Q, DNode *node) {
-        int start = 0;
-        int end = (int)Q.size();
-        --end;
-
-        while(start <= end) {
-            if(Q[start] == node)
-                return start;
-            if(Q[end] == node)
-                return end;
-
-            ++start;
-            --end;
-        }
-        return -1; // should never happen in our case
-    }
+    int sIndex;
 
 protected:
     // START graph

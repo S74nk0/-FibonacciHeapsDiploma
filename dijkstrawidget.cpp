@@ -13,6 +13,7 @@ DijkstraWidget::DijkstraWidget(QWidget *parent)
 //    QString name = "scotland_big.txt";
     QString name = "primerGraf.txt";
 //    QString name = "primerGraf2.txt";
+//    QString name = "austria_big.dat";
     dijkstraGraph.loadGraph(name);
     dijkstraGraph.addToScene(scene);
 

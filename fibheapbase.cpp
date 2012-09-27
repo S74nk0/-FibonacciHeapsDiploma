@@ -6,7 +6,7 @@
 static const double ln = log(2.0);
 
 template<class Node>
-FibHeapBase<Node>::FibHeapBase() : min(0), n(0) //MakeFibHeap
+FibHeapBase<Node>::FibHeapBase() : min(0), n(0), deb_val(0) //MakeFibHeap
 {
 }
 
@@ -96,7 +96,7 @@ Node *FibHeapBase<Node>::ExtractMin()
                 ChildListStart->Parent = 0;
                 ChildListStart = ChildListStart->next();
             }
-            min->insertAfter(ChildListStart, ChildListStart->prev());
+            min->insertAfter(ChildListStart, ChildListStart->prev()); // hello problem. . . here probably
         }
 
         if(z->unlink())
@@ -171,6 +171,7 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
 {
     double f = log( static_cast<double>(this->n) )/ln; // ln(n) = log(n)/log(2.0)
     int D = qRound(f) + 1;//D(n); // potential
+    int d = 0; // degree in the loop
 
 //    Node **A = new Node*[D];
     Node *A[D]; // microoptimization stack
@@ -180,12 +181,11 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
         A[i] = 0;
     }
 
-    Node *x = 0, *y = 0, *tmp = 0;
+    Node *x = this->rootList.getFirst(), *y = 0, *tmp = 0;
 
-    x = this->min;
     do
     {
-        int d = x->degree;
+        d = x->degree;
 
         while(A[d] != 0 && x != A[d])
         {
@@ -198,8 +198,6 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
                     x = y;
                     y = tmp;
                 }
-                if(y == this->min)
-                    this->min = x;
 
                 this->Link(y, x);// states change
             }
@@ -210,8 +208,10 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
         A[d] = x;
 
         x = x->next();
-    }while(x != this->min);
+    }while(x != this->rootList.getFirst());
 
+
+    this->min = this->rootList.getFirst();
 
     for(int i = 0; i < D; ++i)
     {
@@ -435,7 +435,7 @@ void FibHeapBase<Node>::NodesFromDomRoot(QDomElement &root)
 
         indexMinCount++;
     }
-    this->rootList.setFirst(tmpNode->next()); //this->LastNode = tmpNode;
+    this->rootList.setFirst(tmpNode/*->next()*/); //this->LastNode = tmpNode;
 }
 
 template<class Node>

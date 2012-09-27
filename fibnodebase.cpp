@@ -101,11 +101,12 @@ void FibNodeBase<Derived>::unChild()
 {
     if(this->Parent)
     {
+        --this->Parent->degree;
         if(this->Parent->Child == this) // ce je trenutni otrok kazalec na otroka
         {
             this->Parent->Child = this->Next;
         }
-        if(this->Next == this) // zadnji otrok
+        if(this->Parent->degree == 0) // zadnji otrok
         {
             this->Parent->Child = 0;
         }
@@ -114,7 +115,6 @@ void FibNodeBase<Derived>::unChild()
         this->Next = this;
         this->Prev = this;
 
-        this->Parent->degree--;
         this->Parent = 0; // 3. korak pokrit
     }
 }
@@ -134,11 +134,17 @@ void FibNodeBase<Derived>::makeChildLink(FibNodeBase *child)
     {
         this->Child = child;
     }
+    else
+    {
+//        this->Child->insertAfter(child);
+        this->Child->insertBefore(child);
+    }
 
-    child->Next = this->Child;
-    child->Prev = this->Child->Prev;
-    this->Child->Prev->Next = child;
-    this->Child->Prev = child;
+
+//    child->Next = this->Child;
+//    child->Prev = this->Child->Prev;
+//    this->Child->Prev->Next = child;
+//    this->Child->Prev = child;
 
     ++this->degree;
     child->mark = false;
