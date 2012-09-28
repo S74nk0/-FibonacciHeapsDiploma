@@ -161,22 +161,6 @@ void FibHeapGraphics::setFirstPositions()
     }
 }
 
-//void FibHeapGraphics::animateInsert()
-//{
-//    QTimeLine *timeline = new QTimeLine;
-//    timeline->setDuration (300);
-//    timeline->setCurveShape (QTimeLine::EaseInOutCurve); // OK = EaseOutCurve
-//    QObject::connect (timeline, SIGNAL(finished()), timeline, SLOT(deleteLater()));
-
-//    QGraphicsItemAnimation *animation = new QGraphicsItemAnimation;
-//    animation->setItem(LastNode);
-//    animation->setTimeLine(timeline);
-//    animation->setPosAt(1.0, QPointF(LastNode->x()+50,LastNode->y()));
-//    QObject::connect (timeline, SIGNAL(finished()), animation, SLOT(deleteLater()));
-
-//    timeline->start();
-//}
-
 void FibHeapGraphics::saveCurrentPositions()
 {
     foreach (GraphicsFibNode *node, Nodes) {

@@ -168,9 +168,6 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DFNode, int sourceIndex)
 //    QList<DFNode *> S;
 
     heap.Insert(Nodes[sourceIndex]);
-//    foreach(DFNode *tmp, Nodes) {
-//        heap.Insert(tmp);
-//    }
 
     DFNode *u = 0;
     int altDistance = 0;
@@ -193,7 +190,6 @@ void DijkstraAlgorithm<Node, EdgeTemplate>::doAlg(DFNode, int sourceIndex)
                     u->toEdges[i]->endNode()->prevScaned = u;
                     u->toEdges[i]->endNode()->key = altDistance;
                     heap.Insert(u->toEdges[i]->endNode());
-//                    heap.DecreaseKey(u->toEdges[i]->endNode(), altDistance);
                 }
                 else if(altDistance < u->toEdges[i]->endNode()->key)
                 {

@@ -198,7 +198,6 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
                     x = y;
                     y = tmp;
                 }
-
                 this->Link(y, x);// states change
             }
 
@@ -257,35 +256,17 @@ void FibHeapBase<Node>::Cut(Node *x/*, Node *y*/) // y nepotreben zaradi unChild
 template<class Node>
 void FibHeapBase<Node>::CascadingCut(Node *y)
 {
-//    Node *z = y->parent();
-//    if(z != 0)
-//    {
-//        if(y->mark == false)
-//        {
-//            y->mark = true;
-//        }
-//        else
-//        {
-//            this->Cut(y/*, z*/);
-//            this->CascadingCut(z);
-//        }
-//    }
-
     Node *z = y->parent();
-    Node *yy = y;
-
-    while(z != 0)
+    if(z != 0)
     {
-        if(!yy->mark)
+        if(y->mark == false)
         {
-            yy->mark = true;
-            break;
+            y->mark = true;
         }
         else
         {
-            this->Cut(y);
-            yy = z;
-            z = z->parent();
+            this->Cut(y/*, z*/);
+            this->CascadingCut(z);
         }
     }
 }

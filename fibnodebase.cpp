@@ -111,9 +111,7 @@ void FibNodeBase<Derived>::unChild()
             this->Parent->Child = 0;
         }
 
-        (void)this->unlink();
-        this->Next = this;
-        this->Prev = this;
+        this->unlink2();
 
         this->Parent = 0; // 3. korak pokrit
     }
@@ -136,15 +134,8 @@ void FibNodeBase<Derived>::makeChildLink(FibNodeBase *child)
     }
     else
     {
-//        this->Child->insertAfter(child);
         this->Child->insertBefore(child);
     }
-
-
-//    child->Next = this->Child;
-//    child->Prev = this->Child->Prev;
-//    this->Child->Prev->Next = child;
-//    this->Child->Prev = child;
 
     ++this->degree;
     child->mark = false;
