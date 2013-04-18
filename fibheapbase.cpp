@@ -58,7 +58,7 @@ FibHeapBase<Node> *FibHeapBase<Node>::Union(FibHeapBase *H2)
 {
     FibHeapBase *newH = new FibHeapBase();
     newH->min = this->min;
-    newH->rootList.setFirst(this->rootList.getFirst());
+    newH->rootList.setFirst(this->rootList.getLast());
 
     if(this->min != 0 && H2->min != 0)
     {
@@ -96,7 +96,7 @@ Node *FibHeapBase<Node>::ExtractMin()
                 ChildListStart->Parent = 0;
                 ChildListStart = ChildListStart->next();
             }
-            min->insertAfter(ChildListStart, ChildListStart->prev()); // hello problem. . . here probably
+            min->insertAfter(ChildListStart, ChildListStart->prev());
         }
 
         if(z->unlink())

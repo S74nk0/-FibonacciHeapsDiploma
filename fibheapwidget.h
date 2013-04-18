@@ -38,7 +38,7 @@ protected:
 
 private:
     void updateMin();
-
+    void deSelect();
     FibHeapGraphics *selectedHeap;
     FibHeapGraphics *firstFibHeap;
     FibHeapGraphics *secondFibHeap;

@@ -1,9 +1,11 @@
 #include "graphicsfibnode.h"
+#include <limits>
 
 //static members
 GraphicsFibNode *GraphicsFibNode::minfNode = 0;
 GraphicsFibNode *GraphicsFibNode::minfNode2 = 0;
 GraphicsFibNode *GraphicsFibNode::selected = 0;
+bool GraphicsFibNode::colorMins = true;
 
 
 
@@ -49,22 +51,29 @@ void GraphicsFibNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
             brush.setColor(Qt::black);
             textPen.setColor(Qt::white);
         }
-        else if(this == this->minfNode || this == this->minfNode2)
+        else if(this->colorMins && (this == this->minfNode || this == this->minfNode2) )
             brush.setColor(Qt::red/*Qt::lightGray*/);
         else
             brush.setColor(Qt::lightGray);
-
     }
     painter->setBrush(brush);
     painter->setPen(textPen);
     painter->drawEllipse(-10, -10, 20, 20);
 
-    QString num = QString::number(this->key);
-    painter->drawText(-5*num.size(),5, num);
-//    QTextOption center(Qt::AlignCenter);
-//    painter->drawText(
-//                Pos, num
-//                      , center);
+
+    if(this->key != std::numeric_limits<int>::min())
+    {
+        QString num = QString::number(this->key);
+        painter->drawText(-4*num.size(),5, num);
+    }
+    else
+    {
+        QString num = QObject::trUtf8("-\u221e");
+        painter->drawText(
+                    QRect(-10, -10, 20, 20), Qt::AlignCenter
+                          , num);
+    }
+
 }
 
 void GraphicsFibNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -80,7 +89,12 @@ void GraphicsFibNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void GraphicsFibNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    this->setPos(Pos);
+    this->setPos(this->pos().rx(), Pos.ry()); //this->setPos(Pos);
+    GraphicsFibNode *tmp = this->child();
+    if(tmp)
+    {
+        tmp->setPos(this->pos().rx(), tmp->pos().ry());
+    }
     update();
     QGraphicsItem::mouseReleaseEvent(event);
 }

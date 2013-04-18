@@ -222,7 +222,7 @@ FibHeapGraphics *FibHeapGraphics::Union(FibHeapGraphics *H2)
     FibHeapGraphics *newHeap = new FibHeapGraphics();
     newHeap->min = newHeapUnion->min;
     newHeap->n = newHeapUnion->n;
-    newHeap->rootList.setFirst(newHeapUnion->rootList.getFirst());
+    newHeap->rootList.setFirst(newHeapUnion->rootList.getLast()); // used to be get firstgetFirst()
 
     newHeap->referencePoint = this->referencePoint;
 
@@ -234,7 +234,9 @@ FibHeapGraphics *FibHeapGraphics::Union(FibHeapGraphics *H2)
             << H2->Nodes;
     newHeap->Edges << this->Edges
                    << H2->Edges
-                   << new GraphicsFibEdge(this->rootList.getLast(), H2->rootList.getFirst());
+                   << new GraphicsFibEdge(this->rootList.getFirst(), H2->rootList.getLast());
+//                   << new GraphicsFibEdge(this->rootList.getLast(), H2->rootList.getFirst());
+
 
     newHeap->saveCurrentPositions();
     newHeap->setStates();

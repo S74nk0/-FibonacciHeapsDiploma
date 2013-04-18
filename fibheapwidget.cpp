@@ -45,6 +45,13 @@ void FibHeapWidget::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Minus:
         zoomOut();
         break;
+    case Qt::Key_D:
+        deSelect();
+        break;
+    case Qt::Key_M:
+        GraphicsFibNode::colorMins = !GraphicsFibNode::colorMins;
+        updateMin();
+        break;
     default:
         QGraphicsView::keyPressEvent(event);
     }
@@ -247,4 +254,13 @@ void FibHeapWidget::ImportHeap()
         selectedHeap->ImportHeap(fileName, this->scene());
 
     updateMin();
+}
+
+
+void FibHeapWidget::deSelect()
+{
+    GraphicsFibNode *old = GraphicsFibNode::selected;
+    GraphicsFibNode::selected = 0;
+    if(old)
+        old->update();
 }

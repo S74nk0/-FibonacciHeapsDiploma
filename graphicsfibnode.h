@@ -20,6 +20,7 @@ public:
     static GraphicsFibNode *minfNode;
     static GraphicsFibNode *minfNode2;
     static GraphicsFibNode *selected;
+    static bool colorMins;
 
     //implement this function
     void setStates();
