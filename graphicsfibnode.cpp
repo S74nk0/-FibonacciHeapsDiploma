@@ -89,12 +89,16 @@ void GraphicsFibNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void GraphicsFibNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+#if 0 // debugging
     this->setPos(this->pos().rx(), Pos.ry()); //this->setPos(Pos);
     GraphicsFibNode *tmp = this->child();
     if(tmp)
     {
         tmp->setPos(this->pos().rx(), tmp->pos().ry());
     }
+#else
+    this->setPos(Pos);
+#endif
     update();
     QGraphicsItem::mouseReleaseEvent(event);
 }

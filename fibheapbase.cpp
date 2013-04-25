@@ -174,7 +174,8 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
     int d = 0; // degree in the loop
 
 //    Node **A = new Node*[D];
-    Node *A[D]; // microoptimization stack
+//    Node *A[D]; // microoptimization stack
+    Node *A[4]; // debuging
 
     for(int i = 0; i < D; ++i)
     {
