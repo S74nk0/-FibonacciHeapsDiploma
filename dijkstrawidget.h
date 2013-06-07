@@ -1,8 +1,8 @@
 #ifndef DIJKSTRAWIDGET_H
 #define DIJKSTRAWIDGET_H
 
-#include <QtGui/QGraphicsView>
-
+//#include <QtGui/QGraphicsView>
+#include <QGraphicsView> // qt 5
 #include "dijkstragraphics.h"
 
 class DijkstraWidget : public QGraphicsView

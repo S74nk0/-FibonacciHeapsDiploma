@@ -1,7 +1,8 @@
 #ifndef FIBHEAPWIDGET_H
 #define FIBHEAPWIDGET_H
 
-#include <QtGui/QGraphicsView>
+//#include <QtGui/QGraphicsView>
+#include <QGraphicsView>
 
 #include "fibheapgraphics.h"
 

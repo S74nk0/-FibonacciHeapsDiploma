@@ -90,13 +90,15 @@
 
 
 //cel program z graficnim vmesnikom
-#include <QtGui/QApplication>
+//#include <QtGui/QApplication>
+#include <QApplication> // android qt 5
 #include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
+    w.setWindowTitle("Fibonacci Heaps");
     w.show();
 
     return a.exec();

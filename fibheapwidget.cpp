@@ -1,7 +1,9 @@
 #include "fibheapwidget.h"
 
 #include <QtGui>
+#include <QFileDialog> // qt 5
 #include <limits>
+#include <QMessageBox>
 
 FibHeapWidget::FibHeapWidget(QWidget *parent)
     : QGraphicsView(parent), isDelete(false), isFirst(true)
@@ -96,8 +98,11 @@ void FibHeapWidget::extractMin()
 
 void FibHeapWidget::decreaseKey(int key)
 {
-    if(!GraphicsFibNode::selected)
+    if(!GraphicsFibNode::selected) {
+        QMessageBox::information( this, "Select a node", "In order to run this operation\n"
+                                  "you must select a node first", QMessageBox::Ok, 0 );
         return;
+    }
 
     GraphicsFibNode *Selected = GraphicsFibNode::selected;
     GraphicsFibNode::selected = 0;
@@ -107,8 +112,11 @@ void FibHeapWidget::decreaseKey(int key)
 
 void FibHeapWidget::deleteNode()
 {
-    if(!GraphicsFibNode::selected)
+    if(!GraphicsFibNode::selected) {
+        QMessageBox::information( this, "Select a node", "In order to run this operation\n"
+                                  "you must select a node first", QMessageBox::Ok, 0 );
         return;
+    }
 
     this->decreaseKey(std::numeric_limits<int>::min());
 
@@ -245,13 +253,24 @@ void FibHeapWidget::unionOperation()
 
 void FibHeapWidget::ImportHeap()
 {
-    if(selectedHeap->Min())
-        return;
+    bool clear = false;
+    if(selectedHeap->Min()) {
+        if(QMessageBox::No ==
+                QMessageBox::question(this,"Heap is not empty","Currently selected heap is not empty.\n" "Clear selected heap and import new?")) {
+            return;
+        } else {
+            clear = true;
+        }
+    }
 
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::currentPath(), tr("FHeap (*.fibh)"));
 
-    if(fileName != "")
+    if(fileName != "") {
+        if(clear) {
+            clearSelected();
+        }
         selectedHeap->ImportHeap(fileName, this->scene());
+    }
 
     updateMin();
 }

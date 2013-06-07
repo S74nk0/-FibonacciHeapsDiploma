@@ -175,7 +175,7 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
 
 //    Node **A = new Node*[D];
 //    Node *A[D]; // microoptimization stack
-    Node *A[4]; // debuging
+    Node *A[4];
 
     for(int i = 0; i < D; ++i)
     {
@@ -184,8 +184,13 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
 
     Node *x = this->rootList.getFirst(), *y = 0, *tmp = 0;
 
+    int forIteracija = 0;
     do
     {
+        // pisanje
+        Node *w = x;
+        forIteracija++;
+        // pisanje end
         d = x->degree;
 
         while(A[d] != 0 && x != A[d])
@@ -206,6 +211,13 @@ void FibHeapBase<Node>::Consolidate() // # fixed!
             ++d;
         }
         A[d] = x;
+
+        //pisanje
+        if(w != x) {
+            "RAZLIČEN";
+            int d = this->n;
+        }
+        //pisanje END
 
         x = x->next();
     }while(x != this->rootList.getFirst());
